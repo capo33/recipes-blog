@@ -239,7 +239,7 @@ export const updateProfile = asyncHandler(
 // @desc    Delete user
 // @route   DELETE /api/v1/auth/user/:id
 // @access  Private/Admin or User
-export const deleteUser = asyncHandler(
+export const deleteUserByUser = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const user = await UserModel.findById(req.user?._id);
     const recipes = await RecipeModel.findOneAndDelete({
