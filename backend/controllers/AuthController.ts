@@ -52,6 +52,7 @@ export const register = asyncHandler(
     // send response
     res.status(201).json({
       success: true,
+      message: "User created successfully",
       token,
       ...userWithoutPassword,
     });
@@ -93,6 +94,7 @@ export const login = asyncHandler(
     res.status(200).json({
       success: true,
       token,
+      message: "User logged in successfully",
       ...userWithoutPassword,
     });
   }

@@ -16,11 +16,7 @@ export const getRecipes = asyncHandler(
       .populate("owner", "name image")
       .populate("category", "name image");
 
-    res.status(200).json({
-      success: true,
-      message: "All recipes",
-      recipes,
-    });
+    res.status(200).json(recipes);
   }
 );
 
@@ -45,11 +41,7 @@ export const getRecipeById = asyncHandler(
       throw new Error("Recipe not found");
     }
 
-    res.status(200).json({
-      success: true,
-      message: "Recipe found",
-      recipe,
-    });
+    res.status(200).json(recipe);
   }
 );
 
@@ -404,17 +396,22 @@ export const likeRecipe = asyncHandler(
     const { recipeId } = req.body;
 
     // Like the recipe
-    await RecipeModel.findByIdAndUpdate(
+    const recipe = await RecipeModel.findByIdAndUpdate(
       recipeId,
       {
-        $push: { likes: req.user?._id },
+        $push: { likes: req.body.userId },
       },
       { new: true }
     );
+    if (!recipe) {
+      res.status(404);
+      throw new Error("Recipe not found");
+    }
 
     res.status(200).json({
       success: true,
       message: "Recipe liked successfully",
+      likes: recipe?.likes,
     });
   }
 );
@@ -427,17 +424,23 @@ export const unlikeRecipe = asyncHandler(
     const { recipeId } = req.body;
 
     // Unlike the recipe
-    await RecipeModel.findByIdAndUpdate(
+    const recipe = await RecipeModel.findByIdAndUpdate(
       recipeId,
       {
-        $pull: { likes: req.user?._id },
+        $pull: { likes: req.body.userId },
       },
       { new: true }
     );
 
+    if (!recipe) {
+      res.status(404);
+      throw new Error("Recipe not found");
+    }
+
     res.status(200).json({
       success: true,
       message: "Recipe unliked successfully",
+      likes: recipe?.likes,
     });
   }
 );

@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import path from "path";
 import express, { Application, Request, Response } from "express";
-
+import cors from "cors";
 // Load env vars
 dotenv.config();
 
@@ -30,6 +30,7 @@ app.use(
     parameterLimit: 100000, //
   })
 );
+app.use(cors());
 
 // Routes
 app.use("/api/v1/auth", userRoutes);
