@@ -83,6 +83,8 @@ export const createRecipe = createAsyncThunk(
       const response = await recipeServices.createRecipe(formData, token);
       toast.success("Recipe created successfully");
       thunkAPI.dispatch(getAllRecipes());
+      console.log('response', response);
+      
       return response;
     } catch (error: unknown | any) {
       return thunkAPI.rejectWithValue(error.response.data.message);

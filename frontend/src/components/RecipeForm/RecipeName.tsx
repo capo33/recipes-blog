@@ -16,6 +16,8 @@ const RecipeName = ({ recipe, handleChange }: RecipeNameProps) => {
         type='text'
         name='name'
         id='name'
+
+        
         value={recipe?.name ? recipe.name : ""}
         onChange={handleChange}
         placeholder='Write a name for your recipe'

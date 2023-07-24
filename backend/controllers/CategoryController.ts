@@ -11,11 +11,7 @@ export const getCategories = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const categories = await CategoryModel.find({}).populate("recipes");
 
-    res.status(200).json({
-      success: true,
-      message: "All categories",
-      categories,
-    });
+    res.status(200).json(categories);
   }
 );
 

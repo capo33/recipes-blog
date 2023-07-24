@@ -25,10 +25,14 @@ import {
   Form,
 } from "react-bootstrap";
 import RecipeName from "../../components/RecipeForm/RecipeName";
+import axios from "axios";
 
 const AddRecipe = () => {
   const { user } = useAppSelector((state) => state.auth);
   const [inputValue, setInputValue] = useState("");
+  const [image, setImage] = useState<string | File>("");
+  const [url, setUrl] = useState("");
+
   const [recipe, setRecipe] = useState<Recipe>({
     name: "",
     ingredients: [],
@@ -81,6 +85,7 @@ const AddRecipe = () => {
     >
   ) => {
     const { name, value } = e.target;
+
     setRecipe((prevRecipe) => ({
       ...prevRecipe,
       [name]: value,
@@ -88,21 +93,58 @@ const AddRecipe = () => {
   };
 
   // Submit handler for form
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "recipe-app");
+    data.append("cloud_name", "dunforh2u");
+    // Make request to cloudinary
+    const res = await axios.post(
+      "https://api.cloudinary.com/v1_1/dunforh2u/upload",
+      data
+    );
+    setRecipe((prevRecipe) => ({
+      ...prevRecipe,
+      image: res.data.url,
+    }));
+
     dispatch(createRecipe({ formData: recipe, token, toast }));
-    navigate("/");
-    setRecipe({
-      name: "",
-      ingredients: [],
-      instructions: "",
-      image: "",
-      cookingTime: 0,
-      category: { _id: "", name: "", image: "", slug: "" },
-      owner: {
-        _id: user?._id as string,
-      },
-    });
+    // navigate("/");
+    // setRecipe({
+    //   name: "",
+    //   ingredients: [],
+    //   instructions: "",
+    //   image: "",
+    //   cookingTime: 0,
+    //   category: { _id: "", name: "", image: "", slug: "" },
+    //   owner: {
+    //     _id: user?._id as string,
+    //   },
+    // });
+  };
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "recipe-app");
+    data.append("cloud_name", "dunforh2u");
+    // Make request to cloudinary
+    const res = await axios.post(
+      "https://api.cloudinary.com/v1_1/dunforh2u/upload",
+      data
+    );
+    setRecipe((prevRecipe) => ({
+      ...prevRecipe,
+      image: res.data.url,
+    }));
+    console.log(res);
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files?.[0];
+    if (!file) return;
+    setImage(file);
   };
 
   return (
@@ -117,10 +159,10 @@ const AddRecipe = () => {
         </div>
       </div>
       <div className='row justify-content-center'>
-        <div className='col-8 alert alert-success' role='alert'></div>
-        <div className='col-8 alert alert-danger' role='alert'></div>
+        {/* <div className='col-8 alert alert-success' role='alert'></div>
+        <div className='col-8 alert alert-danger' role='alert'></div> */}
         <div className='col-8'>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Row className='row g-3'>
               <RecipeName recipe={recipe} handleChange={handleChange} />
               <Ingredients
@@ -131,16 +173,24 @@ const AddRecipe = () => {
                 setInputValue={setInputValue}
               />
               <Col md={12}>
-                <Form.Label htmlFor='description'>Description</Form.Label>
-                <Form.Control
+                <Form.Label htmlFor='instruction'>instruction</Form.Label>
+                {/* <Form.Control
                   type='text'
-                  id='description'
-                  name='description'
-                  placeholder='Enter description'
+                  id='instruction'
+                  name='instruction'
+                  value={recipe?.instructions}
+                  onChange={handleChange}
+                  placeholder='Enter instruction'
                   required
+                /> */}
+                <Editor
+                  recipe={recipe}
+                  onChange={(value: string) =>
+                    setRecipe({ ...recipe, instructions: value })
+                  }
                 />
               </Col>
-              <div className='col-12'>
+              {/* <div className='col-12'>
                 <label htmlFor='name' className='form-label'>
                   Recipe Name
                 </label>
@@ -150,8 +200,8 @@ const AddRecipe = () => {
                   id='name'
                   className='form-control'
                 />
-              </div>
-              <div className='col-12'>
+              </div> */}
+              {/* <div className='col-12'>
                 <label htmlFor='description' className='form-label'>
                   Description
                 </label>
@@ -163,8 +213,8 @@ const AddRecipe = () => {
                   rows={4}
                   defaultValue={""}
                 />
-              </div>
-              <div className='col-12'>
+              </div> */}
+              {/* <div className='col-12'>
                 <label htmlFor='name' className='form-label'>
                   Ingredients
                 </label>
@@ -180,7 +230,7 @@ const AddRecipe = () => {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className='col-12'>
                 <button
                   type='button'
@@ -191,7 +241,7 @@ const AddRecipe = () => {
                 </button>
               </div>
               <div className='col-12'>
-                <label htmlFor='category'>Select Category</label>
+                {/* <label htmlFor='category'>Select Category</label>
                 <select
                   className='form-select form-control'
                   name='category'
@@ -203,15 +253,25 @@ const AddRecipe = () => {
                   <option value='Chinese'>Chinese</option>
                   <option value='Mexican'>Mexican</option>
                   <option value='Indian'>Indian</option>
-                </select>
+                </select> */}
+                <CookingTime recipe={recipe} handleChange={handleChange} />
+                <Category recipe={recipe} handleChange={handleChange} />
               </div>
               <div className='col-12'>
-                <label htmlFor='image'>Product Image</label>
-                <input
+                <label htmlFor='image'> Upload image</label>
+                {/* <input
                   type='file'
                   className='form-control'
                   name='image'
+                  value={recipe?.image}
                   accept='image/*'
+                  onChange={handleUpload}
+                /> */}
+                <input
+                  type='file'
+                  name='image'
+                  className='form-control'
+                  onChange={handleImageChange}
                 />
               </div>
               <div className='col-12'>
