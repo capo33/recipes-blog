@@ -4,6 +4,7 @@ import { Recipe } from "../../interfaces/RecipeInterface";
 import { AiFillDelete, AiOutlinePlus } from "react-icons/ai";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { Alert, Button, Col, Form } from "react-bootstrap";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 type IngredientProps = {
   recipe: Recipe | null;
@@ -28,7 +29,7 @@ const Ingredients = ({
           {recipe?.ingredients?.map((ingredient) => (
             <span key={ingredient}>
               <span>{ingredient}</span>
-              <MdOutlineDeleteForever
+              <RiDeleteBinLine
                 onClick={() => handleDelete(ingredient)}
                 className='h-5 w-5 text-gray-400'
                 style={{ cursor: "pointer" }}

@@ -2,6 +2,9 @@ import ReactQuill from "react-quill";
 
 import { formats, modules } from "../../utils/index";
 import { Recipe } from "../../interfaces/RecipeInterface";
+import { Col, Form } from "react-bootstrap";
+
+import "./editor.css";
 
 type EditorProps = {
   recipe: Recipe;
@@ -10,18 +13,18 @@ type EditorProps = {
 
 const Editor = ({ recipe, onChange }: EditorProps) => {
   return (
-    <>
-      <p className='text-lg leading-6 font-medium'>Instructions</p>
+    <Col md={12} id='editor'>
+      <Form.Label htmlFor='instructions'>Instructions</Form.Label>
+
       <ReactQuill
         value={recipe.instructions}
         onChange={onChange}
         theme='snow'
-        style={{ border: "1px solid #e2e8f0" }}
         modules={modules}
         formats={formats}
         placeholder='Write something amazing...'
       />
-    </>
+    </Col>
   );
 };
 
