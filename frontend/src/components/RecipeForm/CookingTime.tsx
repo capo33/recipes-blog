@@ -9,7 +9,7 @@ type CookingTimeProps = {
 };
 const CookingTime = ({ recipe, handleChange }: CookingTimeProps) => {
   return (
-    <Col md={4}>
+    <Col md={6} className="mb-2">
       <Form.Label htmlFor='cookingTime'>Cooking Time</Form.Label>
       <Form.Control
         type='number'

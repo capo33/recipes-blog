@@ -33,7 +33,7 @@ export const modules = {
       { indent: "-1" },
       { indent: "+1" },
     ],
-    ["link", "image", "video"],
+    ["link"],
     ["clean"],
     ["code-block"],
   ],
@@ -52,7 +52,5 @@ export const formats = [
   "bullet",
   "indent",
   "link",
-  "image",
-  "video",
   "code-block",
 ];

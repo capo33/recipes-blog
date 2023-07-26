@@ -21,7 +21,7 @@ const Category = ({ recipe, handleChange }: CategoryProps) => {
   }, [dispatch]);
 
   return (
-    <Col md={8}>
+    <Col md={6} className="mb-2">
       <Form.Label htmlFor="category">
         Category
       </Form.Label>

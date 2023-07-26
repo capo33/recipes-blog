@@ -37,11 +37,7 @@ export const getCategory = asyncHandler(
       throw new Error("Category not found");
     }
 
-    res.status(200).json({
-      success: true,
-      message: "Category found",
-      category,
-    });
+    res.status(200).json(category);
   }
 );
 
@@ -55,7 +51,8 @@ export const createCategory = asyncHandler(
       name,
       slug: slugify(name),
       image,
-    });
+      
+     });
 
     res.status(201).json({
       success: true,

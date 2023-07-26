@@ -43,11 +43,10 @@ const Ingredients = ({
         type='text'
         name='ingredients'
         id='ingredients'
-        required
-        value={inputValue}
+         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       />
-      <Button variant='primary' onClick={handleClick} className='mt-2'>
+      <Button variant='primary' onClick={handleClick} className='mt-2 mb-'>
         <AiOutlinePlus className='h-5 w-5 text-gray-400' aria-hidden='true' />{" "}
         Add Ingredient
       </Button>

@@ -10,10 +10,11 @@ const categorySchema = new Schema<ICategory>(
     },
     slug: {
       type: String,
-      required: true,
     },
     image: {
       type: String,
+      required: true,
+      default: "no photo",
     },
     recipes: [
       {

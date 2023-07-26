@@ -72,18 +72,22 @@ interface ICategoryCreate {
 export const createCategory = createAsyncThunk(
   "category/createCategory",
   async (
-    { categoryData, token, toast, navigate }: ICategoryCreate,
-    { rejectWithValue }
+    {
+      categoryData,
+      token,
+      toast,
+      navigate
+    }: ICategoryCreate,
+    thunkAPI
   ) => {
     try {
       const response = await categoryServices.createCategory(
         categoryData,
         token
       );
-      navigate("/categories");
       toast.success(response?.message);
-      console.log('response', response);
-      
+      navigate("/admin/all-categories");
+      thunkAPI.dispatch(getAllCategories());
       return response;
     } catch (error: unknown | any) {
       const message =
@@ -93,7 +97,7 @@ export const createCategory = createAsyncThunk(
         error.message ||
         error.toString();
       toast.error(message);
-      return rejectWithValue(message);
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );

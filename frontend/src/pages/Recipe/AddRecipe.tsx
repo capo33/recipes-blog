@@ -160,7 +160,7 @@ const AddRecipe = () => {
               onChange={handleImageChange}
             />
           </Col>
-          <Col sm={12} className='mt-2 mb-5'>
+          <Col md={12} className='mt-4 mb-5'>
             <Button type='submit' className='w-100'>
               <AiOutlineSend /> Submit Recipe
             </Button>
