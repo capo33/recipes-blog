@@ -7,7 +7,6 @@ import { Col, Container, Image, Row } from "react-bootstrap";
 
 const Categories = () => {
   const { categories, isLoading } = useAppSelector((state) => state.category);
-console.log(categories);
 
   const dispatch = useAppDispatch();
 
@@ -20,10 +19,7 @@ console.log(categories);
   };
 
   return (
-    <section className='bg-white container px-6 py-10 mx-auto'>
-      <h2 className='text-center mb-5 text-2xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white'>
-        Categories
-      </h2>
+    <Container className='px-5'>
       {/* <BackLink link='/' name='Back to home' /> */}
       {isLoading && <div>Loading...</div>}
       <div className='mt-6 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-x-6 gap-y-8'>
@@ -32,52 +28,35 @@ console.log(categories);
             <h1 className='text-2xl text-gray-500'>No categories found</h1>
           </div>
         )}
-        <Container>
-          <Row>
-            {categories?.map((category) => (
-              <>
-                <Col xs={6} md={4}>
-                  <Image src={category.image} rounded />
-                  <p>
-                    {category.slug}
-                  </p>
-                  <Link
-                    to={`/category/${category.slug}`}
-                    className='text-white text-2xl font-bold text-center'
-                  >
-                    <span className='absolute inset-0' />
-                    {capitalize(category.name)}
-                  </Link>
-
-                </Col>
- 
-
-                {/* <div
-              key={category._id}
-              className='relative w-full h-64 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 ease-in-out'
-              style={{
-                backgroundImage: `url(${category.image})`,
-              }}
-            >
-              <div className='absolute inset-0 bg-black bg-opacity-50 group-hover:opacity-75 transition duration-300 ease-in-out' />
-              <div className='relative w-full h-full px-4 sm:px-6 lg:px-4 flex justify-center items-center'>
-                <h3 className='text-center'>
-                  <Link
-                    to={`/category/${category.slug}`}
-                    className='text-white text-2xl font-bold text-center'
-                  >
-                    <span className='absolute inset-0' />
-                    {capitalize(category.name)}
-                  </Link>
-                </h3>
-                </div>
-            </div> */}
-              </>
-            ))}
-          </Row>
-        </Container>
+        <div className='px-4 my-5 text-center'>
+          <h1 className='display-5 fw-bold'> Categories</h1>
+          <div className='col-lg-6 mx-auto'>
+            <p className='lead'>
+              Browse through our categories to find your favorite recipe.
+            </p>
+          </div>
+        </div>
+        <Row>
+          {categories?.map((category) => (
+            <Col xs={12} md={6} lg={4} className='mb-4' key={category._id}>
+              <Link to={`/category/${category.slug}`} className=''>
+                <Image src={category.image} rounded className='w-100 mx-auto' />
+              </Link>
+              <h3 className='text-2xl font-bold text-center'>
+                {category.slug}
+              </h3>
+              <Link
+                to={`/category/${category.slug}`}
+                className='text-white text-2xl font-bold text-center'
+              >
+                <span className='absolute inset-0' />
+                {capitalize(category.name)}
+              </Link>
+            </Col>
+          ))}
+        </Row>
       </div>
-    </section>
+    </Container>
   );
 };
 
