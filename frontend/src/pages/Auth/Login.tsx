@@ -1,27 +1,37 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { BsEyeSlashFill, BsEyeFill } from "react-icons/bs";
+import React, { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
+import {
+  Box,
+  TextField,
+  IconButton,
+  OutlinedInput,
+  InputLabel,
+  InputAdornment,
+  FormControl,
+  Container,
+  Avatar,
+  Typography,
+  Grid,
+  Button,
+} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 import { AuthUser } from "../../interfaces/AuthInterface";
 import { login } from "../../redux/feature/Auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/app/store";
-import { toast } from "react-hot-toast";
-import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
-import FormContainer from "../../components/FormContainer/Index";
 
 const Login = () => {
-  const { isLoading, user } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
 
-  const [passwordShown, setPasswordShown] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<AuthUser>({
     email: "",
     password: "",
   });
-
-  // Show password toggle
-  const togglePasswordVisiblity = () => {
-    setPasswordShown(passwordShown ? false : true);
-  };
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -40,6 +50,15 @@ const Login = () => {
     }
   }, [token, navigate, redirect]);
 
+  // Show password toggle
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
   // Change input value
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -53,64 +72,90 @@ const Login = () => {
   };
 
   return (
-    <FormContainer>
-      <h1>Sign In</h1>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId='email'>
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            type='email'
-            name='email'
-            placeholder='Enter email'
-            value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
-          />
-        </Form.Group>
-
-        <Form.Group controlId='password'>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type={passwordShown ? "text" : "password"}
-            name='password'
-            placeholder='Enter password'
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <Form.Check
-            type='checkbox'
-            className='mt-2'
-            label='Show password'
-            onClick={togglePasswordVisiblity}
-          />
-
-          {/* <div className='absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5'>
-          <span onClick={togglePasswordVisiblity} className='cursor-pointer'>
-            {passwordShown ? <BsEyeFill /> : <BsEyeSlashFill />}
-          </span>
-        </div> */}
-        </Form.Group>
-
-        <Button
-          type='submit'
-          variant='info'
-          className='mt-2'
-          disabled={isLoading}
-        >
-          Sign In
-        </Button>
-        {isLoading && <p> Loading...</p>}
-      </Form>
-      <Row className='py-3'>
-        <Col>
-          Don't have an account?{" "}
-          <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
-            Register
-          </Link>
-        </Col>
-      </Row>
-    </FormContainer>
+    <Container component='main' maxWidth='xs'>
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component='h1' variant='h5'>
+          Login
+        </Typography>
+        <Box component='form' noValidate sx={{ mt: 3 }} onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                value={formData.email}
+                onChange={handleChange}
+                id='email'
+                label='Email Address'
+                name='email'
+                autoComplete='email'
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl variant='outlined' fullWidth>
+                <InputLabel htmlFor='outlined-adornment-password'>
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  id='outlined-adornment-password'
+                  type={showPassword ? "text" : "password"}
+                  endAdornment={
+                    <InputAdornment position='end'>
+                      <IconButton
+                        aria-label='toggle password visibility'
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge='end'
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label='Password'
+                  value={formData.password}
+                  onChange={handleChange}
+                  name='password'
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+          <Button
+            type='submit'
+            fullWidth
+            variant='contained'
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Login
+          </Button>
+          <Grid container justifyContent='space-around'>
+            <Grid item xs={12}>
+              <Link to='/forgot-password'>
+                <Typography variant='body2' color='text.secondary'>
+                  Forgot password?
+                </Typography>
+              </Link>
+            </Grid>
+            <Grid item xs={12}>
+              <Link to='/register'>
+                <Typography variant='body2' color='text.secondary'>
+                  Don't have an account? Sign Up
+                </Typography>
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
   );
 };
 

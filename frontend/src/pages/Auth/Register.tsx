@@ -164,10 +164,18 @@ const Register = () => {
           </Button>
           <Grid container justifyContent='space-around'>
             <Grid item xs={12}>
-              <Link to='/forgot-password'>Forgot password?</Link>
+              <Link to='/forgot-password'>
+              <Typography variant='body2' color='text.secondary'>
+                  Forgot password?
+                </Typography>
+              </Link>
             </Grid>
             <Grid item xs={12}>
-              <Link to='/login'>Already have an account? Login</Link>
+              <Link to='/login'>
+                <Typography variant='body2' color='text.secondary'>
+                  Already have an account? Login
+                </Typography>
+              </Link>
             </Grid>
           </Grid>
         </Box>
