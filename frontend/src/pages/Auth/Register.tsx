@@ -162,15 +162,15 @@ const Register = () => {
           >
             Register
           </Button>
-          <Grid container justifyContent='space-around'>
-            <Grid item xs={12}>
+          <Grid container>
+            <Grid item xs>
               <Link to='/forgot-password'>
               <Typography variant='body2' color='text.secondary'>
                   Forgot password?
                 </Typography>
               </Link>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item>
               <Link to='/login'>
                 <Typography variant='body2' color='text.secondary'>
                   Already have an account? Login
