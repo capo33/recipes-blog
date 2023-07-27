@@ -184,13 +184,16 @@ export const saveRecipe = asyncHandler(
     }
 
     // Save the recipe
-    await UserModel.findByIdAndUpdate(
-      req.body.userID,
-      {
-        $push: { savedRecipes: recipe._id },
-      },
-      { new: true } // to return the updated document
-    );
+    // await UserModel.findByIdAndUpdate(
+    //   req.body.userID,
+    //   {
+    //     $push: { savedRecipes: recipe._id },
+    //   },
+    //   { new: true } // to return the updated document
+    // );
+
+    user?.savedRecipes.push(recipe._id);
+    await user?.save();
 
     res.status(200).json({
       success: true,
@@ -224,11 +227,11 @@ export const unsaveRecipe = asyncHandler(
     }
 
     // Check if the user has already saved the recipe
-    const isSaved = user?.savedRecipes.includes(recipe._id);
+    const isUnsaved = !user?.savedRecipes.includes(recipe._id);
 
-    if (!isSaved) {
+    if (isUnsaved) {
       res.status(400);
-      throw new Error("Recipe not saved");
+      throw new Error("Recipe already unsaved");
     }
 
     // Unsave the recipe
@@ -249,24 +252,27 @@ export const unsaveRecipe = asyncHandler(
 );
 
 // @desc    Get recipes by user
-// @route   GET /api/v1/recipes/savedRecipes/:userId
+// @route   GET /api/v1/recipes/savedRecipes/:id
 // @access  Public
 export const getRecipesByUser = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const user = await UserModel.findById(req.params.id)
+    const { id } = req.params; // user id
+    const user = await UserModel.findById(id)
       .populate("savedRecipes")
       .select("-password");
+    console.log("user?.savedRecipes", user?.savedRecipes);
 
     res.status(201).json(user?.savedRecipes);
   }
 );
 
 // @desc    Get recipes by user
-// @route   GET /api/v1/recipes/savedRecipes/:userId
+// @route   GET /api/v1/recipes/savedRecipes/ids/:id
 // @access  Public
 export const getSavedRecipes = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const user = await UserModel.findById(req.params.userId)
+    const { id } = req.params; // user id
+    const user = await UserModel.findById(id)
       .populate("savedRecipes", "name image")
       .select("password");
 
@@ -276,11 +282,7 @@ export const getSavedRecipes = asyncHandler(
       .populate("category", "name image")
       .populate("owner", "name");
 
-    res.status(200).json({
-      success: true,
-      message: "Saved recipes",
-      savedRecipes,
-    });
+    res.status(201).json({ savedRecipes });
   }
 );
 

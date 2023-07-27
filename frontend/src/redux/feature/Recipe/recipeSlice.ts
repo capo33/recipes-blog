@@ -92,19 +92,7 @@ export const createRecipe = createAsyncThunk(
   }
 );
 
-// Uploading images
-// export const uploadImages = createAsyncThunk(
-//   "recipe/uploadImages",
-//   async ({ data, token }: { data: string; token: string }, thunkAPI) => {
-//     try {
-//       const response = await recipeServices.uploadRecipeImage(data, token);
-//       return response;
-//     } catch (error: unknown | any) {
-//       return thunkAPI.rejectWithValue(error.response.data.message);
-//     }
-//   }
-// );
-
+ 
 // Get saved recipes
 export const getSavedRecipes = createAsyncThunk(
   "recipe/getSavedRecipes",
@@ -134,6 +122,7 @@ export const saveRecipe = createAsyncThunk(
       const response = await recipeServices.saveRecipe(recipeID, userID, token);
       thunkAPI.dispatch(getSavedRecipes({ userID, token }));
       // console.log("response", response); response is the saved recipe
+      console.log("response", response);
 
       return response;
     } catch (error: unknown | any) {
@@ -463,11 +452,10 @@ const recipeSlice = createSlice({
 
     // Like a recipe
     builder.addCase(likeRecipe.pending, (state) => {
-      state.isLoading = true;
-    });
+      state.isSuccess = false;
+     });
     builder.addCase(likeRecipe.fulfilled, (state, { payload }) => {
-      state.isLoading = false;
-      state.isSuccess = true;
+       state.isSuccess = true;
 
       const newdata = state.recipes.map((recipe) => {
         if (recipe?._id === payload?.data?._id) {
@@ -485,11 +473,10 @@ const recipeSlice = createSlice({
 
     // Unlike a recipe
     builder.addCase(unlikeRecipe.pending, (state) => {
-      state.isLoading = true;
+      state.isSuccess = false;
     });
     builder.addCase(unlikeRecipe.fulfilled, (state, { payload }) => {
-      state.isLoading = false;
-      state.isSuccess = true;
+       state.isSuccess = true;
       console.log(payload);
 
       const newdata = state.recipes.map((recipe) => {

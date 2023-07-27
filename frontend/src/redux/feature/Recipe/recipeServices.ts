@@ -52,6 +52,8 @@ const saveRecipe = async (recipeID: string, userID: string, token: string) => {
       },
     }
   );
+  console.log("saveRecipe response.data: ", response.data);
+  
   return response.data?.savedRecipes;
 };
 
@@ -87,6 +89,7 @@ const getRecipesByUserId = async (userID: string, token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
+console.log("getRecipesByUserId response.data: ", response.data);
 
   return response.data?.savedRecipes;
 };

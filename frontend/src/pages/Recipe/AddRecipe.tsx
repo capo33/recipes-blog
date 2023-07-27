@@ -20,7 +20,6 @@ import RecipeName from "../../components/RecipeForm/RecipeName";
 const AddRecipe = () => {
   const { user } = useAppSelector((state) => state.auth);
   const [inputValue, setInputValue] = useState("");
-  const [image, setImage] = useState<string | File>("");
 
   const [recipe, setRecipe] = useState<Recipe>({
     name: "",
@@ -85,7 +84,7 @@ const AddRecipe = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData();
-    data.append("file", image);
+    data.append("file", recipe.image);
     data.append("upload_preset", "recipe-app");
     data.append("cloud_name", "dunforh2u");
     // Make request to cloudinary
@@ -93,12 +92,16 @@ const AddRecipe = () => {
       "https://api.cloudinary.com/v1_1/dunforh2u/upload",
       data
     );
-    setRecipe((prevRecipe) => ({
-      ...prevRecipe,
+    const recipeData = {
+      name: recipe.name,
+      ingredients: recipe.ingredients,
+      instructions: recipe.instructions,
       image: res.data.url,
-    }));
-
-    dispatch(createRecipe({ formData: recipe, token, toast }));
+      cookingTime: recipe.cookingTime,
+      category: recipe.category,
+      owner: recipe.owner,
+    } as Recipe;
+    dispatch(createRecipe({ formData: recipeData, token, toast }));
     navigate("/");
     setRecipe({
       name: "",
@@ -116,7 +119,7 @@ const AddRecipe = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.currentTarget.files?.[0];
     if (!file) return;
-    setImage(file);
+    recipe.image = file as any;
   };
 
   return (
