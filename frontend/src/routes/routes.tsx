@@ -13,12 +13,14 @@ import AdminRoute from "./Guards/AdminRoute";
 import AddCategory from "../pages/Category/admin/AddCategory";
 import Categories from "../pages/Category/Categories";
 import AllCategoriesForAdmin from "../pages/Category/admin/AllCategoriesForAdmin";
+import Register from "../pages/Auth/Register";
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="" element={<Home />} />
       <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
       <Route path="recipe-details/:recipeId" element={<RecipeDetails />} />
       <Route path="add-recipe" element={<AddRecipe />} />
       <Route path='categories' element={<Categories />} />
