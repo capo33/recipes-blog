@@ -7,7 +7,7 @@ interface RecipeState {
   recipes: Recipe[];
   recipe: Recipe | null;
   savedRecipes: Recipe[];
-  owenSavedRecipes: Recipe[];
+  ownRecipes: Recipe[];
   isError: boolean;
   isLoading: boolean;
   isSuccess: boolean;
@@ -18,7 +18,7 @@ const initialState: RecipeState = {
   recipes: [],
   recipe: null,
   savedRecipes: [],
-  owenSavedRecipes: [],
+  ownRecipes: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -337,6 +337,7 @@ const recipeSlice = createSlice({
     builder.addCase(getAllRecipes.fulfilled, (state, { payload }) => {
       state.isLoading = false;
       state.recipes = payload as Recipe[];
+      state.ownRecipes = payload as Recipe[];
     });
     builder.addCase(getAllRecipes.rejected, (state, { payload }) => {
       state.isLoading = false;
@@ -353,6 +354,7 @@ const recipeSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.recipe = payload as Recipe;
+      state.ownRecipes = [...state.ownRecipes, payload as Recipe];
     });
     builder.addCase(getSingleRecipe.rejected, (state, { payload }) => {
       state.isLoading = false;
@@ -368,6 +370,7 @@ const recipeSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.recipe = payload as Recipe;
+      state.ownRecipes = [...state.ownRecipes, payload as Recipe];
     });
     builder.addCase(createRecipe.rejected, (state, { payload }) => {
       state.isLoading = false;

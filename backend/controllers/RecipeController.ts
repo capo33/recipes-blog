@@ -61,6 +61,13 @@ export const createRecipe = asyncHandler(
       owner: req?.user?._id,
     });
 
+    // Add the recipe to the user
+    await UserModel.findByIdAndUpdate(req?.user?._id, {
+      $push: { ownRecipes: newRecipe._id },
+    });
+
+    console.log("newRecipe", newRecipe);
+
     // Add the recipe to the category
     await CategoryModel.findByIdAndUpdate(req.body.category, {
       $push: { recipes: newRecipe._id },
@@ -280,7 +287,7 @@ export const getSavedRecipes = asyncHandler(
       _id: { $in: user?.savedRecipes }, // find recipes with ids in the savedRecipes array
     })
       .populate("category", "name image")
-      .populate("owner", "name");
+      .populate("owner", "name image");
 
     res.status(201).json({ savedRecipes });
   }

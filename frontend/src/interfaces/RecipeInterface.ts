@@ -7,8 +7,7 @@ export interface Owner {
   image?: string;
   isAdmin?: boolean;
 }
- 
- 
+
 export interface Review {
   rating: number;
   comment: string;

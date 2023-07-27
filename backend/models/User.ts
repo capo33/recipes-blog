@@ -39,6 +39,12 @@ const userSchema = new Schema<IUser>(
         ref: "Recipe",
       },
     ],
+    ownRecipes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Recipe",
+      },
+    ],
     phone: {
       type: String,
       default: "XXX-XXX-XXXX",

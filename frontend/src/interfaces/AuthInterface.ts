@@ -12,6 +12,7 @@ export interface User {
   phone?: string;
   address?: string;
   savedRecipes?: string[];
+  ownRecipes?: Recipe[];
   birthday?: Date;
   interests?: string[];
   _id?: string;

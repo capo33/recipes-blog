@@ -2,6 +2,13 @@ import { Document, Types } from "mongoose";
 
 import { IReview } from "./reviewInterface";
 
+interface Owner {
+  _id: Types.ObjectId;
+  name?: string;
+  email?: string;
+  image?: string;
+  isAdmin?: boolean;
+}
 export interface IRecipe extends Document {
   name: string;
   instructions: string;
@@ -15,7 +22,7 @@ export interface IRecipe extends Document {
   slug: string;
   likes: Types.ObjectId[];
   category: Types.ObjectId;
-  owner: Types.ObjectId;
+  owner: Owner;
   createdAt: Date;
   updatedAt: Date;
 }

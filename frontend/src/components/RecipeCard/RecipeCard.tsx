@@ -28,7 +28,9 @@ type RecipeCardProps = {
 
 const RecipeCard = ({ recipe }: RecipeCardProps) => {
   const { user } = useAppSelector((state) => state.auth);
-  const { savedRecipes } = useAppSelector((state) => state.recipe);
+  const { savedRecipes, ownRecipes } = useAppSelector((state) => state.recipe);
+  console.log("owenRecipes", ownRecipes);
+  console.log("user?.owenRecipes", user?.ownRecipes);
 
   const dispatch = useAppDispatch();
 
@@ -36,10 +38,6 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
   const userID = user?._id as string;
 
   const recipesIDs = savedRecipes?.map((recipe) => recipe._id);
-
-  console.log("check ", recipesIDs?.includes(recipe._id));
-  console.log("savedRecipes ", savedRecipes);
-  console.log("recipesIDs ", recipesIDs);
 
   useEffect(() => {
     dispatch(getSavedRecipes({ userID, token }));

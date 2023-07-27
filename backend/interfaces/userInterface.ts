@@ -8,9 +8,9 @@ export interface IUser extends Document {
   image: string;
   about: string;
   savedRecipes: Types.ObjectId[];
+  ownRecipes: Types.ObjectId[];
   phone: string;
-  // isAdmin: boolean;
-  role: string;
+   role: string;
   address: string;
   birthday: Date;
   interests: string[];
