@@ -149,7 +149,7 @@ function NavBar() {
 
   return (
     <AppBar position='sticky' sx={{ bgcolor: "blueviolet" }}>
-      <Container>
+      <Container maxWidth='lg'>
         <Toolbar disableGutters>
           <BakeryDiningOutlinedIcon
             sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}

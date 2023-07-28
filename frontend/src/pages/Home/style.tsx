@@ -12,21 +12,6 @@ const styles = () => {
     gridContainer: {
       display: "flex",
       alignItems: "center",
-      maxWidth: "1300px",
-      padding: "50px",
-    },
-    aboutUsContainer: {
-      width: "100%",
-      display: "flex",
-      minHeight: "400px",
-      alignItems: "center",
-      justifyContent: "center",
-      margin: "30px 0px 50px 0px",
-    },
-    aboutUsSubtitle: {
-      opacity: "0.7",
-      paddingBottom: "30px",
-      fontSize: "18px",
     },
     title: {
       paddingBottom: "15px",
