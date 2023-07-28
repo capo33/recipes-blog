@@ -1,14 +1,16 @@
+import { Col, Container, Row } from "react-bootstrap";
 import { useEffect } from "react";
-import { Grid, Container } from "@mui/material";
 
 import Hero from "./Hero";
 import { Recipe } from "../../interfaces/RecipeInterface";
-import RecipeReviewCard from "../../components/RecipeCard/Index";
 import { getAllRecipes } from "../../redux/feature/Recipe/recipeSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/app/store";
+import RecipeCard from "../../components/RecipeCard/RecipeCard";
 
 const Home = () => {
   const { recipes } = useAppSelector((state) => state.recipe);
+
+  console.log("recipes", recipes);
 
   const dispatch = useAppDispatch();
 
@@ -19,16 +21,16 @@ const Home = () => {
   return (
     <Container>
       <Hero />
-      <Grid container spacing={2} sx={{ m: "0 auto" }}>
+      <Row>
         {recipes?.length === 0 && (
           <p>No recipes found. Please create a recipe.</p>
         )}
         {recipes?.map((recipe: Recipe) => (
-          <Grid item xs={12} sm={6} md={4} lg={4}>
-            <RecipeReviewCard recipe={recipe} />
-          </Grid>
+          <Col sm={12} md={6} lg={4} className='mb-4' key={recipe._id}>
+            <RecipeCard recipe={recipe} />
+          </Col>
         ))}
-      </Grid>
+      </Row>
     </Container>
   );
 };

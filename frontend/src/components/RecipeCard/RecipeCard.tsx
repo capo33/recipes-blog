@@ -10,7 +10,6 @@ import {
 } from "react-icons/ai";
 import Tooltip from "react-bootstrap/Tooltip";
 import { FaRegComments } from "react-icons/fa";
-import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 
 import { formatDate } from "../../utils";
 import {
@@ -81,7 +80,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
       <Card.Body>
         {/* Card Header */}
         <Card.Text as='div' className='d-flex justify-content-between  '>
-          <Card.Title as={"h4"}>{recipe?.name}</Card.Title>
+          <Card.Title as={"h5"}>{recipe?.name}</Card.Title>
           <Card.Title as={"h4"} className='d-flex align-items-center'>
             {recipe?.likes?.includes(userID) ? (
               <AiFillLike
@@ -135,7 +134,10 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
               </Tooltip>
             }
           >
-            <Button>
+            <Button
+              variant='light'
+              className='btn btn-outline-primary d-flex justify-content-center align-items-center'
+            >
               <AiFillLike />
             </Button>
           </OverlayTrigger>
@@ -149,7 +151,10 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
               </Tooltip>
             }
           >
-            <Button>
+              <Button
+              variant='light'
+              className='btn btn-outline-primary d-flex justify-content-center align-items-center'
+            >
               <AiOutlineEye />
             </Button>
           </OverlayTrigger>
@@ -165,7 +170,10 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
               </Tooltip>
             }
           >
-            <Button>
+              <Button
+              variant='light'
+              className='btn btn-outline-primary d-flex justify-content-center align-items-center'
+            >
               <FaRegComments />
             </Button>
           </OverlayTrigger>
@@ -179,7 +187,10 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
               </Tooltip>
             }
           >
-            <Button>
+              <Button
+              variant='light'
+              className='btn btn-outline-primary d-flex justify-content-center align-items-center'
+            >
               <AiOutlineStar />
             </Button>
           </OverlayTrigger>

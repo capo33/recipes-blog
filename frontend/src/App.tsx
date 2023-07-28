@@ -2,12 +2,12 @@ import { Toaster } from "react-hot-toast";
 import "./App.css";
 import { Outlet } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import NavBar from "./components/Header/Index";
+import { Header } from "./components/Header/Index";
 
 function App() {
   return (
     <>
-      <NavBar />
+      <Header />
       <Toaster />
       <main className='py-3'>
         <Container>

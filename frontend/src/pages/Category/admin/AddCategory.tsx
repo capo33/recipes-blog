@@ -55,7 +55,7 @@ const AddCategory = () => {
   };
 
   return (
-    <Container className='px-5'>
+    <Container>
       <div className='px-4 my-5 text-center'>
         <h1 className='display-5 fw-bold'>Add Category</h1>
         <div className='col-lg-6 mx-auto'>
