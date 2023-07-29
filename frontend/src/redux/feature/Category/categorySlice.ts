@@ -72,12 +72,7 @@ interface ICategoryCreate {
 export const createCategory = createAsyncThunk(
   "category/createCategory",
   async (
-    {
-      categoryData,
-      token,
-      toast,
-      navigate
-    }: ICategoryCreate,
+    { categoryData, token, toast, navigate }: ICategoryCreate,
     thunkAPI
   ) => {
     try {
@@ -145,10 +140,9 @@ export const deleteCategory = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      const response = await categoryServices.deleteCategory(
-        id as string,
-        token
-      );
+      const response = await categoryServices.deleteCategory(id, token);
+      console.log('response', response);
+      
       // navigate("/");
       toast.success(response?.message);
       thunkAPI.dispatch(getAllCategories());

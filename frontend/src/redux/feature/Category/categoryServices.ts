@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { CATEGORY_URL } from "../../../constants/constants";
 import { ICategoryData } from "../../../interfaces/CategoryInterface";
- 
+
 // *************************** Category *************************** //
 // get all categories
 const getAllCategories = async () => {
@@ -57,6 +57,8 @@ const deleteCategory = async (id: string, token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
+  console.log("response.data", response.data);
+
   return response.data;
 };
 

@@ -185,13 +185,14 @@ const RecipeDetails = () => {
                       Edit
                     </Link>
 
-                    <button
+                    <Button
                       onClick={handleConfirmDelete}
-                      className='btn btn-danger btn-sm'
+                      variant='danger'
+                      size='sm'
                     >
                       <BsTrash />
                       Delete
-                    </button>
+                    </Button>
                   </div>
                 )}
               </div>

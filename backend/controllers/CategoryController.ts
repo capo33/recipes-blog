@@ -51,8 +51,7 @@ export const createCategory = asyncHandler(
       name,
       slug: slugify(name),
       image,
-      
-     });
+    });
 
     res.status(201).json({
       success: true,
@@ -93,9 +92,8 @@ export const updateCategory = asyncHandler(
 // @access  Private/Admin
 export const deleteCategory = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const category = await CategoryModel.findOneAndDelete({
-      id: req.params.id,
-    });
+    const { id } = req.params;
+    const category = await CategoryModel.findByIdAndDelete(id);
 
     // Check if category exists with the given slug
     if (!category) {

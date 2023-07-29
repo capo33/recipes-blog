@@ -4,19 +4,18 @@ import { toast } from "react-hot-toast";
 import { AiOutlineSend } from "react-icons/ai";
 import { Row, Col, Button, Form, Container } from "react-bootstrap";
 import axios from "axios";
-import cloudinary from "cloudinary/lib/cloudinary";
-
 import "react-quill/dist/quill.snow.css";
+
 import Editor from "../../components/Editor/Editor";
 import { Recipe } from "../../interfaces/RecipeInterface";
 import Category from "../../components/RecipeForm/Category";
+import RecipeName from "../../components/RecipeForm/RecipeName";
 import { userProfile } from "../../redux/feature/Auth/authSlice";
 import CookingTime from "../../components/RecipeForm/CookingTime";
 import Ingredients from "../../components/RecipeForm/Ingredients";
 import { createRecipe } from "../../redux/feature/Recipe/recipeSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/app/store";
 import { getAllCategories } from "../../redux/feature/Category/categorySlice";
-import RecipeName from "../../components/RecipeForm/RecipeName";
 
 const AddRecipe = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -94,7 +93,7 @@ const AddRecipe = () => {
       data
     );
     console.log(res.data);
-    
+
     const recipeData = {
       name: recipe.name,
       ingredients: recipe.ingredients,
@@ -103,7 +102,6 @@ const AddRecipe = () => {
       cookingTime: recipe.cookingTime,
       category: recipe.category,
       owner: recipe.owner,
-      
     } as Recipe;
     dispatch(createRecipe({ formData: recipeData, token, toast }));
     navigate("/");
