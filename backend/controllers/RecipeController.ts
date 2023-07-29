@@ -126,6 +126,10 @@ export const deleteRecipe = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { recipeId } = req.params;
 
+    await UserModel.findByIdAndUpdate(req?.user?._id, {
+      $pull: { ownRecipes: recipeId },
+    });
+
     // Check if the user is logged in
     if (!req?.user) {
       res.status(401);

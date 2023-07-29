@@ -73,7 +73,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
   // };
 
   return (
-    <Card className='my-3 p-3 rounded'>
+    <Card className='my-3  rounded'>
       {/* Card Body */}
       <Card.Body>
         {/* Card Header */}

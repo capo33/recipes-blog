@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 import { AiOutlineSend } from "react-icons/ai";
 import { Row, Col, Button, Form, Container } from "react-bootstrap";
 import axios from "axios";
+import cloudinary from "cloudinary/lib/cloudinary";
 
 import "react-quill/dist/quill.snow.css";
 import Editor from "../../components/Editor/Editor";
@@ -85,13 +86,15 @@ const AddRecipe = () => {
     e.preventDefault();
     const data = new FormData();
     data.append("file", recipe.image);
-    data.append("upload_preset", "recipe-app");
-    data.append("cloud_name", "dunforh2u");
+    data.append("upload_preset", process.env.REACT_APP_PRESET_NAME as string);
+    data.append("cloud_name", process.env.REACT_APP_CLOUD_NAME as string);
     // Make request to cloudinary
     const res = await axios.post(
-      "https://api.cloudinary.com/v1_1/dunforh2u/upload",
+      ` https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/upload`,
       data
     );
+    console.log(res.data);
+    
     const recipeData = {
       name: recipe.name,
       ingredients: recipe.ingredients,
@@ -100,6 +103,7 @@ const AddRecipe = () => {
       cookingTime: recipe.cookingTime,
       category: recipe.category,
       owner: recipe.owner,
+      
     } as Recipe;
     dispatch(createRecipe({ formData: recipeData, token, toast }));
     navigate("/");
@@ -161,6 +165,7 @@ const AddRecipe = () => {
               name='image'
               className='form-control'
               onChange={handleImageChange}
+              required
             />
           </Col>
           <Col md={12} className='mt-4 mb-5'>

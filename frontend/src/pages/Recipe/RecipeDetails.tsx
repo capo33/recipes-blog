@@ -1,8 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Button, Col, Container, ListGroup, Nav, Row } from "react-bootstrap";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import Image from "react-bootstrap/Image";
+import cloudinary from "cloudinary/lib/cloudinary";
+import {
+  Button,
+  Col,
+  Container,
+  ListGroup,
+  Row,
+  Form,
+  Tooltip,
+  Tab,
+  Tabs,
+  OverlayTrigger,
+  Image,
+} from "react-bootstrap";
+import { BsTrash } from "react-icons/bs";
+import { AiOutlineEdit } from "react-icons/ai";
+import { GoBookmark, GoBookmarkFill } from "react-icons/go";
+
+import { formatDate } from "../../utils";
 import {
   addReview,
   deleteRecipe,
@@ -14,23 +31,13 @@ import {
   unlikeRecipe,
   unsaveRecipe,
 } from "../../redux/feature/Recipe/recipeSlice";
-import { Form } from "react-bootstrap";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
-
+import Message from "../../components/Message/Index";
+import ModalPopup from "../../components/Modal/Index";
+import { Rating } from "../../components/Rating/Index";
 import { Review } from "../../interfaces/RecipeInterface";
 import { useAppDispatch, useAppSelector } from "../../redux/app/store";
 
 import "./style.css";
-import { AiFillLike, AiOutlineEdit, AiOutlineLike } from "react-icons/ai";
-import { GoBookmark, GoBookmarkFill } from "react-icons/go";
-import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tabs";
-import { formatDate } from "../../utils";
-import { Rating } from "../../components/Rating/Index";
-import Message from "../../components/Message/Index";
-import ModalPopup from "../../components/Modal/Index";
-import { BsTrash } from "react-icons/bs";
 
 const RecipeDetails = () => {
   const { recipeId } = useParams<{ recipeId: string }>();
@@ -281,8 +288,23 @@ const RecipeDetails = () => {
               <div className='widget-title'>
                 <h3>More Recipes by {recipe?.owner?.name} </h3>
               </div>
-              {/* <div className='widget-body'>
-                {ownRecipes &&
+              <div className='widget-body'>
+                {!ownRecipes.length ? (
+                  <p>{recipe?.owner?.name} has no other recipes</p>
+                ) : (
+                  <div className='d-flex flex-wrap'>
+                    {ownRecipes?.map((rec, index) => (
+                      <Image
+                        src={rec.image}
+                        alt='recipe'
+                        rounded
+                        className='w-25 m-1'
+                        key={index}
+                      />
+                    ))}
+                  </div>
+                )}
+                {/* {ownRecipes ? (
                   ownRecipes?.map((rec, index) => (
                     <Image
                       src={rec.image}
@@ -291,8 +313,11 @@ const RecipeDetails = () => {
                       className='w-25 m-1'
                       key={index}
                     />
-                  ))}
-              </div> */}
+                  ))
+                ) : (
+                  <p>{recipe?.owner?.name} has no other recipes</p>
+                )} */}
+              </div>
             </div>
           </Col>
 

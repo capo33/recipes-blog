@@ -354,7 +354,7 @@ const recipeSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.recipe = payload as Recipe;
-      state.ownRecipes = payload as Recipe[];
+      state.ownRecipes =  [...state.ownRecipes, payload as Recipe]
     });
     builder.addCase(getSingleRecipe.rejected, (state, { payload }) => {
       state.isLoading = false;
