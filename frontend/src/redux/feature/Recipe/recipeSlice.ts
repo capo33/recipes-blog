@@ -83,8 +83,8 @@ export const createRecipe = createAsyncThunk(
       const response = await recipeServices.createRecipe(formData, token);
       toast.success("Recipe created successfully");
       thunkAPI.dispatch(getAllRecipes());
-      console.log('response', response);
-      
+      console.log("response", response);
+
       return response;
     } catch (error: unknown | any) {
       return thunkAPI.rejectWithValue(error.response.data.message);
@@ -92,7 +92,6 @@ export const createRecipe = createAsyncThunk(
   }
 );
 
- 
 // Get saved recipes
 export const getSavedRecipes = createAsyncThunk(
   "recipe/getSavedRecipes",
@@ -164,18 +163,19 @@ export const deleteRecipe = createAsyncThunk(
   "recipe/deleteRecipe",
   async (
     {
-      recipeID,
+      recipeId,
       token,
       toast,
       navigate,
-    }: { recipeID: string; token: string; toast: any; navigate: any },
+    }: { recipeId: string; token: string; toast: any; navigate: any },
     thunkAPI
   ) => {
     try {
-      const response = await recipeServices.deleteRecipe(recipeID, token);
+      const response = await recipeServices.deleteRecipe(recipeId, token);
+      console.log("response", response);
+
       toast.success("Recipe deleted successfully");
       navigate("/");
-      thunkAPI.dispatch(getAllRecipes());
       return response;
     } catch (error: unknown | any) {
       return thunkAPI.rejectWithValue(error.response.data.message);
@@ -354,7 +354,7 @@ const recipeSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.recipe = payload as Recipe;
-      state.ownRecipes = [...state.ownRecipes, payload as Recipe];
+      state.ownRecipes = payload as Recipe[];
     });
     builder.addCase(getSingleRecipe.rejected, (state, { payload }) => {
       state.isLoading = false;
@@ -370,7 +370,7 @@ const recipeSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.recipe = payload as Recipe;
-      state.ownRecipes = [...state.ownRecipes, payload as Recipe];
+      state.ownRecipes = payload as Recipe[];
     });
     builder.addCase(createRecipe.rejected, (state, { payload }) => {
       state.isLoading = false;
@@ -431,6 +431,7 @@ const recipeSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.recipes = payload as Recipe[];
+      state.ownRecipes = payload as Recipe[];
     });
     builder.addCase(deleteRecipe.rejected, (state, { payload }) => {
       state.isLoading = false;
@@ -446,6 +447,7 @@ const recipeSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.recipe = payload as Recipe;
+      state.ownRecipes = [...state.ownRecipes, payload as Recipe];
     });
     builder.addCase(updateRecipe.rejected, (state, { payload }) => {
       state.isLoading = false;
@@ -456,9 +458,9 @@ const recipeSlice = createSlice({
     // Like a recipe
     builder.addCase(likeRecipe.pending, (state) => {
       state.isSuccess = false;
-     });
+    });
     builder.addCase(likeRecipe.fulfilled, (state, { payload }) => {
-       state.isSuccess = true;
+      state.isSuccess = true;
 
       const newdata = state.recipes.map((recipe) => {
         if (recipe?._id === payload?.data?._id) {
@@ -479,7 +481,7 @@ const recipeSlice = createSlice({
       state.isSuccess = false;
     });
     builder.addCase(unlikeRecipe.fulfilled, (state, { payload }) => {
-       state.isSuccess = true;
+      state.isSuccess = true;
       console.log(payload);
 
       const newdata = state.recipes.map((recipe) => {

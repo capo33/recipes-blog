@@ -1,10 +1,9 @@
 import React from "react";
+import { AiOutlinePlus } from "react-icons/ai";
+import { RiDeleteBinLine } from "react-icons/ri";
+import { Alert, Badge, Button, Col, Form } from "react-bootstrap";
 
 import { Recipe } from "../../interfaces/RecipeInterface";
-import { AiFillDelete, AiOutlinePlus } from "react-icons/ai";
-import { MdOutlineDeleteForever } from "react-icons/md";
-import { Alert, Button, Col, Form } from "react-bootstrap";
-import { RiDeleteBinLine } from "react-icons/ri";
 
 type IngredientProps = {
   recipe: Recipe | null;
@@ -22,31 +21,45 @@ const Ingredients = ({
   setInputValue,
 }: IngredientProps) => {
   return (
-    <Col md={12}>
+    <Col md={12} className='mb-2'>
       <Form.Label htmlFor='ingredients'>Ingredients</Form.Label>
       {recipe && recipe?.ingredients?.length > 0 && (
         <Alert variant='secondary'>
           {recipe?.ingredients?.map((ingredient) => (
             <span key={ingredient}>
-              <span>{ingredient}</span>
-              <RiDeleteBinLine
-                onClick={() => handleDelete(ingredient)}
-                className='h-5 w-5 text-gray-400'
-                style={{ cursor: "pointer" }}
-                aria-hidden='true'
-              />
+              <Badge
+                bg='success'
+                text='white'
+                className='me-1'
+                style={{ fontSize: "1rem" }}
+              >
+                {ingredient}
+
+                <RiDeleteBinLine
+                  onClick={() => handleDelete(ingredient)}
+                  className='mx-1'
+                  style={{ cursor: "pointer" }}
+                  aria-hidden='true'
+                />
+              </Badge>
             </span>
           ))}
         </Alert>
       )}
+      
       <Form.Control
         type='text'
         name='ingredients'
         id='ingredients'
-         value={inputValue}
+        value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       />
-      <Button variant='primary' onClick={handleClick} className='mt-2 mb-'>
+      <Button
+        variant='primary'
+        onClick={handleClick}
+        className='mt-2 mb-'
+        disabled={inputValue === ""}
+      >
         <AiOutlinePlus className='h-5 w-5 text-gray-400' aria-hidden='true' />{" "}
         Add Ingredient
       </Button>

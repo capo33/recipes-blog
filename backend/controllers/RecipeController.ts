@@ -10,15 +10,13 @@ import { IRecipe } from "../interfaces/recipeInterface";
 // @desc    Get all recipes
 // @route   GET /api/v1/recipes
 // @access  Public
-export const getRecipes = asyncHandler(
-  async (req: Request, res: Response): Promise<void> => {
-    const recipes = await RecipeModel.find({})
-      .populate("owner", "name image")
-      .populate("category", "name image");
+export const getRecipes = asyncHandler(async (req: Request, res: Response) => {
+  const recipes = await RecipeModel.find({})
+    .populate("owner", "name image")
+    .populate("category", "name image");
 
-    res.status(200).json(recipes);
-  }
-);
+  res.status(200).json(recipes);
+});
 
 //@desc     GET a recipe by id
 //@route    GET /api/v1/recipes/:id
@@ -65,8 +63,6 @@ export const createRecipe = asyncHandler(
     await UserModel.findByIdAndUpdate(req?.user?._id, {
       $push: { ownRecipes: newRecipe._id },
     });
-
-    console.log("newRecipe", newRecipe);
 
     // Add the recipe to the category
     await CategoryModel.findByIdAndUpdate(req.body.category, {
@@ -128,13 +124,15 @@ export const updateRecipe = asyncHandler(
 //@access   Private
 export const deleteRecipe = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
+    const { recipeId } = req.params;
+
     // Check if the user is logged in
     if (!req?.user) {
       res.status(401);
       throw new Error("Not authorized");
     }
 
-    const recipe = await RecipeModel.findById(req.params.recipeId);
+    const recipe = await RecipeModel.findById(recipeId);
 
     // Check if recipe exists with the given id
     if (!recipe) {
@@ -149,12 +147,11 @@ export const deleteRecipe = asyncHandler(
     }
 
     // Delete the recipe
-    await RecipeModel.findByIdAndDelete(req.params.recipeId);
+    await RecipeModel.findByIdAndDelete(recipeId);
 
     res.status(200).json({
       success: true,
       message: "Recipe deleted successfully",
-      recipe,
     });
   }
 );

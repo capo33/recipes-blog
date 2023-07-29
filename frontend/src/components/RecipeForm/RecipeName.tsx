@@ -10,7 +10,7 @@ type RecipeNameProps = {
 
 const RecipeName = ({ recipe, handleChange }: RecipeNameProps) => {
   return (
-    <Col md={12}>
+    <Col md={12} className="mb-2">
       <Form.Label htmlFor='title'>Name</Form.Label>
       <Form.Control
         type='text'

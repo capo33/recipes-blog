@@ -1,13 +1,13 @@
 import axios from "axios";
 
-import { RECIPE_URL, UPLOAD_URL } from "../../../constants/constants";
+import { RECIPE_URL } from "../../../constants/constants";
 import { Recipe, Review } from "../../../interfaces/RecipeInterface";
-// const RECIPE_URL = 'http://localhost:5000/api/v1/recipe';
 
 // *************************** Recipe *************************** //
 // get all recipes
 const getAllRecipes = async () => {
   const response = await axios.get(`${RECIPE_URL}`);
+
   return response.data;
 };
 
@@ -52,7 +52,6 @@ const saveRecipe = async (recipeID: string, userID: string, token: string) => {
       },
     }
   );
-  console.log("saveRecipe response.data: ", response.data);
 
   return response.data?.savedRecipes;
 };
@@ -89,7 +88,6 @@ const getRecipesByUserId = async (userID: string, token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log("getRecipesByUserId response.data: ", response.data);
 
   return response.data?.savedRecipes;
 };
@@ -113,12 +111,14 @@ const updateRecipe = async (
 };
 
 // Delete a recipe
-const deleteRecipe = async (recipeID: string, token: string) => {
-  const response = await axios.delete(`${RECIPE_URL}/${recipeID}`, {
+const deleteRecipe = async (recipeId: string, token: string) => {
+  const response = await axios.delete(`${RECIPE_URL}/${recipeId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+  console.log(response.data);
+
   return response.data;
 };
 
@@ -133,7 +133,6 @@ const likeRecipe = async (recipeId: string, userId: string, token: string) => {
       },
     }
   );
-  console.log("likeRecipe response.data: ", response.data);
 
   return response.data;
 };

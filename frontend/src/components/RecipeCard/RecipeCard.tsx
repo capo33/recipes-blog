@@ -27,9 +27,7 @@ type RecipeCardProps = {
 
 const RecipeCard = ({ recipe }: RecipeCardProps) => {
   const { user } = useAppSelector((state) => state.auth);
-  const { savedRecipes, ownRecipes } = useAppSelector((state) => state.recipe);
-  console.log("owenRecipes", ownRecipes);
-  console.log("user?.owenRecipes", user?.ownRecipes);
+  const { savedRecipes } = useAppSelector((state) => state.recipe);
 
   const dispatch = useAppDispatch();
 
@@ -151,7 +149,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
               </Tooltip>
             }
           >
-              <Button
+            <Button
               variant='light'
               className='btn btn-outline-primary d-flex justify-content-center align-items-center'
             >
@@ -170,7 +168,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
               </Tooltip>
             }
           >
-              <Button
+            <Button
               variant='light'
               className='btn btn-outline-primary d-flex justify-content-center align-items-center'
             >
@@ -187,7 +185,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
               </Tooltip>
             }
           >
-              <Button
+            <Button
               variant='light'
               className='btn btn-outline-primary d-flex justify-content-center align-items-center'
             >

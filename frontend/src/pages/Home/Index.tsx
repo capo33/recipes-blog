@@ -6,11 +6,12 @@ import { Recipe } from "../../interfaces/RecipeInterface";
 import { getAllRecipes } from "../../redux/feature/Recipe/recipeSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/app/store";
 import RecipeCard from "../../components/RecipeCard/RecipeCard";
+import Message from "../../components/Message/Index";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const { recipes } = useAppSelector((state) => state.recipe);
-
-  console.log("recipes", recipes);
+  const { user } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
 
@@ -22,14 +23,25 @@ const Home = () => {
     <Container>
       <Hero />
       <Row>
-        {recipes?.length === 0 && (
-          <p>No recipes found. Please create a recipe.</p>
+        {!recipes?.length ? (
+          user ? (
+            <Message variant='info'>
+              No recipes found. <Link to='/add-recipe'>Create Recipe</Link>
+            </Message>
+          ) : (
+            <Message variant='info'>
+              No recipes found. <Link to='/login'>Login</Link> to create recipe.
+            </Message>
+          )
+        ) : (
+          <Row>
+            {recipes?.map((recipe: Recipe) => (
+              <Col key={recipe._id} sm={12} md={6} lg={4} xl={3}>
+                <RecipeCard recipe={recipe} />
+              </Col>
+            ))}
+          </Row>
         )}
-        {recipes?.map((recipe: Recipe) => (
-          <Col sm={12} md={6} lg={4} className='mb-4' key={recipe._id}>
-            <RecipeCard recipe={recipe} />
-          </Col>
-        ))}
       </Row>
     </Container>
   );

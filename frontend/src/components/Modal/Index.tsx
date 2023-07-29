@@ -18,7 +18,7 @@ const ModalPopup = ({
     <Modal show={showModal} onHide={() => setShowModal(false)}>
       <Modal.Header closeButton>
         <Modal.Title>
-          <span className='text-danger'>Delete</span>
+          <span className='text-danger'>Delete {value}</span>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

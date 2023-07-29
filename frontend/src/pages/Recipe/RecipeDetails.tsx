@@ -14,7 +14,7 @@ import {
   unlikeRecipe,
   unsaveRecipe,
 } from "../../redux/feature/Recipe/recipeSlice";
-import { Card, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
@@ -52,9 +52,6 @@ const RecipeDetails = () => {
   const guestID = recipe?.owner?._id as string;
   const recipesIDs = savedRecipes?.map((recipe) => recipe._id);
 
-  console.log("owenRecipes", ownRecipes);
-  console.log("user?.owenRecipes", user?.ownRecipes);
-
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -69,7 +66,7 @@ const RecipeDetails = () => {
   const handleDeleteBlog = async () => {
     dispatch(
       deleteRecipe({
-        recipeID: recipe?._id as string,
+        recipeId: recipe?._id as string,
         token,
         navigate,
         toast,
@@ -149,6 +146,10 @@ const RecipeDetails = () => {
   // Unlike Recipe
   const handleUnlike = async (id: string) => {
     dispatch(unlikeRecipe({ recipeId: id, userId: userID, token }));
+  };
+
+  const deleteRecipeHandler = (id: string) => {
+    dispatch(deleteRecipe({ recipeId: id, token, navigate, toast }));
   };
 
   return (
@@ -280,17 +281,18 @@ const RecipeDetails = () => {
               <div className='widget-title'>
                 <h3>More Recipes by {recipe?.owner?.name} </h3>
               </div>
-              <div className='widget-body'>
-                {ownRecipes?.map((rec, index) => (
-                  <Image
-                    src={rec.image}
-                    alt='recipe'
-                    rounded
-                    className='w-25 m-1'
-                    key={index}
-                  />
-                ))}
-              </div>
+              {/* <div className='widget-body'>
+                {ownRecipes &&
+                  ownRecipes?.map((rec, index) => (
+                    <Image
+                      src={rec.image}
+                      alt='recipe'
+                      rounded
+                      className='w-25 m-1'
+                      key={index}
+                    />
+                  ))}
+              </div> */}
             </div>
           </Col>
 
