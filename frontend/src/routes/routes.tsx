@@ -14,30 +14,34 @@ import AddCategory from "../pages/Category/admin/AddCategory";
 import Categories from "../pages/Category/Categories";
 import AllCategoriesForAdmin from "../pages/Category/admin/AllCategoriesForAdmin";
 import Register from "../pages/Auth/Register";
+import UpdateCategory from "../pages/Category/admin/UpdateCategory";
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
-      <Route path="" element={<Home />} />
-      <Route path="login" element={<Login />} />
-      <Route path="register" element={<Register />} />
-      <Route path="recipe-details/:recipeId" element={<RecipeDetails />} />
-      <Route path="add-recipe" element={<AddRecipe />} />
+    <Route path='/' element={<App />}>
+      <Route path='' element={<Home />} />
+      <Route path='login' element={<Login />} />
+      <Route path='register' element={<Register />} />
+      <Route path='recipe-details/:recipeId' element={<RecipeDetails />} />
+      <Route path='add-recipe' element={<AddRecipe />} />
       <Route path='categories' element={<Categories />} />
 
       <Route path='' element={<PrivateRoute />}>
-{/* '        <Route path='/shipping' element={<ShippingScreen />} />
+        {/* '        <Route path='/shipping' element={<ShippingScreen />} />
         <Route path='/payment' element={<PaymentScreen />} />
         <Route path='/placeorder' element={<PlaceOrderScreen />} />
         <Route path='/order/:id' element={<OrderScreen />} />
         <Route path='/profile' element={<ProfileScreen />} />' */}
       </Route>
-      <Route path="" element={<AdminRoute />}>
-      <Route path='/admin/add-category' element={<AddCategory />} />
-      <Route path='/admin/all-categories' element={<AllCategoriesForAdmin />} />
+      <Route path='' element={<AdminRoute />}>
+        <Route path='/admin/add-category' element={<AddCategory />} />
+        <Route path='/admin/edit-category/:slug' element={<UpdateCategory />} />
 
+        <Route
+          path='/admin/all-categories'
+          element={<AllCategoriesForAdmin />}
+        />
       </Route>
-
     </Route>
   )
 );

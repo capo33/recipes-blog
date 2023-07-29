@@ -111,7 +111,9 @@ export const updateCategory = createAsyncThunk(
         token
       );
 
-      navigate("/admin/allcategories");
+      console.log("response", response);
+
+      navigate("/admin/all-categories");
       toast.success(response?.message);
       return response;
     } catch (error: unknown | any) {
@@ -141,8 +143,8 @@ export const deleteCategory = createAsyncThunk(
   ) => {
     try {
       const response = await categoryServices.deleteCategory(id, token);
-      console.log('response', response);
-      
+      console.log("response", response);
+
       // navigate("/");
       toast.success(response?.message);
       thunkAPI.dispatch(getAllCategories());

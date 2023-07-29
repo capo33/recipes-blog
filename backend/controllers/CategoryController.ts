@@ -67,17 +67,21 @@ export const createCategory = asyncHandler(
 // @access  Private/Admin
 export const updateCategory = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const category = await CategoryModel.findOneAndUpdate(
-      { id: req.params.id },
-      req.body,
-      { new: true }
-    );
+    const { id } = req.params;
+    const category = await CategoryModel.findById(id);
 
     // Check if category exists with the given slug
     if (!category) {
       res.status(404);
       throw new Error("Category not found");
     }
+
+    const { name, image } = req.body;
+    category.name = name || category.name;
+    category.slug = slugify(name) || category.slug;
+    category.image = image || category.image;
+
+    await category.save();
 
     res.status(200).json({
       success: true,

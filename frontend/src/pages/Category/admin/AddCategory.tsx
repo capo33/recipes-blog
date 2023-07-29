@@ -35,7 +35,6 @@ const AddCategory = () => {
       data
     );
 
-    console.log("categoryData", categoryData);
     const catData = {
       name: categoryData.name,
       image: res.data.url,

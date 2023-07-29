@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 import { useParams, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import FileBase from "react-file-base64";
+import { Col, Container, Row, Form, Button } from "react-bootstrap";
+import { RxUpdate } from "react-icons/rx";
+import axios from "axios";
 
 import {
   getCategoryBySlug,
   updateCategory,
 } from "../../../redux/feature/Category/categorySlice";
 import { ICategoryData } from "../../../interfaces/CategoryInterface";
-import RecipeButton from "../../../components/RecipeForm/RecipeButton";
 import { useAppDispatch, useAppSelector } from "../../../redux/app/store";
 
 const UpdateCategory = () => {
@@ -17,12 +18,10 @@ const UpdateCategory = () => {
   const { user } = useAppSelector((state) => state.auth);
   const { category } = useAppSelector((state) => state.category);
 
-  const categoryData = {
+  const [categoryData, setCategoryData] = useState<ICategoryData>({
     name: (category?.name as string) || "",
     image: (category?.image as string) || "",
-  };
-
-  const [data, setData] = useState<ICategoryData>(categoryData);
+  });
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -35,17 +34,32 @@ const UpdateCategory = () => {
 
   useEffect(() => {
     if (category) {
-      setData(category as ICategoryData);
+      setCategoryData(category as ICategoryData);
     }
   }, [category]);
 
   // Handle submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const data = new FormData();
+    data.append("file", categoryData.image);
+    data.append("upload_preset", "recipe-app");
+    data.append("cloud_name", "dunforh2u");
+    // Make request to cloudinary
+    const res = await axios.post(
+      "https://api.cloudinary.com/v1_1/dunforh2u/image/upload",
+      data
+    );
+
+    const catData = {
+      name: categoryData.name,
+      image: res.data.url,
+    };
+
     dispatch(
       updateCategory({
         id: category?._id as string,
-        categoryData: data,
+        categoryData: catData,
         token,
         toast,
         navigate,
@@ -53,48 +67,60 @@ const UpdateCategory = () => {
     );
   };
 
-  return (
-    <div className='p-5 mt-10 max-w-md'>
-      <div className='p-8 rounded border border-gray-200'>
-        <h1 className='font-medium text-3xl'>Update Category</h1>
-        <form onSubmit={handleSubmit}>
-          <div className='mt-8 grid gap-4'>
-            <div>
-              <label
-                htmlFor='name'
-                className='text-sm text-gray-700 block mb-1 font-medium'
-              >
-                Name
-              </label>
-              <input
-                type='text'
-                name='name'
-                value={data?.name as string}
-                id='name'
-                onChange={(e) => setData({ ...data, name: e.target.value })}
-                className='bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full'
-                placeholder='e.g. Sports'
-              />
-            </div>
-          </div>
-          <div className='mt-8'>
-            <img src={data?.image as string} alt={data?.name} />
-            <FileBase
-              type='file'
-              multiple={false}
-              onDone={({ base64 }: any) =>
-                setData({ ...data, image: base64 as string })
-              }
-            />
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files?.[0];
+    if (!file) return;
+    categoryData.image = file as any;
+  };
 
-            {/* <UploadPicture handleUpload={handleUpload} uploading={uploading} /> */}
-          </div>
-          <div className='space-x-4 mt-8'>
-            <RecipeButton title='Update' />
-          </div>
-        </form>
+  return (
+    <Container>
+      <div className='px-4 my-5 text-center'>
+        <h1 className='display-5 fw-bold'>Update Category</h1>
+        <div className='col-lg-6 mx-auto'>
+          <p className='lead'>Add a new category to your recipe.</p>
+        </div>
       </div>
-    </div>
+      <Form onSubmit={handleSubmit}>
+        <Row>
+          <Col md={12}>
+            <Form.Label htmlFor='name'>Name</Form.Label>
+            <Form.Control
+              type='text'
+              name='name'
+              value={categoryData.name}
+              id='name'
+              onChange={(e) =>
+                setCategoryData({ ...categoryData, name: e.target.value })
+              }
+              placeholder='e.g. Sports'
+            />
+          </Col>
+
+          <Col md={12}>
+            <Form.Label htmlFor='image'> Upload image</Form.Label>
+            <Form.Control
+              type='file'
+              name='image'
+              className='form-control'
+              onChange={handleImageChange}
+            />
+          </Col>
+          <Col md={4}>
+            <img
+              src={categoryData.image}
+              alt={categoryData.name}
+              className='rounded mt-2'
+            />
+          </Col>
+          <Col md={12} className='mt-4 mb-5'>
+            <Button type='submit' className='w-100'>
+              <RxUpdate className='mx-1' /> Update
+            </Button>
+          </Col>
+        </Row>
+      </Form>
+    </Container>
   );
 };
 
