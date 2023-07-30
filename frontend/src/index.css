@@ -1,1 +1,8 @@
- 
+html {
+  scroll-behavior: smooth;
+}
+
+/* delete scrollbar */
+::-webkit-scrollbar {
+  display: none;
+}
