@@ -21,6 +21,11 @@ export const subStringFunc = (str: string, length: number) => {
   }
 };
 
+// capitalize
+export const capitalize = (str: string ) => {
+  return str.charAt(0)?.toUpperCase() + str.slice(1);
+};
+
 // React quill editor
 export const modules = {
   toolbar: [

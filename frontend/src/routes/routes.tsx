@@ -16,6 +16,7 @@ import AllCategoriesForAdmin from "../pages/Category/admin/AllCategoriesForAdmin
 import Register from "../pages/Auth/Register";
 import UpdateCategory from "../pages/Category/admin/UpdateCategory";
 import SavedRecipes from "../pages/Recipe/SavedRecipes";
+import CategoryDetails from "../pages/Category/CategoryDetails";
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +27,8 @@ const routes = createBrowserRouter(
       <Route path='recipe-details/:recipeId' element={<RecipeDetails />} />
       <Route path='add-recipe' element={<AddRecipe />} />
       <Route path='categories' element={<Categories />} />
+      <Route path='/category/:slug' element={<CategoryDetails />} />
+
 
       <Route path='' element={<PrivateRoute />}>
       <Route path='/saved-recipes' element={<SavedRecipes />} />

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../redux/app/store";
 import { getAllCategories } from "../../redux/feature/Category/categorySlice";
 import { Col, Container, Image, Row } from "react-bootstrap";
+import { capitalize } from "../../utils";
 
 const Categories = () => {
   const { categories } = useAppSelector((state) => state.category);
@@ -14,9 +15,6 @@ const Categories = () => {
     dispatch(getAllCategories());
   }, [dispatch]);
 
-  const capitalize = (str: string) => {
-    return str.charAt(0)?.toUpperCase() + str.slice(1);
-  };
 
   return (
     <Container>
@@ -41,15 +39,8 @@ const Categories = () => {
                 <Image src={category.image} rounded className='w-100 mx-auto' />
               </Link>
               <h3 className='text-2xl font-bold text-center'>
-                {category.slug}
+                {capitalize(category.name as string)}
               </h3>
-              <Link
-                to={`/category/${category.slug}`}
-                className='text-white text-2xl font-bold text-center'
-              >
-                <span className='absolute inset-0' />
-                {capitalize(category.name)}
-              </Link>
             </Col>
           ))}
         </Row>
