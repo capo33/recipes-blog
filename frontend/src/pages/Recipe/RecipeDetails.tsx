@@ -205,7 +205,7 @@ const RecipeDetails = () => {
                 {recipesIDs?.includes(recipe?._id as string) ? (
                   <Button
                     variant='secondary w-25 mt-2 mb-5'
-                    size="sm"
+                    size='sm'
                     style={{ fontSize: "1.2rem" }}
                     onClick={() => handleUnsaveRecipe(recipe?._id as string)}
                   >
@@ -215,7 +215,7 @@ const RecipeDetails = () => {
                 ) : (
                   <Button
                     variant='primary w-25 mt-2 mb-5'
-                    size="sm"
+                    size='sm'
                     style={{ fontSize: "1.2rem" }}
                     onClick={() => handleSaveRecipe(recipe?._id as string)}
                   >
@@ -300,7 +300,9 @@ const RecipeDetails = () => {
             </div>
           </div>
         </Col>
-
+        <Col lg={8} md={12}>
+          <hr />
+        </Col>
         {/* Comments & Reviews */}
         <Row className='my-3'>
           <Col lg={8} md={12}>
@@ -403,13 +405,14 @@ const RecipeDetails = () => {
             )}
 
             <ListGroup.Item>
-              <h3 className="my-3">Write a Customer Review</h3>
+              <h3 className='my-3'>Write a Customer Review</h3>
               {user ? (
                 <Form onSubmit={handleSubmit}>
                   <Form.Group controlId='rating' className='my-2'>
                     <Form.Label>Rating</Form.Label>
                     <Form.Control
                       as='select'
+                      required
                       value={data.rating}
                       onChange={(e) =>
                         setData({
@@ -432,6 +435,7 @@ const RecipeDetails = () => {
                       as='textarea'
                       rows={3}
                       value={data.comment}
+                      required
                       onChange={(e) =>
                         setData({
                           ...data,

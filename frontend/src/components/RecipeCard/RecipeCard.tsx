@@ -50,28 +50,6 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
     dispatch(unlikeRecipe({ recipeId: id, userId: userID, token }));
   };
 
-  // // Save Recipe
-  // const handleSaveRecipe = (recipeID: string) => {
-  //   dispatch(
-  //     saveRecipe({
-  //       recipeID,
-  //       userID,
-  //       token,
-  //     })
-  //   );
-  // };
-
-  // // Unsave Recipe
-  // const handleUnsaveRecipe = (recipeID: string) => {
-  //   dispatch(
-  //     unsaveRecipe({
-  //       recipeID,
-  //       userID,
-  //       token,
-  //     })
-  //   );
-  // };
-
   return (
     <Card className='my-3 rounded'>
       {/* Card Body */}
@@ -91,25 +69,21 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
                 onClick={() => handleLike(recipe?._id as string)}
               />
             )}
-            {/* {recipesIDs?.includes(recipe?._id as string) ? (
-              <FaBookmark
-                style={{ cursor: "pointer" }}
-                className='h-5 w-5 cursor-pointer'
-                onClick={() => handleUnsaveRecipe(recipe?._id as string)}
-              />
-            ) : (
-              <FaRegBookmark
-                style={{ cursor: "pointer" }}
-                onClick={() => handleSaveRecipe(recipe?._id as string)}
-                className='h-5 w-5 cursor-pointer'
-              />
-            )} */}
           </Card.Title>
         </Card.Text>
         <Card.Title as={"p"}>{formatDate(recipe?.createdAt)}</Card.Title>
 
         <Link to={`/recipe-details/${recipe._id}`}>
-          <Card.Img src={recipe.image} variant='top' alt={recipe.name} />
+          <Card.Img
+            src={recipe.image}
+            variant='top'
+            alt={recipe.name}
+            style={{
+              height: "250px",
+              width: "100%", 
+              objectFit: "cover",
+            }}
+          />
         </Link>
 
         <Card.Text as='div' className='mb-2 mt-2'>
@@ -119,6 +93,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
             <Badge bg='danger'>Unsaved</Badge>
           )}
         </Card.Text>
+
         {/* Tooltips */}
         <Card.Text as='div' className='d-flex justify-content-between'>
           {/* Likes Tooltip */}

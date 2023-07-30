@@ -53,7 +53,7 @@ export const Header = () => {
               <LinkContainer to='/'>
                 <Nav.Link>Home</Nav.Link>
               </LinkContainer>
-              <LinkContainer to='/saved-recipes'>
+              <LinkContainer to='/categories'>
                 <Nav.Link>Categories</Nav.Link>
               </LinkContainer>
               {user && (
