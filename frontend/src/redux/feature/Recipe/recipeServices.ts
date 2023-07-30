@@ -170,14 +170,14 @@ const addReview = async (recipeID: string, formData: Review, token: string) => {
   return response.data;
 };
 
-// delete a review
+// delete a review reviews/:recipeId/:reviewId
 const deleteReview = async (
-  recipeID: string,
-  reviewID: string,
+  recipeId: string,
+  reviewId: string,
   token: string
 ) => {
   const response = await axios.delete(
-    `${RECIPE_URL}/reviews/${recipeID}/${reviewID}`,
+    `${RECIPE_URL}/reviews/${recipeId}/${reviewId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

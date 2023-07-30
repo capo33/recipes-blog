@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import cloudinary from "cloudinary/lib/cloudinary";
 import {
   Button,
   Col,
@@ -26,9 +25,7 @@ import {
   deleteReview,
   getSavedRecipes,
   getSingleRecipe,
-  likeRecipe,
   saveRecipe,
-  unlikeRecipe,
   unsaveRecipe,
 } from "../../redux/feature/Recipe/recipeSlice";
 import Message from "../../components/Message/Index";
@@ -47,7 +44,7 @@ const RecipeDetails = () => {
   const { recipe } = useAppSelector((state) => state.recipe);
   const { savedRecipes, ownRecipes } = useAppSelector((state) => state.recipe);
 
-  const [show, setShow] = React.useState(false);
+  const [show, setShow] = useState(false);
   const [data, setData] = useState<Review>({
     rating: 0,
     comment: "",
@@ -70,7 +67,7 @@ const RecipeDetails = () => {
   }, [dispatch, recipeId, token, userID]);
 
   // Delete handler for recipe
-  const handleDeleteBlog = async () => {
+  const handleDeleteRecipe = async () => {
     dispatch(
       deleteRecipe({
         recipeId: recipe?._id as string,
@@ -134,179 +131,162 @@ const RecipeDetails = () => {
     }
   };
 
-  const handleDeleteComment = (recipeID: string, reviewID: string) => {
+  const handleDeleteComment = (recipeId: string, reviewId: string) => {
+    console.log(recipeId, reviewId);
+
     dispatch(
       deleteReview({
-        recipeID: recipe_Id,
-        reviewID,
+        recipeId: recipe_Id,
+        reviewId,
         token,
         toast,
       })
     );
   };
 
-  // Like Recipe
-  const handleLike = async (id: string) => {
-    dispatch(likeRecipe({ recipeId: id, userId: userID, token }));
-  };
-
-  // Unlike Recipe
-  const handleUnlike = async (id: string) => {
-    dispatch(unlikeRecipe({ recipeId: id, userId: userID, token }));
-  };
-
-  const deleteRecipeHandler = (id: string) => {
-    dispatch(deleteRecipe({ recipeId: id, token, navigate, toast }));
-  };
-
   return (
-    <div className=' '>
-      <Container>
-        {showModal ? (
-          <ModalPopup
-            showModal={showModal}
-            setShowModal={setShowModal}
-            handleDelete={handleDeleteBlog}
-            value='recipe'
-          />
-        ) : null}
-        <Row>
-          <Col lg={8}>
-            <div className='article'>
-              <div className='flexy'>
-                <h2>{recipe?.name}</h2>
-                {recipe?.owner?._id === userID && (
-                  <div>
-                    <Link
-                      to={`/update-recipe/${recipe?._id}`}
-                      className='btn btn-primary btn-sm mx-2'
-                    >
-                      <AiOutlineEdit />
-                      Edit
-                    </Link>
+    <Container>
+      {showModal ? (
+        <ModalPopup
+          showModal={showModal}
+          setShowModal={setShowModal}
+          handleDelete={handleDeleteRecipe}
+          value='recipe'
+        />
+      ) : null}
+      <Row>
+        <Col lg={8}>
+          <div className='article'>
+            <div className='flexy'>
+              <h2>{recipe?.name}</h2>
+              {recipe?.owner?._id === userID && (
+                <div>
+                  <Link
+                    to={`/update-recipe/${recipe?._id}`}
+                    className='btn btn-outline-primary btn-sm mx-2'
+                  >
+                    <AiOutlineEdit />
+                    Edit
+                  </Link>
 
-                    <Button
-                      onClick={handleConfirmDelete}
-                      variant='danger'
-                      size='sm'
-                    >
-                      <BsTrash />
-                      Delete
-                    </Button>
-                  </div>
-                )}
-              </div>
-              <h6>{recipe?.category?.name}</h6>
-
-              <Image
-                src={recipe?.image}
-                alt={recipe?.name}
-                className='w-100 h-100'
-              />
-              {!user ? (
-                <OverlayTrigger
-                  placement='top'
-                  overlay={<Tooltip>Login to save recipe</Tooltip>}
-                >
-                  <Button variant='primary w-100'>
-                    <GoBookmark style={{ fontSize: "1.2rem" }} />
+                  <Button
+                    onClick={handleConfirmDelete}
+                    variant='outline-danger'
+                    size='sm'
+                  >
+                    <BsTrash />
+                    Delete
                   </Button>
-                </OverlayTrigger>
-              ) : (
-                <>
-                  {recipesIDs?.includes(recipe?._id as string) ? (
-                    <Button
-                      variant='secondary w-100 mt-2'
-                      style={{ fontSize: "1.5rem" }}
-                      onClick={() => handleUnsaveRecipe(recipe?._id as string)}
-                    >
-                      <GoBookmarkFill className='h-5 w-5 cursor-pointer' />
-                      unsave{" "}
-                    </Button>
-                  ) : (
-                    <Button
-                      variant='primary w-100 mt-2'
-                      style={{ fontSize: "1.5rem" }}
-                      onClick={() => handleSaveRecipe(recipe?._id as string)}
-                    >
-                      <GoBookmark className='h-5 w-5 cursor-pointer' />
-                      save{" "}
-                    </Button>
-                  )}
-                </>
+                </div>
               )}
             </div>
+            <h6>
+              {recipe?.category?.name
+                ? recipe?.category?.name
+                : "Category not available"}
+            </h6>
 
-            <Tabs defaultActiveKey='ingredients' className='mb-3' justify>
-              <Tab eventKey='ingredients' title='Ingredients'>
-                <ListGroup as='ol' numbered>
-                  {recipe?.ingredients?.map((ingredient, index) => (
-                    <ListGroup.Item
-                      as={"li"}
-                      key={index}
-                      className='border-0 bg-transparent'
-                    >
-                      {ingredient}
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
-              </Tab>
-              <Tab eventKey='instructions' title='instructions'>
-                <span
-                  className='m-5'
-                  dangerouslySetInnerHTML={{
-                    __html: recipe?.instructions as string,
-                  }}
-                />
-              </Tab>
-            </Tabs>
-          </Col>
-          <Col className='blog-aside'>
-            {/* Author */}
-            <div className='widget widget-author'>
-              <div className='widget-title'>
-                <h3>Hello, I'm {recipe?.owner?.name}</h3>
-              </div>
-              <div className='widget-body'>
-                <Link to={`/profile/${guestID}`}>
-                  <img
-                    src={recipe?.owner?.image}
-                    alt=''
-                    className='w-25 h-25'
-                  />
-                </Link>
-                <Button
-                  variant='outline-primary'
-                  onClick={() => navigate(`/profile/${guestID}`)}
-                >
-                  View Profile
+            <Image
+              src={recipe?.image}
+              alt={recipe?.name}
+              className='w-100 h-100'
+            />
+            {!user ? (
+              <OverlayTrigger
+                placement='top'
+                overlay={<Tooltip>Login to save recipe</Tooltip>}
+              >
+                <Button variant='primary w-100 mt-2 mb-5'>
+                  <GoBookmark style={{ fontSize: "1.2rem" }} />
                 </Button>
-              </div>
-            </div>
-
-            {/* Author Recipes */}
-            <div className='widget widget-post'>
-              <div className='widget-title'>
-                <h3>More Recipes by {recipe?.owner?.name} </h3>
-              </div>
-              <div className='widget-body'>
-                {!ownRecipes.length ? (
-                  <p>{recipe?.owner?.name} has no other recipes</p>
+              </OverlayTrigger>
+            ) : (
+              <>
+                {recipesIDs?.includes(recipe?._id as string) ? (
+                  <Button
+                    variant='secondary w-25 mt-2 mb-5'
+                    size="sm"
+                    style={{ fontSize: "1.2rem" }}
+                    onClick={() => handleUnsaveRecipe(recipe?._id as string)}
+                  >
+                    <GoBookmarkFill className='h-5 w-5 cursor-pointer' />
+                    unsave{" "}
+                  </Button>
                 ) : (
-                  <div className='d-flex flex-wrap'>
-                    {ownRecipes?.map((rec, index) => (
-                      <Image
-                        src={rec.image}
-                        alt='recipe'
-                        rounded
-                        className='w-25 m-1'
-                        key={index}
-                      />
-                    ))}
-                  </div>
+                  <Button
+                    variant='primary w-25 mt-2 mb-5'
+                    size="sm"
+                    style={{ fontSize: "1.2rem" }}
+                    onClick={() => handleSaveRecipe(recipe?._id as string)}
+                  >
+                    <GoBookmark className='h-5 w-5 cursor-pointer' />
+                    save{" "}
+                  </Button>
                 )}
-                {/* {ownRecipes ? (
-                  ownRecipes?.map((rec, index) => (
+              </>
+            )}
+          </div>
+
+          <Tabs defaultActiveKey='ingredients' className='mb-3' justify>
+            <Tab eventKey='ingredients' title='Ingredients'>
+              <ListGroup as='ol' numbered>
+                {recipe?.ingredients?.map((ingredient, index) => (
+                  <ListGroup.Item
+                    as={"li"}
+                    key={index}
+                    className='border-0 bg-transparent'
+                  >
+                    {ingredient}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            </Tab>
+            <Tab eventKey='instructions' title='instructions'>
+              <span
+                className='m-5'
+                dangerouslySetInnerHTML={{
+                  __html: recipe?.instructions as string,
+                }}
+              />
+            </Tab>
+          </Tabs>
+        </Col>
+
+        <Col className='recipe-aside'>
+          {/* Author */}
+          <div className='widget widget-author'>
+            <div className='widget-title'>
+              <h3>Hello, I'm {recipe?.owner?.name}</h3>
+            </div>
+            <div className='widget-body'>
+              <Link to={`/profile/${guestID}`}>
+                <img
+                  src={recipe?.owner?.image}
+                  alt={recipe?.owner?.name}
+                  className='w-25 h-25'
+                />
+              </Link>
+              <Button
+                variant='info'
+                size='sm'
+                onClick={() => navigate(`/profile/${guestID}`)}
+              >
+                View Profile
+              </Button>
+            </div>
+          </div>
+
+          {/* Author Recipes */}
+          <div className='widget widget-post'>
+            <div className='widget-title'>
+              <h3>More Recipes by {recipe?.owner?.name} </h3>
+            </div>
+            <div className='widget-body'>
+              {!ownRecipes.length ? (
+                <p>{recipe?.owner?.name} has no other recipes</p>
+              ) : (
+                <div className='d-flex flex-wrap'>
+                  {ownRecipes?.map((rec, index) => (
                     <Image
                       src={rec.image}
                       alt='recipe'
@@ -314,79 +294,166 @@ const RecipeDetails = () => {
                       className='w-25 m-1'
                       key={index}
                     />
-                  ))
-                ) : (
-                  <p>{recipe?.owner?.name} has no other recipes</p>
-                )} */}
-              </div>
-            </div>
-          </Col>
-
-          {/* Comments */}
-          <Row className='review my-3'>
-            <Col lg={8} md={12}>
-              <h2>Reviews</h2>
-              {recipe && recipe?.reviews?.length === 0 && (
-                <Message variant='success'>No Reviews</Message>
+                  ))}
+                </div>
               )}
-              <ListGroup variant='flush'>
+            </div>
+          </div>
+        </Col>
+
+        {/* Comments & Reviews */}
+        <Row className='my-3'>
+          <Col lg={8} md={12}>
+            <h3>Reviews</h3>
+            {recipe?.reviews && recipe?.reviews?.length === 0 && (
+              <Message variant='success'>No Reviews</Message>
+            )}
+
+            {/* Show and Hide Reviews */}
+            {recipe?.reviews && recipe?.reviews?.length > 2 && (
+              <>
+                <div className=''>
+                  {show ? (
+                    <h6 className='mb-6' onClick={() => toggleComment()}>
+                      <span className='cursor-pointer underline rounded '>
+                        Hide Comments
+                      </span>
+                    </h6>
+                  ) : (
+                    <h6 className='mb-6' onClick={() => toggleComment()}>
+                      <span className='cursor-pointer underline rounded'>
+                        {recipe?.reviews?.length > 0
+                          ? "Show All Comments"
+                          : "No Comments Yet"}
+                      </span>
+                    </h6>
+                  )}
+                </div>
+              </>
+            )}
+
+            {/* Show 2 Reviews */}
+            {recipe?.reviews && recipe?.reviews?.length > 0 && !show && (
+              <>
+                {recipe &&
+                  recipe?.reviews
+                    ?.map((review) => (
+                      <ListGroup
+                        variant='info'
+                        key={review._id}
+                        className='my-2'
+                      >
+                        <ListGroup.Item>
+                          <div className='d-flex justify-content-between'>
+                            <strong>{review.name}</strong>
+                            {review?.user === user?._id && (
+                              <button
+                                className='btn btn-outline-danger btn-sm '
+                                onClick={() =>
+                                  handleDeleteComment(
+                                    recipe_Id as string,
+                                    review._id as string
+                                  )
+                                }
+                              >
+                                Delete
+                              </button>
+                            )}
+                          </div>
+                          <Rating value={review?.rating} />
+                          <p>{formatDate(review.createdAt)}</p>
+                          <p>{review.comment}</p>
+                        </ListGroup.Item>
+                      </ListGroup>
+                    ))
+                    .slice(0, 2)}
+              </>
+            )}
+
+            {/* Show All Reviews */}
+            {show && recipe?.reviews && recipe?.reviews?.length > 0 && (
+              <>
                 {recipe &&
                   recipe?.reviews?.map((review) => (
-                    <ListGroup.Item key={review._id}>
-                      <strong>{review.name}</strong>
-                      <Rating value={review?.rating} />
-                      <p>{formatDate(review.createdAt)}</p>
-                      <p>{review.comment}</p>
-                    </ListGroup.Item>
+                    <ListGroup variant='info' key={review._id} className='my-2'>
+                      <ListGroup.Item>
+                        <div className='d-flex justify-content-between'>
+                          <strong>{review.name}</strong>
+                          {review?.user === user?._id && (
+                            <button
+                              className='btn btn-outline-danger btn-sm '
+                              onClick={() =>
+                                handleDeleteComment(
+                                  recipe_Id as string,
+                                  review._id as string
+                                )
+                              }
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </div>
+                        <Rating value={review?.rating} />
+                        <p>{formatDate(review.createdAt)}</p>
+                        <p>{review.comment}</p>
+                      </ListGroup.Item>
+                    </ListGroup>
                   ))}
-              </ListGroup>
-              <ListGroup.Item>
-                <h2>Write a Customer Review</h2>
-                {user ? (
-                  <Form>
-                    <Form.Group controlId='rating' className='my-2'>
-                      <Form.Label>Rating</Form.Label>
-                      <Form.Control
-                        as='select'
-                        // value={rating}
-                        // onChange={(e) => setRating(Number(e.target.value))}
-                      >
-                        <option value=''>Select...</option>
-                        <option value='1'>1 - Poor</option>
-                        <option value='2'>2 - Fair</option>
-                        <option value='3'>3 - Good</option>
-                        <option value='4'>4 - Very Good</option>
-                        <option value='5'>5 - Excellent</option>
-                      </Form.Control>
-                    </Form.Group>
-                    <Form.Group controlId='comment' className='my-2'>
-                      <Form.Label>Comment</Form.Label>
-                      <Form.Control
-                        as='textarea'
-                        rows={3}
-                        // value={comment}
-                        // onChange={(e) => setComment(e.target.value)}
-                      ></Form.Control>
-                    </Form.Group>
-                    <Button
-                      // disabled={isReviewLoading}
-                      type='submit'
-                      variant='primary'
+              </>
+            )}
+
+            <ListGroup.Item>
+              <h3 className="my-3">Write a Customer Review</h3>
+              {user ? (
+                <Form onSubmit={handleSubmit}>
+                  <Form.Group controlId='rating' className='my-2'>
+                    <Form.Label>Rating</Form.Label>
+                    <Form.Control
+                      as='select'
+                      value={data.rating}
+                      onChange={(e) =>
+                        setData({
+                          ...data,
+                          rating: Number(e.currentTarget.value),
+                        })
+                      }
                     >
-                      Submit
-                    </Button>
-                  </Form>
-                ) : (
-                  <Message variant='warning'>
-                    Please <Link to='/login'>sign in</Link> to write a review{" "}
-                  </Message>
-                )}
-              </ListGroup.Item>
-            </Col>
-          </Row>
+                      <option value=''>Select...</option>
+                      <option value='1'>1 - Poor</option>
+                      <option value='2'>2 - Fair</option>
+                      <option value='3'>3 - Good</option>
+                      <option value='4'>4 - Very Good</option>
+                      <option value='5'>5 - Excellent</option>
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId='comment' className='my-2'>
+                    <Form.Label>Comment</Form.Label>
+                    <Form.Control
+                      as='textarea'
+                      rows={3}
+                      value={data.comment}
+                      onChange={(e) =>
+                        setData({
+                          ...data,
+                          comment: e.currentTarget.value as string,
+                        })
+                      }
+                    ></Form.Control>
+                  </Form.Group>
+                  <Button type='submit' variant='primary'>
+                    Submit
+                  </Button>
+                </Form>
+              ) : (
+                <Message variant='warning'>
+                  Please <Link to='/login'>sign in</Link> to write a review{" "}
+                </Message>
+              )}
+            </ListGroup.Item>
+          </Col>
         </Row>
-      </Container>
-    </div>
+      </Row>
+    </Container>
   );
 };
 

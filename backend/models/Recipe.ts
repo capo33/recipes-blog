@@ -33,7 +33,7 @@ const recipeSchema = new Schema<IRecipe>(
     reviews: [ReviewModel.schema],
     rating: {
       type: Number,
-      required: true,
+      // required: true,
       default: 0,
     },
 

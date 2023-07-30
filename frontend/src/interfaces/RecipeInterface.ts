@@ -9,7 +9,7 @@ export interface Owner {
 }
 
 export interface Review {
-  rating: number;
+  rating: number ;
   comment: string;
   _id?: string;
   name?: string;

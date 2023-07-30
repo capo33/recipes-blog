@@ -298,21 +298,21 @@ export const deleteReview = createAsyncThunk(
   "recipe/deleteReview",
   async (
     {
-      recipeID,
-      reviewID,
+      recipeId,
+      reviewId,
       token,
       toast,
-    }: { recipeID: string; reviewID: string; token: string; toast: any },
+    }: { recipeId: string; reviewId: string; token: string; toast: any },
     thunkAPI
   ) => {
     try {
       const response = await recipeServices.deleteReview(
-        recipeID,
-        reviewID,
+        recipeId,
+        reviewId,
         token
       );
       toast.success("Review deleted successfully");
-      thunkAPI.dispatch(getSingleRecipe(recipeID));
+      thunkAPI.dispatch(getSingleRecipe(recipeId));
       return response;
     } catch (error: unknown | any) {
       toast.error(error.response.data.message);
@@ -354,7 +354,7 @@ const recipeSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.recipe = payload as Recipe;
-      state.ownRecipes =  [...state.ownRecipes, payload as Recipe]
+      state.ownRecipes = [...state.ownRecipes, payload as Recipe];
     });
     builder.addCase(getSingleRecipe.rejected, (state, { payload }) => {
       state.isLoading = false;

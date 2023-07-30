@@ -343,7 +343,7 @@ export const addReview = asyncHandler(
     // we update the number of reviews and the rating
     recipe.numReviews = recipe.reviews.length;
 
-    // we update/calculate the rating the rating by getting the sum of all the ratings and dividing it by the number of reviews
+    // we update/calculate the rating by getting the sum of all the ratings and dividing it by the number of reviews
     recipe.rating =
       recipe?.reviews?.reduce((acc, item) => Number(item?.rating) + acc, 0) /
       recipe?.reviews?.length;
@@ -382,10 +382,15 @@ export const deleteReview = asyncHandler(
     // we update the number of reviews and the rating
     recipe.numReviews = recipe.reviews.length;
 
-    // we update/calculate the rating the rating by getting the sum of all the ratings and dividing it by the number of reviews
+    // delete the rating of the deleted review
+    // Recipe validation failed: rating: Cast to Number failed for value \"NaN\" (type number) at path \"rating\""
     recipe.rating =
-      recipe?.reviews?.reduce((acc, item) => Number(item?.rating) + acc, 0) /
-      recipe?.reviews?.length;
+      recipe?.reviews?.length > 0
+        ? recipe?.reviews?.reduce(
+            (acc, item) => Number(item?.rating) + acc,
+            0
+          ) / recipe?.reviews?.length
+        : 0;
 
     // we save the recipe
     await recipe.save();
