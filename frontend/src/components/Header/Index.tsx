@@ -38,7 +38,7 @@ export const Header = () => {
     <header style={{ zIndex: 1, position: "sticky", top: 0 }}>
       <Navbar bg='primary' variant='dark' expand='md' collapseOnSelect>
         <Container>
-          <LinkContainer to='/'>
+          <LinkContainer to='/' style={{ fontSize: "1.6rem" }}>
             <Navbar.Brand>
               <MdOutlineFastfood /> YupFood
             </Navbar.Brand>
@@ -48,7 +48,7 @@ export const Header = () => {
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav
               className='ms-auto  '
-              style={{ fontSize: "1.2rem", fontWeight: 500 }}
+              style={{ fontSize: "1.1rem", fontWeight: 500 }}
             >
               {/* <SearchBox /> */}
               <LinkContainer className='hover' to='/'>
