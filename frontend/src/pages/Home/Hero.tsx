@@ -13,7 +13,7 @@ const Hero = () => {
           height={510}
           className='d-block mx-lg-auto img-fluid'
           loading='lazy'
-          alt='Cooking With Node.js'
+          alt='Eating food'
         />
       </Col>
       <Col lg={6} md={12}>

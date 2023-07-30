@@ -1,18 +1,19 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
 import { FaUser } from "react-icons/fa";
-import { AiOutlineLogout } from "react-icons/ai";
-import { BsFillPersonPlusFill } from "react-icons/bs";
 import { BiLogIn } from "react-icons/bi";
-import { AiOutlinePlus } from "react-icons/ai";
-import { BsGrid } from "react-icons/bs";
+import { MdOutlineFastfood } from "react-icons/md";
 import { HiOutlineUserGroup } from "react-icons/hi";
-import logo from "../../assets/logo.png";
+import { LinkContainer } from "react-router-bootstrap";
+import { BsFillPersonPlusFill, BsGrid } from "react-icons/bs";
+import { AiOutlineLogout, AiOutlinePlus } from "react-icons/ai";
 import { Nav, Navbar, Container, Badge, NavDropdown } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "../../redux/app/store";
+
 import { logout } from "../../redux/feature/Auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/app/store";
 import { getSavedRecipes } from "../../redux/feature/Recipe/recipeSlice";
+
+import "./header.css";
 
 export const Header = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -35,33 +36,33 @@ export const Header = () => {
 
   return (
     <header style={{ zIndex: 1, position: "sticky", top: 0 }}>
-      <Navbar bg='success' variant='' expand='md' collapseOnSelect>
+      <Navbar bg='primary' variant='dark' expand='md' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
             <Navbar.Brand>
-              <img src={logo} alt='yummy' width='150' />
+              <MdOutlineFastfood /> YupFood
             </Navbar.Brand>
           </LinkContainer>
 
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav
-              className='ms-auto'
-              style={{ fontSize: "1.1rem", fontWeight: "bold" }}
+              className='ms-auto  '
+              style={{ fontSize: "1.2rem", fontWeight: 500 }}
             >
               {/* <SearchBox /> */}
-              <LinkContainer to='/'>
+              <LinkContainer className='hover' to='/'>
                 <Nav.Link>Home</Nav.Link>
               </LinkContainer>
-              <LinkContainer to='/categories'>
+              <LinkContainer className='hover' to='/categories'>
                 <Nav.Link>Categories</Nav.Link>
               </LinkContainer>
               {user && (
-                <LinkContainer to='/saved-recipes'>
-                  <Nav.Link className='d-flex align-items-center justify-content-center'>
+                <LinkContainer className='hover' to='/saved-recipes'>
+                  <Nav.Link className='d-flex align-items-center  '>
                     Saved Recipes
                     {savedRecipes?.length > 0 && (
-                      <Badge pill bg='primary' className='mx-1'>
+                      <Badge pill bg='warning' className='mx-1'>
                         {savedRecipes?.length}
                       </Badge>
                     )}
@@ -115,13 +116,13 @@ export const Header = () => {
                 </NavDropdown>
               ) : (
                 <>
-                  <LinkContainer to='/login'>
+                  <LinkContainer className='hover' to='/login'>
                     <Nav.Link className='d-flex align-items-center justify-content-center'>
                       <BiLogIn className='me-1' />
                       Login
                     </Nav.Link>
                   </LinkContainer>
-                  <LinkContainer to='/register'>
+                  <LinkContainer className='hover' to='/register'>
                     <Nav.Link className='d-flex align-items-center justify-content-center'>
                       <BsFillPersonPlusFill className='me-1' />
                       Register

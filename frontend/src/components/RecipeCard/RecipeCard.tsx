@@ -79,8 +79,8 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
             variant='top'
             alt={recipe.name}
             style={{
-              height: "250px",
-              width: "100%", 
+              minHeight: "200px",
+              width: "100%",
               objectFit: "cover",
             }}
           />
