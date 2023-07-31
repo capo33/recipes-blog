@@ -132,8 +132,6 @@ const RecipeDetails = () => {
   };
 
   const handleDeleteComment = (recipeId: string, reviewId: string) => {
-    console.log(recipeId, reviewId);
-
     dispatch(
       deleteReview({
         recipeId: recipe_Id,

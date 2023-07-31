@@ -73,15 +73,11 @@ const SavedRecipes = () => {
                 >
                   View
                 </Link>
-
-                <button
-                  type='button'
-                  className='flex items-center justify-center w-full p-3 rounded-md text-red-900'
+                <Button
                   onClick={() => handleUnsaveRecipe(myRecipe._id as string)}
                 >
-                  {/* <TrashIcon className='w-4 h-4' /> */}
                   <span>Remove</span>
-                </button>
+                </Button>
               </div>
             </div>
           </div>

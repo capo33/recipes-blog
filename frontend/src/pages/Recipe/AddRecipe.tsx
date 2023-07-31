@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { AiOutlineSend } from "react-icons/ai";
-import { Row, Col, Button, Form, Container } from "react-bootstrap";
+import { Row, Col, Button, Form, Container, Image } from "react-bootstrap";
 import axios from "axios";
 import "react-quill/dist/quill.snow.css";
 
@@ -19,8 +19,8 @@ import { getAllCategories } from "../../redux/feature/Category/categorySlice";
 
 const AddRecipe = () => {
   const { user } = useAppSelector((state) => state.auth);
-
   const [inputValue, setInputValue] = useState("");
+  const [loading, setLoading] = useState(false);
   const [recipe, setRecipe] = useState<Recipe>({
     name: "",
     ingredients: [],
@@ -93,16 +93,16 @@ const AddRecipe = () => {
       `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/upload`,
       formData
     );
-
     setRecipe({ ...recipe, image: res.data.url });
   };
 
-  // Submit handler for form
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  // Submit handler for button
+  const handleSubmit = async () => {
     dispatch(createRecipe({ formData: recipe, token, toast }));
+
     navigate("/");
+
+    setLoading(true);
     setRecipe({
       name: "",
       ingredients: [],
@@ -127,7 +127,7 @@ const AddRecipe = () => {
           </p>
         </div>
       </div>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <Row className='row'>
           <RecipeName recipe={recipe} handleChange={handleChange} />
           <Ingredients
@@ -157,11 +157,37 @@ const AddRecipe = () => {
               onChange={uploadImage}
               required
             />
-            <img src={recipe.image} alt={recipe.name} />
+            <Image
+              src={recipe.image}
+              alt={recipe.name}
+              className='mt-3 rounded mx-auto d-block'
+              style={{ width: "25%" }}
+            />
           </Col>
           <Col md={12} className='mt-4 mb-5'>
-            <Button type='submit' className='w-100'>
-              <AiOutlineSend /> Submit Recipe
+            {loading && (
+              <Button variant='primary' disabled className='w-100'>
+                <span
+                  className='spinner-border spinner-border-sm'
+                  role='status'
+                  aria-hidden='true'
+                ></span>
+              </Button>
+            )}
+            <Button
+              type='submit'
+              className='w-100'
+              onClick={handleSubmit}
+              disabled={
+                !recipe.name ||
+                !recipe.cookingTime ||
+                !recipe.category ||
+                !recipe.image ||
+                !recipe.ingredients.length ||
+                !recipe.instructions
+              }
+            >
+              <AiOutlineSend /> Submit
             </Button>
           </Col>
         </Row>
