@@ -8,8 +8,8 @@ import {
 import Home from "../pages/Home/Index";
 import RecipeDetails from "../pages/Recipe/RecipeDetails";
 import AddRecipe from "../pages/Recipe/AddRecipe";
-import PrivateRoute from "./Guards/PrivateRoute";
-import AdminRoute from "./Guards/AdminRoute";
+import PrivateRoute from "../Guards/PrivateRoute";
+import AdminRoute from "../Guards/AdminRoute";
 import AddCategory from "../pages/Category/admin/AddCategory";
 import Categories from "../pages/Category/Categories";
 import AllCategoriesForAdmin from "../pages/Category/admin/AllCategoriesForAdmin";
@@ -17,6 +17,7 @@ import Register from "../pages/Auth/Register";
 import UpdateCategory from "../pages/Category/admin/UpdateCategory";
 import SavedRecipes from "../pages/Recipe/SavedRecipes";
 import CategoryDetails from "../pages/Category/CategoryDetails";
+import UpdateRecipe from "../pages/Recipe/UpdateRecipe";
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -29,10 +30,9 @@ const routes = createBrowserRouter(
       <Route path='categories' element={<Categories />} />
       <Route path='/category/:slug' element={<CategoryDetails />} />
 
-
       <Route path='' element={<PrivateRoute />}>
-      <Route path='/saved-recipes' element={<SavedRecipes />} />
-
+        <Route path='/saved-recipes' element={<SavedRecipes />} />
+        <Route path='/update-recipe/:recipeId' element={<UpdateRecipe />} />
       </Route>
       <Route path='' element={<AdminRoute />}>
         <Route path='/admin/add-category' element={<AddCategory />} />

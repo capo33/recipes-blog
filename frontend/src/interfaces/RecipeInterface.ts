@@ -23,7 +23,7 @@ export interface Recipe {
   name: string;
   ingredients: string[];
   instructions: string;
-  image: string;
+  image: string
   cookingTime: number;
   category: Category;
   owner: Owner;

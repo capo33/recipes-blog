@@ -62,7 +62,6 @@ export const createCategory = asyncHandler(
 );
 
 // @desc    Update a category
-
 // @route   PUT /api/v1/categories/:id
 // @access  Private/Admin
 export const updateCategory = asyncHandler(

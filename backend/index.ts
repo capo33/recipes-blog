@@ -9,7 +9,7 @@ import { connectDB } from "./config/db";
 import userRoutes from "./routes/Auth.routes";
 import recipeRoutes from "./routes/Recipe.routes";
 import categoryRoutes from "./routes/Category.routes";
-
+ 
 import { errorHandler, notFound } from "./middlewares/errorHandler";
 
 // Initialize express
@@ -36,7 +36,8 @@ app.use(cors());
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/recipes", recipeRoutes);
 app.use("/api/v1/categories", categoryRoutes);
-
+app.use("/api/v1/categories", categoryRoutes);
+ 
 // const __dirname: string = path.resolve();
 // app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 

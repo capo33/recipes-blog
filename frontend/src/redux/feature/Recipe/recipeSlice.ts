@@ -188,13 +188,13 @@ export const updateRecipe = createAsyncThunk(
   "recipe/updateRecipe",
   async (
     {
-      recipeID,
+      recipeId,
       formData,
       token,
       toast,
       navigate,
     }: {
-      recipeID: string;
+      recipeId: string;
       formData: any;
       token: string;
       toast: any;
@@ -204,13 +204,14 @@ export const updateRecipe = createAsyncThunk(
   ) => {
     try {
       const response = await recipeServices.updateRecipe(
-        recipeID,
+        recipeId,
         formData,
         token
       );
       thunkAPI.dispatch(getAllRecipes());
+      console.log("response", response);
       toast.success("Recipe updated successfully");
-      navigate(`/recipe-details/${recipeID}`);
+      navigate(`/recipe-details/${recipeId}`);
       return response;
     } catch (error: unknown | any) {
       return thunkAPI.rejectWithValue(error.response.data.message);

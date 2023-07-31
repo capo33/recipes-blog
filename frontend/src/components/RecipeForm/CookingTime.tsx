@@ -15,7 +15,7 @@ const CookingTime = ({ recipe, handleChange }: CookingTimeProps) => {
         type='number'
         name='cookingTime'
         id='cookingTime'
-        value={recipe?.cookingTime}
+        value={recipe?.cookingTime || 0}
         onChange={handleChange}
         required
       />

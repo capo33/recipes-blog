@@ -44,7 +44,7 @@ const SavedRecipes = () => {
       </h2>
 
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10'>
-    {savedRecipes?.map((myRecipe) => (
+        {savedRecipes?.map((myRecipe) => (
           <div
             className='  rounded-md shadow-md dark:bg-gray-900 dark:text-gray-100'
             key={myRecipe?._id}
@@ -88,8 +88,6 @@ const SavedRecipes = () => {
         ))}
       </div>
     </section>
-   
-    
   );
 };
 

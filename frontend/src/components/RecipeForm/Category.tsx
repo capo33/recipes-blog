@@ -28,6 +28,7 @@ const Category = ({ recipe, handleChange }: CategoryProps) => {
       <Form.Select
         id='category'
         name='category'
+        required
         value={recipe?.category?._id}
         onChange={handleChange}
        >

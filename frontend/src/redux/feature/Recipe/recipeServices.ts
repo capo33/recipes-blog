@@ -94,12 +94,12 @@ const getRecipesByUserId = async (userID: string, token: string) => {
 
 // Update a recipe
 const updateRecipe = async (
-  recipeID: string,
+  recipeId: string,
   formData: Recipe,
   token: string
 ) => {
   const response = await axios.put(
-    `${RECIPE_URL}/${recipeID}`,
+    `${RECIPE_URL}/${recipeId}`,
     { ...formData },
     {
       headers: {

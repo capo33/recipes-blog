@@ -1,34 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { AiOutlineSend } from "react-icons/ai";
-import { Row, Col, Button, Form, Container } from "react-bootstrap";
+import { Row, Col, Button, Form, Container, Image } from "react-bootstrap";
 import axios from "axios";
 import "react-quill/dist/quill.snow.css";
 
+import {
+  getSingleRecipe,
+  updateRecipe,
+} from "../../redux/feature/Recipe/recipeSlice";
 import Editor from "../../components/Editor/Editor";
 import { Recipe } from "../../interfaces/RecipeInterface";
 import Category from "../../components/RecipeForm/Category";
 import RecipeName from "../../components/RecipeForm/RecipeName";
-import { userProfile } from "../../redux/feature/Auth/authSlice";
-import CookingTime from "../../components/RecipeForm/CookingTime";
 import Ingredients from "../../components/RecipeForm/Ingredients";
-import { createRecipe } from "../../redux/feature/Recipe/recipeSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/app/store";
-import { getAllCategories } from "../../redux/feature/Category/categorySlice";
+import CookingTime from "../../components/RecipeForm/CookingTime";
+import { useAppSelector, useAppDispatch } from "../../redux/app/store";
 
-const AddRecipe = () => {
+const UpdateRecipe = () => {
+  const { recipeId } = useParams<{ recipeId: string }>();
   const { user } = useAppSelector((state) => state.auth);
-
+  const { recipe } = useAppSelector((state) => state.recipe);
+  const [photo, setPhoto] = useState("");
   const [inputValue, setInputValue] = useState("");
-  const [recipe, setRecipe] = useState<Recipe>({
-    name: "",
-    ingredients: [],
-    instructions: "",
-    image: "",
-    cookingTime: 0,
+  const [formData, setFormData] = useState<Recipe>({
+    name: (recipe?.name as string) || "",
+    ingredients: (recipe?.ingredients as string[]) || [],
+    instructions: (recipe?.instructions as string) || "",
+    image: (recipe?.image as string) || "",
+    cookingTime: (recipe?.cookingTime as number) || 0,
     category: { _id: "", name: "", image: "", slug: "" },
-
     owner: {
       _id: user?._id as string,
     },
@@ -40,18 +42,32 @@ const AddRecipe = () => {
   const token = user?.token as string;
 
   useEffect(() => {
-    dispatch(getAllCategories());
-  }, [dispatch, token]);
+    dispatch(getSingleRecipe(recipeId as string));
+  }, [dispatch, recipeId]);
 
-  // Get user profile
   useEffect(() => {
-    dispatch(userProfile(token));
-  }, [dispatch, token]);
+    if (recipe) {
+      setFormData(recipe as Recipe);
+    }
+  }, [recipe]);
+
+  // Handle change for all input fields
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevRecipe) => ({
+      ...prevRecipe,
+      [name]: value,
+    }));
+  };
 
   // Click handler for adding ingredients
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setRecipe((prevRecipe) => ({
+    setFormData((prevRecipe) => ({
       ...prevRecipe,
       ingredients: [...prevRecipe.ingredients, inputValue],
     }));
@@ -60,23 +76,13 @@ const AddRecipe = () => {
 
   // Click handler for deleting ingredients
   const handleDelete = (ingredient: string) => {
-    const newIngredients = recipe.ingredients.filter(
+    const newIngredients = formData.ingredients.filter(
       (ing) => ing !== ingredient
     );
-    setRecipe({ ...recipe, ingredients: newIngredients });
-  };
 
-  // Change handler for input field
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
-
-    setRecipe((prevRecipe) => ({
+    setFormData((prevRecipe) => ({
       ...prevRecipe,
-      [name]: value,
+      ingredients: newIngredients as string[],
     }));
   };
 
@@ -93,27 +99,36 @@ const AddRecipe = () => {
       `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/upload`,
       formData
     );
-
-    setRecipe({ ...recipe, image: res.data.url });
+    setPhoto(res.data.url);
+    setFormData((prevRecipe) => ({
+      ...prevRecipe,
+      image: res.data.url,
+    }));
   };
 
-  // Submit handler for form
+  // Submit handler
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    dispatch(createRecipe({ formData: recipe, token, toast }));
-    navigate("/");
-    setRecipe({
-      name: "",
-      ingredients: [],
-      instructions: "",
-      image: "",
-      cookingTime: 0,
-      category: { _id: "", name: "", image: "", slug: "" },
-      owner: {
-        _id: user?._id as string,
-      },
-    });
+    const newRecipeData = {
+      name: formData.name,
+      ingredients: formData.ingredients,
+      instructions: formData.instructions,
+      image: formData.image,
+      cookingTime: formData.cookingTime,
+      category: formData.category,
+      owner: formData.owner,
+    };
+
+    dispatch(
+      updateRecipe({
+        recipeId: recipeId as string,
+        formData: newRecipeData,
+        token,
+        toast,
+        navigate,
+      })
+    );
   };
 
   return (
@@ -129,9 +144,9 @@ const AddRecipe = () => {
       </div>
       <Form onSubmit={handleSubmit}>
         <Row className='row'>
-          <RecipeName recipe={recipe} handleChange={handleChange} />
+          <RecipeName recipe={formData} handleChange={handleChange} />
           <Ingredients
-            recipe={recipe}
+            recipe={formData}
             handleDelete={handleDelete}
             handleClick={handleClick}
             inputValue={inputValue}
@@ -139,14 +154,14 @@ const AddRecipe = () => {
           />
 
           <Editor
-            recipe={recipe}
+            recipe={formData}
             onChange={(value: string) =>
-              setRecipe({ ...recipe, instructions: value })
+              setFormData({ ...formData, instructions: value })
             }
           />
 
-          <Category recipe={recipe} handleChange={handleChange} />
-          <CookingTime recipe={recipe} handleChange={handleChange} />
+          <Category recipe={formData} handleChange={handleChange} />
+          <CookingTime recipe={formData} handleChange={handleChange} />
 
           <Col md={12}>
             <Form.Label htmlFor='image'> Upload image</Form.Label>
@@ -155,9 +170,13 @@ const AddRecipe = () => {
               name='image'
               className='form-control'
               onChange={uploadImage}
-              required
+             />
+            <Image
+              src={photo ? photo : formData.image}
+              alt={formData.name}
+              className="mt-3 rounded mx-auto d-block"
+              style={{ width: "25%" }}
             />
-            <img src={recipe.image} alt={recipe.name} />
           </Col>
           <Col md={12} className='mt-4 mb-5'>
             <Button type='submit' className='w-100'>
@@ -170,4 +189,4 @@ const AddRecipe = () => {
   );
 };
 
-export default AddRecipe;
+export default UpdateRecipe;

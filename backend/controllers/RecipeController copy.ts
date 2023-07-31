@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import UserModel from "../models/User";
 import RecipeModel from "../models/Recipe";
+import cloudinary from "../utils/cloudinary";
 import CategoryModel from "../models/Category";
 import asyncHandler from "../middlewares/asyncHandler";
 import { IReview } from "../interfaces/reviewInterface";
@@ -48,8 +49,6 @@ export const getRecipeById = asyncHandler(
 // @access  Private
 export const createRecipe = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    req.body;
-
     if (!req?.user) {
       res.status(401);
       throw new Error("Not authorized");
@@ -85,6 +84,8 @@ export const createRecipe = asyncHandler(
 export const updateRecipe = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { recipeId } = req.params;
+    const { name, ingredients, instructions, image, cookingTime, category } =
+      req.body;
 
     if (!req?.user) {
       res.status(401);
@@ -106,30 +107,19 @@ export const updateRecipe = asyncHandler(
     }
 
     // Update the recipe
-    // const updatedRecipe = await RecipeModel.findByIdAndUpdate(
-    //   recipeId,
-    //   req.body,
-    //   {
-    //     new: true,
-    //     runValidators: true, // runValidators is used to run the validators in the model (e.g. required, min, max, etc.)
-    //   }
-    // );
+    const updatedRecipe = await RecipeModel.findByIdAndUpdate(
+      recipeId,
+      req.body,
+      {
+        new: true,
+        runValidators: true, // runValidators is used to run the validators in the model (e.g. required, min, max, etc.)
+      }
+    );
 
-    const { name, ingredients, instructions, image, cookingTime, category } =
-      req.body;
-
-    recipe.name = name || recipe.name;
-    recipe.ingredients = ingredients || recipe.ingredients;
-    recipe.instructions = instructions || recipe.instructions;
-    recipe.image = image || recipe.image;
-    recipe.cookingTime = cookingTime || recipe.cookingTime;
-    recipe.category = category || recipe.category;
-
-    await recipe.save();
     res.status(200).json({
       success: true,
       message: "Recipe updated successfully",
-      recipe,
+      updatedRecipe,
     });
   }
 );
