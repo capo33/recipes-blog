@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import {
   Badge,
   Button,
@@ -13,27 +13,72 @@ import {
 } from "react-bootstrap";
 
 import { formatDate } from "../../utils";
+import {
+  logout,
+  userDeleteProfile,
+  userProfile,
+} from "../../redux/feature/Auth/authSlice";
+import ModalPopup from "../../components/Modal/Index";
 import { useAppDispatch, useAppSelector } from "../../redux/app/store";
- import { getUserById } from "../../redux/feature/Auth/authSlice";
 
-import "./style.css";
-
-export const GuestProfile = () => {
-  const { guestID } = useParams();
-
-  const { guest } = useAppSelector((state) => state.auth);
+const Profile = () => {
+  const { user } = useAppSelector((state) => state.auth);
+  // const recipes = useAppSelector((state) => state.recipe);
+  const { recipes } = useAppSelector((state) => state.recipe);
+  const [showModal, setShowModal] = useState(false);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const ownedRecipes = recipes?.filter(
+    (recipe) => recipe?.owner?._id === user?._id
+  );
+
+  const token = user?.token as string;
+  const userData = {
+    name: user?.name,
+    about: user?.about,
+    phone: user?.phone,
+    email: user?.email,
+    ownedRecipes: ownedRecipes,
+    image: user?.image,
+    isAdmin: user?.role,
+    address: user?.address,
+    birthday: user?.birthday,
+    interests: user?.interests,
+    userId: user?._id,
+    time: user?.createdAt,
+  };
 
   useEffect(() => {
-    dispatch(getUserById(guestID));
-  }, [dispatch, guestID]);
+    if (token) {
+      dispatch(userProfile(token));
+    }
+  }, [dispatch, token]);
+
+  const handleDeleteProfile = () => {
+    dispatch(logout());
+    dispatch(userDeleteProfile({ token, toast, navigate }));
+  };
+
+  // Delete handler for recipe
+  const handleConfirmDelete = () => {
+    setShowModal((prev) => !prev);
+    console.log("Delete profile");
+    console.log(showModal);
+  };
 
   return (
     <Container>
-      {/* Breadcrumb */}
-      
-      {/* /Breadcrumb */}
+      {showModal ? (
+        <ModalPopup
+          showModal={showModal}
+          setShowModal={setShowModal}
+          handleDelete={handleDeleteProfile}
+          value='profile'
+        />
+      ) : null}
+
       <Row>
         <Col lg={4} md={12} className='mb-3'>
           {/* Card */}
@@ -41,25 +86,23 @@ export const GuestProfile = () => {
             <Card.Body>
               <Card.Title className='text-center' as={"div"}>
                 <Card.Img
-                  alt={guest?.user?.name}
-                  src={guest?.user?.image}
+                  alt={userData?.name}
+                  src={userData?.image}
                   className='rounded-circl w-50'
                 />
               </Card.Title>
-              <Card.Title className='text-center'>
-                {guest?.user?.name}
-              </Card.Title>
+              <Card.Title className='text-center'>{userData?.name}</Card.Title>
 
               {/* Role */}
               <ListGroup>
                 <ListGroup.Item className='d-flex justify-content-between'>
                   <span>Role</span>
-                  {guest?.user?.role === "admin" ? (
-                    <Badge variant='danger' className='py-1 px-2 mx-2'>
+                  {userData?.isAdmin === "admin" ? (
+                    <Badge bg='danger' className='py-1 px-2 mx-2'>
                       Admin
                     </Badge>
                   ) : (
-                    <Badge variant='info' className='py-1 px-2 mx-2'>
+                    <Badge bg='info' className='py-1 px-2 mx-2'>
                       User
                     </Badge>
                   )}
@@ -68,16 +111,18 @@ export const GuestProfile = () => {
                 {/* Title */}
                 <ListGroup.Item className='d-flex justify-content-between'>
                   <span>Title</span>
-                  {guest?.recipes && guest?.recipes?.length > 5 ? (
-                    <Badge variant='success' className='py-1 px-2 mx-2'>
+                  {userData?.ownedRecipes &&
+                  userData?.ownedRecipes?.length > 5 ? (
+                    <Badge bg='success' className='py-1 px-2 mx-2'>
                       Pro
                     </Badge>
-                  ) : guest?.recipes && guest?.recipes?.length > 0 ? (
-                    <Badge variant='warning' className='py-1 px-2 mx-2'>
+                  ) : userData?.ownedRecipes &&
+                    userData?.ownedRecipes?.length > 0 ? (
+                    <Badge bg='warning' className='py-1 px-2 mx-2'>
                       Semi-Pro
                     </Badge>
                   ) : (
-                    <Badge variant='danger' className='py-1 px-2 mx-2'>
+                    <Badge bg='danger' className='py-1 px-2 mx-2'>
                       Beginner
                     </Badge>
                   )}
@@ -86,12 +131,13 @@ export const GuestProfile = () => {
                 {/* Status */}
                 <ListGroup.Item className='d-flex justify-content-between flex-wrap'>
                   <span>Status</span>
-                  {guest?.recipes && guest?.recipes?.length > 0 ? (
-                    <Badge variant='info' className='py-1 px-2 mx-2'>
+                  {userData?.ownedRecipes &&
+                  userData?.ownedRecipes?.length > 0 ? (
+                    <Badge bg='info' className='py-1 px-2 mx-2'>
                       Active
                     </Badge>
                   ) : (
-                    <Badge variant='danger' className='py-1 px-2 mx-2'>
+                    <Badge bg='danger' className='py-1 px-2 mx-2'>
                       Inactive
                     </Badge>
                   )}
@@ -100,34 +146,41 @@ export const GuestProfile = () => {
                 {/* Member Since */}
                 <ListGroup.Item className='d-flex justify-content-between'>
                   <span>Member since:</span>
-                  <Badge variant='info' className='py-1 px-2 mx-2'>
-                    {formatDate(guest?.user?.createdAt)}
+                  <Badge bg='info' className='py-1 px-2 mx-2'>
+                    {formatDate(userData?.time)}
                   </Badge>
                 </ListGroup.Item>
               </ListGroup>
               <Card.Footer className='d-flex justify-content-evenly'>
-                <Button variant='primary' size='sm' className='w-50 mx-2'>
-                  Edit
-                </Button>
-                <Button variant='danger' size='sm' className='w-50 mx-2'>
+                <Link
+                  to={`/update-profile/${userData?.userId}`}
+                  className='w-50 mx-2 btn btn-primary btn-sm'
+                >
+                  <span className='text-sm'>Edit</span>
+                </Link>
+                <Button
+                  variant='danger'
+                  size='sm'
+                  onClick={handleConfirmDelete}
+                  className='w-50 mx-2'
+                >
                   Delete
                 </Button>
               </Card.Footer>
             </Card.Body>
           </Card>
-
-          {/* Author Recipes Card */}
+          s{/* Author Recipes Card */}
           <Card className='mt-3'>
             <Card.Body>
               <Card.Title className='text-center ' as={"h3"}>
-                {guest?.user?.name}'s Recipes
+                {userData?.name}'s Recipes
                 <span className='text-gray-500'>
-                  ({guest?.recipes?.length})
+                  ({userData?.ownedRecipes?.length})
                 </span>
               </Card.Title>
 
-              {guest?.recipes && guest?.recipes?.length > 0
-                ? guest?.recipes?.map((recipe, index) => (
+              {userData?.ownedRecipes && userData?.ownedRecipes?.length > 0
+                ? userData?.ownedRecipes?.map((recipe, index) => (
                     <div
                       className='d-flex justify-content-between align-items-center flex-wrap mt-2 p-2 border rounded '
                       key={index}
@@ -165,7 +218,7 @@ export const GuestProfile = () => {
                   <h6 className='mb-0'>Name</h6>
                 </Col>
                 <Col sm={9} className='text-secondary'>
-                  {guest?.user?.name}
+                  {userData?.name}
                 </Col>
               </Row>
 
@@ -176,9 +229,7 @@ export const GuestProfile = () => {
                   <h6 className='mb-0'>Address</h6>
                 </Col>
                 <Col sm={9} className='text-secondary'>
-                  {guest?.user?.address
-                    ? guest?.user?.address
-                    : "Not Available Yet"}
+                  {userData?.address ? userData?.address : "Not Available Yet"}
                 </Col>
               </Row>
 
@@ -189,9 +240,7 @@ export const GuestProfile = () => {
                   <h6 className='mb-0'>Phone</h6>
                 </Col>
                 <Col sm={9} className='text-secondary'>
-                  {guest?.user?.phone
-                    ? guest?.user?.phone
-                    : "Not Available Yet"}
+                  {userData?.phone ? userData?.phone : "Not Available Yet"}
                 </Col>
               </Row>
 
@@ -202,7 +251,7 @@ export const GuestProfile = () => {
                   <h6 className='mb-0'>Birthday</h6>
                 </Col>
                 <Col sm={9} className='text-secondary'>
-                  {guest?.user?.birthday?.toString().slice(0, 10)}
+                  {userData?.birthday?.toString().slice(0, 10)}
                 </Col>
               </Row>
 
@@ -213,10 +262,12 @@ export const GuestProfile = () => {
                   <h6 className='mb-0'>Written recipes</h6>
                 </Col>
                 <Col sm={9} className='text-secondary'>
-                  {guest?.recipes && guest?.recipes?.length > 0
-                    ? guest?.recipes?.length + guest?.recipes?.length > 2
-                      ? guest?.recipes?.length + " recipes"
-                      : guest?.recipes?.length + " recipe"
+                  {userData?.ownedRecipes && userData?.ownedRecipes?.length > 0
+                    ? userData?.ownedRecipes?.length +
+                        userData?.ownedRecipes?.length >
+                      2
+                      ? userData?.ownedRecipes?.length + " recipes"
+                      : userData?.ownedRecipes?.length + " recipe"
                     : "Not Available Yet"}
                 </Col>
               </Row>
@@ -228,8 +279,8 @@ export const GuestProfile = () => {
                   <h6 className='mb-0'>Interests</h6>
                 </Col>
                 <Col sm={9} className='text-secondary'>
-                  {guest?.user?.interests && guest?.user?.interests?.length > 0
-                    ? guest?.user?.interests?.map((interest, index) => (
+                  {userData?.interests && userData?.interests?.length > 0
+                    ? userData?.interests?.map((interest, index) => (
                         <span key={index}>{interest}</span>
                       ))
                     : "Not Available Yet"}
@@ -243,8 +294,8 @@ export const GuestProfile = () => {
                   <h6 className='mb-0'>Bio</h6>
                 </Col>
                 <Col sm={9} className='text-secondary'>
-                  {guest?.user?.about
-                    ? guest?.user?.about
+                  {userData?.about
+                    ? userData?.about
                     : "Update your bio to tell more about yourself."}
                 </Col>
               </Row>
@@ -255,3 +306,5 @@ export const GuestProfile = () => {
     </Container>
   );
 };
+
+export default Profile;
