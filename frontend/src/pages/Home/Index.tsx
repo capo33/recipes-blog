@@ -8,9 +8,10 @@ import { useAppDispatch, useAppSelector } from "../../redux/app/store";
 import RecipeCard from "../../components/RecipeCard/RecipeCard";
 import Message from "../../components/Message/Index";
 import { Link } from "react-router-dom";
+import Loader from "../../components/Loader/Index";
 
 const Home = () => {
-  const { recipes } = useAppSelector((state) => state.recipe);
+  const { recipes , isLoading} = useAppSelector((state) => state.recipe);
   const { user } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
@@ -22,6 +23,7 @@ const Home = () => {
   return (
     <Container>
       <Hero />
+      {isLoading && <Loader />}
       <Row>
         {!recipes?.length ? (
           user ? (

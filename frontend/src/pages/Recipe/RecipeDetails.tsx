@@ -167,32 +167,70 @@ const RecipeDetails = () => {
           value='recipe'
         />
       ) : null}
+
       <Row>
         <Col lg={8}>
           <div className='article'>
             <div className='flexy'>
               <h2>{recipe?.name}</h2>
-              {recipe?.owner?._id === userID && (
-                <div>
-                  <Link
-                    to={`/update-recipe/${recipe?._id}`}
-                    className='btn btn-outline-primary btn-sm mx-2'
-                  >
-                    <AiOutlineEdit />
-                    Edit
-                  </Link>
 
-                  <Button
-                    onClick={handleConfirmDelete}
-                    variant='outline-danger'
-                    size='sm'
-                  >
-                    <BsTrash />
-                    Delete
+              {/* Save & Unsave */}
+              {!user ? (
+                <OverlayTrigger
+                  placement='top'
+                  overlay={<Tooltip>Login to save recipe</Tooltip>}
+                >
+                  <Button variant='primary w-100 mt-2 mb-5'>
+                    <GoBookmark style={{ fontSize: "1.2rem" }} />
                   </Button>
-                </div>
+                </OverlayTrigger>
+              ) : (
+                <>
+                  {recipesIDs?.includes(recipe?._id as string) ? (
+                    <Button
+                      variant='primary w-25 '
+                      style={{ fontSize: "1.2rem" }}
+                      disabled={loading}
+                      onClick={() => handleUnsaveRecipe(recipe?._id as string)}
+                    >
+                      {loading ? (
+                        <span
+                          className='spinner-border spinner-border-sm'
+                          role='status'
+                          aria-hidden='true'
+                        />
+                      ) : (
+                        <span>
+                          <GoBookmarkFill style={{ fontSize: "1.2rem" }} />
+                          unsave
+                        </span>
+                      )}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant='primary w-25 '
+                      style={{ fontSize: "1.2rem" }}
+                      disabled={loading}
+                      onClick={() => handleSaveRecipe(recipe?._id as string)}
+                    >
+                      {loading ? (
+                        <span
+                          className='spinner-border spinner-border-sm'
+                          role='status'
+                          aria-hidden='true'
+                        />
+                      ) : (
+                        <span>
+                          <GoBookmark />
+                          save
+                        </span>
+                      )}
+                    </Button>
+                  )}
+                </>
               )}
             </div>
+
             <h6>
               {recipe?.category?.name
                 ? recipe?.category?.name
@@ -204,63 +242,29 @@ const RecipeDetails = () => {
               alt={recipe?.name}
               className='w-100 h-100'
             />
-            {!user ? (
-              <OverlayTrigger
-                placement='top'
-                overlay={<Tooltip>Login to save recipe</Tooltip>}
-              >
-                <Button variant='primary w-100 mt-2 mb-5'>
-                  <GoBookmark style={{ fontSize: "1.2rem" }} />
-                </Button>
-              </OverlayTrigger>
-            ) : (
-              <>
-                {recipesIDs?.includes(recipe?._id as string) ? (
-                  <Button
-                    variant='secondary w-25 mt-2 mb-5'
-                    size='sm'
-                    style={{ fontSize: "1.2rem" }}
-                    disabled={loading}
-                    onClick={() => handleUnsaveRecipe(recipe?._id as string)}
+
+            {/* Edit & Delete */}
+            <div className='d-flex justify-content-end align-items-center mt-3'>
+              {recipe?.owner?._id === userID && (
+                <div>
+                  <Link
+                    to={`/update-recipe/${recipe?._id}`}
+                    className='btn btn-primary   mx-2'
                   >
-                    {loading ? (
-                      <span
-                        className='spinner-border spinner-border-sm'
-                        role='status'
-                        aria-hidden='true'
-                      ></span>
-                    ) : (
-                      <span>
-                        <GoBookmarkFill className='h-5 w-5 cursor-pointer' />
-                        unsave{" "}
-                      </span>
-                    )}
-                  </Button>
-                ) : (
+                    <AiOutlineEdit />
+                    Edit
+                  </Link>
+
                   <Button
-                    variant='primary w-25 mt-2 mb-5'
-                    size='sm'
-                    style={{ fontSize: "1.2rem" }}
-                    disabled={loading}
-                    onClick={() => handleSaveRecipe(recipe?._id as string)}
-                  >
-                    {" "}
-                    {loading ? (
-                      <span
-                        className='spinner-border spinner-border-sm'
-                        role='status'
-                        aria-hidden='true'
-                      ></span>
-                    ) : (
-                      <span>
-                        <GoBookmark className='h-5 w-5 cursor-pointer' />
-                        save{" "}
-                      </span>
-                    )}
+                    onClick={handleConfirmDelete}
+                    variant='danger'
+                   >
+                    <BsTrash />
+                    Delete
                   </Button>
-                )}
-              </>
-            )}
+                </div>
+              )}
+            </div>
           </div>
 
           <Tabs defaultActiveKey='ingredients' className='mb-3' justify>

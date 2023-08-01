@@ -233,8 +233,6 @@ export const likeRecipe = createAsyncThunk(
     try {
       const response = await recipeServices.likeRecipe(recipeId, userId, token);
       thunkAPI.dispatch(getAllRecipes());
-      console.log("response", response);
-
       return response;
     } catch (error: unknown | any) {
       return thunkAPI.rejectWithValue(error.response.data.message);
@@ -333,10 +331,10 @@ const recipeSlice = createSlice({
   extraReducers: (builder) => {
     // Get all recipes
     builder.addCase(getAllRecipes.pending, (state) => {
-      state.isLoading = true;
+      // state.isLoading = true;
     });
     builder.addCase(getAllRecipes.fulfilled, (state, { payload }) => {
-      state.isLoading = false;
+      // state.isLoading = false;
       state.recipes = payload as Recipe[];
       state.ownRecipes = payload as Recipe[];
     });
@@ -348,17 +346,17 @@ const recipeSlice = createSlice({
 
     // Get a recipe by id
     builder.addCase(getSingleRecipe.pending, (state) => {
-      state.isLoading = true;
+      // state.isLoading = true;
     });
 
     builder.addCase(getSingleRecipe.fulfilled, (state, { payload }) => {
-      state.isLoading = false;
+      // state.isLoading = false;
       state.isSuccess = true;
       state.recipe = payload as Recipe;
       state.ownRecipes = [...state.ownRecipes, payload as Recipe];
     });
     builder.addCase(getSingleRecipe.rejected, (state, { payload }) => {
-      state.isLoading = false;
+      // state.isLoading = false;
       state.isError = true;
       state.message = payload as string;
     });

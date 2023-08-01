@@ -1,15 +1,16 @@
 import React from "react";
+import { Col, Form } from "react-bootstrap";
 
 import { Recipe } from "../../interfaces/RecipeInterface";
-import { Col, Form } from "react-bootstrap";
 
 type CookingTimeProps = {
   recipe: Recipe;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
+
 const CookingTime = ({ recipe, handleChange }: CookingTimeProps) => {
   return (
-    <Col md={6} className="mb-2">
+    <Col md={6} className='mb-2'>
       <Form.Label htmlFor='cookingTime'>Cooking Time</Form.Label>
       <Form.Control
         type='number'
