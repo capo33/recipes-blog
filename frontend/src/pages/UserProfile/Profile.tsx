@@ -70,6 +70,16 @@ const Profile = () => {
 
   return (
     <Container>
+      <div className='px-4 my-5 text-center'>
+        <h1 className='display-5 fw-bold'>
+         My Profile
+        </h1>
+        <div className='col-lg-6 mx-auto'>
+          <p className='lead'>
+            Explore your recipes and profiles
+          </p>
+        </div>
+      </div>
       {showModal ? (
         <ModalPopup
           showModal={showModal}
@@ -133,7 +143,7 @@ const Profile = () => {
                   <span>Status</span>
                   {userData?.ownedRecipes &&
                   userData?.ownedRecipes?.length > 0 ? (
-                    <Badge bg='info' className='py-1 px-2 mx-2'>
+                    <Badge bg='success' className='py-1 px-2 mx-2'>
                       Active
                     </Badge>
                   ) : (

@@ -20,6 +20,7 @@ import CategoryDetails from "../pages/Category/CategoryDetails";
 import UpdateRecipe from "../pages/Recipe/UpdateRecipe";
 import { GuestProfile } from "../pages/UserProfile/GuestProfile";
 import Profile from "../pages/UserProfile/Profile";
+import UpdateProfile from "../pages/UserProfile/UpdateProfile";
  
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -35,8 +36,9 @@ const routes = createBrowserRouter(
 
       <Route path='' element={<PrivateRoute />}>
         <Route path='/saved-recipes' element={<SavedRecipes />} />
-        <Route path='/update-recipe/:recipeId' element={<UpdateRecipe />} />
         <Route path='/profile' element={<Profile />} />
+        <Route path='/update-recipe/:recipeId' element={<UpdateRecipe />} />
+        <Route path='/update-profile/:id' element={<UpdateProfile />} />
 
 
       </Route>

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import {
   Badge,
-  Button,
   Card,
   Col,
   Container,
@@ -14,7 +13,7 @@ import {
 
 import { formatDate } from "../../utils";
 import { useAppDispatch, useAppSelector } from "../../redux/app/store";
- import { getUserById } from "../../redux/feature/Auth/authSlice";
+import { getUserById } from "../../redux/feature/Auth/authSlice";
 
 import "./style.css";
 
@@ -31,9 +30,16 @@ export const GuestProfile = () => {
 
   return (
     <Container>
-      {/* Breadcrumb */}
-      
-      {/* /Breadcrumb */}
+      <div className='px-4 my-5 text-center'>
+        <h1 className='display-5 fw-bold'>
+          {guest?.user?.name} Profile
+        </h1>
+        <div className='col-lg-6 mx-auto'>
+          <p className='lead'>
+            Explore {guest?.user?.name} recipes and profile
+          </p>
+        </div>
+      </div>
       <Row>
         <Col lg={4} md={12} className='mb-3'>
           {/* Card */}
@@ -87,7 +93,7 @@ export const GuestProfile = () => {
                 <ListGroup.Item className='d-flex justify-content-between flex-wrap'>
                   <span>Status</span>
                   {guest?.recipes && guest?.recipes?.length > 0 ? (
-                    <Badge bg='info' className='py-1 px-2 mx-2'>
+                    <Badge bg='success' className='py-1 px-2 mx-2'>
                       Active
                     </Badge>
                   ) : (
@@ -105,14 +111,6 @@ export const GuestProfile = () => {
                   </Badge>
                 </ListGroup.Item>
               </ListGroup>
-              <Card.Footer className='d-flex justify-content-evenly'>
-                <Button variant='primary' size='sm' className='w-50 mx-2'>
-                  Edit
-                </Button>
-                <Button variant='danger' size='sm' className='w-50 mx-2'>
-                  Delete
-                </Button>
-              </Card.Footer>
             </Card.Body>
           </Card>
 
