@@ -31,17 +31,7 @@ const createRecipe = async (formData: Recipe, token: string) => {
   return response.data;
 };
 
-// Update a recipe image
-// const uploadRecipeImage = async (data: string, token: string) => {
-//   const response = await axios.post(`${UPLOAD_URL}`, data, {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   return response.data;
-// };
-
-// Save a recipe
+ // Save a recipe
 const saveRecipe = async (recipeID: string, userID: string, token: string) => {
   const response = await axios.put(
     `${RECIPE_URL}/saveRecipe`,
@@ -52,7 +42,8 @@ const saveRecipe = async (recipeID: string, userID: string, token: string) => {
       },
     }
   );
-
+    console.log(response.data);
+    
   return response.data?.savedRecipes;
 };
 
@@ -197,7 +188,6 @@ const recipeService = {
   getRecipeById,
   updateRecipe,
   deleteRecipe,
-  // uploadRecipeImage,
   likeRecipe,
   unlikeRecipe,
   addReview,

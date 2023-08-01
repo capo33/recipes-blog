@@ -105,16 +105,6 @@ export const updateRecipe = asyncHandler(
       throw new Error("Not authorized");
     }
 
-    // Update the recipe
-    // const updatedRecipe = await RecipeModel.findByIdAndUpdate(
-    //   recipeId,
-    //   req.body,
-    //   {
-    //     new: true,
-    //     runValidators: true, // runValidators is used to run the validators in the model (e.g. required, min, max, etc.)
-    //   }
-    // );
-
     const { name, ingredients, instructions, image, cookingTime, category } =
       req.body;
 
@@ -207,16 +197,16 @@ export const saveRecipe = asyncHandler(
     }
 
     // Save the recipe
-    // await UserModel.findByIdAndUpdate(
-    //   req.body.userID,
-    //   {
-    //     $push: { savedRecipes: recipe._id },
-    //   },
-    //   { new: true } // to return the updated document
-    // );
+    await UserModel.findByIdAndUpdate(
+      req.body.userID,
+      {
+        $push: { savedRecipes: recipe._id },
+      },
+      { new: true } // to return the updated document
+    );
 
-    user?.savedRecipes.push(recipe._id);
-    await user?.save();
+    // user?.savedRecipes.push(recipe._id);
+    // await user?.save();
 
     res.status(200).json({
       success: true,
