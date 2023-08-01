@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { AiOutlineSend } from "react-icons/ai";
 import { Row, Col, Button, Form, Container, Image } from "react-bootstrap";
-import axios from "axios";
 import "react-quill/dist/quill.snow.css";
 
 import Editor from "../../components/Editor/Editor";
@@ -19,7 +19,7 @@ import { getAllCategories } from "../../redux/feature/Category/categorySlice";
 
 const AddRecipe = () => {
   const { user } = useAppSelector((state) => state.auth);
-  
+
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [recipe, setRecipe] = useState<Recipe>({
@@ -48,6 +48,19 @@ const AddRecipe = () => {
   useEffect(() => {
     dispatch(userProfile(token));
   }, [dispatch, token]);
+
+  // Loading state
+  useEffect(() => {
+    function simulateNetworkRequest() {
+      return new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+
+    if (loading) {
+      simulateNetworkRequest().then(() => {
+        setLoading(false);
+      });
+    }
+  }, [loading]);
 
   // Click handler for adding ingredients
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -98,12 +111,11 @@ const AddRecipe = () => {
   };
 
   // Submit handler for button
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     dispatch(createRecipe({ formData: recipe, token, toast }));
-
-    navigate("/");
-
     setLoading(true);
+    navigate("/");
     setRecipe({
       name: "",
       ingredients: [],
@@ -128,7 +140,7 @@ const AddRecipe = () => {
           </p>
         </div>
       </div>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Row className='row'>
           <RecipeName recipe={recipe} handleChange={handleChange} />
           <Ingredients
@@ -178,17 +190,27 @@ const AddRecipe = () => {
             <Button
               type='submit'
               className='w-100'
-              onClick={handleSubmit}
               disabled={
                 !recipe.name ||
                 !recipe.cookingTime ||
                 !recipe.category ||
                 !recipe.image ||
                 !recipe.ingredients.length ||
-                !recipe.instructions
+                !recipe.instructions ||
+                loading
               }
             >
-              <AiOutlineSend /> Submit
+              {loading ? (
+                <span
+                  className='spinner-border spinner-border-sm'
+                  role='status'
+                  aria-hidden='true'
+                ></span>
+              ) : (
+                <span>
+                  <AiOutlineSend /> Submit
+                </span>
+              )}
             </Button>
           </Col>
         </Row>

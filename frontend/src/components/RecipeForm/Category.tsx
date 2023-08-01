@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
+import { Col, Form } from "react-bootstrap";
 
 import { Recipe } from "../../interfaces/RecipeInterface";
-import { getAllCategories } from "../../redux/feature/Category/categorySlice";
 import { useAppDispatch, useAppSelector } from "../../redux/app/store";
-import Form from "react-bootstrap/Form";
-import { Col } from "react-bootstrap";
+import { getAllCategories } from "../../redux/feature/Category/categorySlice";
 
 type CategoryProps = {
   recipe: Recipe | null;
@@ -13,7 +12,6 @@ type CategoryProps = {
 
 const Category = ({ recipe, handleChange }: CategoryProps) => {
   const { categories } = useAppSelector((state) => state.category);
-  console.log("recipe?.category?.name", recipe);
 
   const dispatch = useAppDispatch();
 

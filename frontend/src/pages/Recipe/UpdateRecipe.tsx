@@ -22,8 +22,7 @@ const UpdateRecipe = () => {
   const { recipeId } = useParams<{ recipeId: string }>();
   const { user } = useAppSelector((state) => state.auth);
   const { recipe } = useAppSelector((state) => state.recipe);
-  console.log("recipe?.category.name", recipe?.category?.name);
-
+ 
   const [photo, setPhoto] = useState("");
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
