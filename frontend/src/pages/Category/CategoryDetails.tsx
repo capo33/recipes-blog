@@ -3,13 +3,15 @@ import { Link, useParams } from "react-router-dom";
 import { Col, Container, Image, Row } from "react-bootstrap";
 
 import { capitalize } from "../../utils";
+import Loader from "../../components/Loader/Index";
 import { useAppDispatch, useAppSelector } from "../../redux/app/store";
 import { getCategoryBySlug } from "../../redux/feature/Category/categorySlice";
 
 const CategoryDetails = () => {
   const { slug } = useParams<{ slug: string }>();
 
-  const { category } = useAppSelector((state) => state.category);
+  const { category, isLoading } = useAppSelector((state) => state.category);
+  console.log("category", category);
 
   const dispatch = useAppDispatch();
 
@@ -22,7 +24,7 @@ const CategoryDetails = () => {
       <div className='mt-6 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-x-6 gap-y-8'>
         <div className='px-4 my-5 text-center'>
           <h1 className='display-5 fw-bold'>
-            {capitalize(category?.name as string)}
+            {category?.name && capitalize(category?.name)}
           </h1>
           <div className='col-lg-6 mx-auto'>
             <p className='lead'>
@@ -30,7 +32,7 @@ const CategoryDetails = () => {
             </p>
           </div>
         </div>
-
+        {isLoading && <Loader />}
         <Row>
           {category?.recipes?.map((recipe) => (
             <Col xs={12} md={6} lg={4} className='mb-4' key={recipe?._id}>

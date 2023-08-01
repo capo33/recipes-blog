@@ -1,20 +1,20 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import { capitalize } from "../../utils";
 import { useAppSelector, useAppDispatch } from "../../redux/app/store";
 import { getAllCategories } from "../../redux/feature/Category/categorySlice";
 import { Col, Container, Image, Row } from "react-bootstrap";
-import { capitalize } from "../../utils";
+import Loader from "../../components/Loader/Index";
 
 const Categories = () => {
-  const { categories } = useAppSelector((state) => state.category);
+  const { categories, isLoading } = useAppSelector((state) => state.category);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(getAllCategories());
   }, [dispatch]);
-
 
   return (
     <Container>
@@ -32,14 +32,20 @@ const Categories = () => {
             <h1 className='text-2xl text-gray-500'>No categories found</h1>
           </div>
         )}
+        {isLoading && <Loader />}
         <Row>
           {categories?.map((category) => (
-            <Col xs={12} md={6} lg={4} className='mb-4' key={category._id}>
+            <Col xs={12} md={6} lg={4} className='mb-4 ' key={category._id}>
               <Link to={`/category/${category.slug}`} className=''>
-                <Image src={category.image} rounded className='w-100 mx-auto' />
+                <Image
+                  src={category.image}
+                  rounded
+                  className='img-fluid'
+                  style={{}}
+                />
               </Link>
               <h3 className='text-2xl font-bold text-center'>
-                {capitalize(category.name as string)}
+                {capitalize(category.slug as string)}
               </h3>
             </Col>
           ))}
