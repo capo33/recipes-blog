@@ -9,8 +9,7 @@ import {
   userProfile,
 } from "../../redux/feature/Auth/authSlice";
 import Input from "../../components/ProfileForm/Input";
-import BackLink from "../../components/BackLink/BackLink";
-import Textarea from "../../components/ProfileForm/Textarea";
+ import Textarea from "../../components/ProfileForm/Textarea";
 import RecipeButton from "../../components/RecipeForm/RecipeButton";
 import UploadPicture from "../../components/RecipeForm/UploadPicture";
 
@@ -100,8 +99,7 @@ const UpdateProfile = () => {
 
   return (
     <section className='p-6 dark:bg-gray-800 dark:text-gray-50 mt-5 '>
-      <BackLink link='/profile' name='back to prfoile' />
-      <form
+       <form
         className='container flex flex-col mx-auto space-y-12'
         onSubmit={handleSubmit}
       >

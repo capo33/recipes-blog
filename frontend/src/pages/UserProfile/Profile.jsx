@@ -69,21 +69,16 @@ const Profile = () => {
   };
 
   return (
-    <>
-
+    <Container>
       {showModal ? (
         <ModalPopup
           showModal={showModal}
           setShowModal={setShowModal}
           handleDelete={handleDeleteProfile}
-          title='Delete Profile'
-          body='Are you sure you want to delete your profile?'
+          value="profile"
         />
       ) : null}
-    <Container className=' mx-auto my-5 p-5'>
-        <button className='btn btn-danger' onClick={handleConfirmDelete}>
-          delete
-        </button>
+
       <Row>
         <Col lg={4} md={12} className='mb-3'>
           {/* Card */}
@@ -172,14 +167,9 @@ const Profile = () => {
                   Delete
                 </Button>
               </Card.Footer>
-              <Button onClick={handleConfirmDelete} variant='danger'>
-                Delete
-              </Button>
             </Card.Body>
           </Card>
-          <button onClick={handleConfirmDelete}>click</button>
-
-          {/* Author Recipes Card */}
+          s{/* Author Recipes Card */}
           <Card className='mt-3'>
             <Card.Body>
               <Card.Title className='text-center ' as={"h3"}>
@@ -314,7 +304,6 @@ const Profile = () => {
         </Col>
       </Row>
     </Container>
-    </>
   );
 };
 
