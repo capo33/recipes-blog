@@ -22,7 +22,10 @@ const UpdateRecipe = () => {
   const { recipeId } = useParams<{ recipeId: string }>();
   const { user } = useAppSelector((state) => state.auth);
   const { recipe } = useAppSelector((state) => state.recipe);
+  console.log("recipe?.category.name", recipe?.category?.name);
+
   const [photo, setPhoto] = useState("");
+  const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [formData, setFormData] = useState<Recipe>({
     name: (recipe?.name as string) || "",
@@ -30,7 +33,12 @@ const UpdateRecipe = () => {
     instructions: (recipe?.instructions as string) || "",
     image: (recipe?.image as string) || "",
     cookingTime: (recipe?.cookingTime as number) || 0,
-    category: { _id: "", name: "", image: "", slug: "" },
+    category: {
+      _id: recipe?.category?._id || "",
+      name: recipe?.category?.name || "",
+      image: recipe?.category?.image || "",
+      slug: recipe?.category?.slug || "",
+    },
     owner: {
       _id: user?._id as string,
     },
@@ -51,7 +59,20 @@ const UpdateRecipe = () => {
     }
   }, [recipe]);
 
-  // Handle change for all input fields
+  // Loading state
+  useEffect(() => {
+    function simulateNetworkRequest() {
+      return new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+
+    if (loading) {
+      simulateNetworkRequest().then(() => {
+        setLoading(false);
+      });
+    }
+  }, [loading]);
+
+  // Change handler for form inputs
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -74,7 +95,7 @@ const UpdateRecipe = () => {
     setInputValue("");
   };
 
-  // Click handler for deleting ingredients
+  // Delete handler for deleting ingredients
   const handleDelete = (ingredient: string) => {
     const newIngredients = formData.ingredients.filter(
       (ing) => ing !== ingredient
@@ -86,6 +107,7 @@ const UpdateRecipe = () => {
     }));
   };
 
+  // Handle upload image
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.currentTarget.files?.[0];
     if (!file) return;
@@ -109,21 +131,11 @@ const UpdateRecipe = () => {
   // Submit handler
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const newRecipeData = {
-      name: formData.name,
-      ingredients: formData.ingredients,
-      instructions: formData.instructions,
-      image: formData.image,
-      cookingTime: formData.cookingTime,
-      category: formData.category,
-      owner: formData.owner,
-    };
-
+    setLoading(true);
     dispatch(
       updateRecipe({
         recipeId: recipeId as string,
-        formData: newRecipeData,
+        formData: formData,
         token,
         toast,
         navigate,
@@ -134,17 +146,25 @@ const UpdateRecipe = () => {
   return (
     <Container>
       <div className='px-4 my-5 text-center'>
-        <h1 className='display-5 fw-bold'>Submit Your Recipe</h1>
+        <h1 className='display-5 fw-bold'>
+          Update{" "}
+          <span className='text-primary'>
+            {formData.name ? formData.name : "Recipe"}
+          </span>
+        </h1>
         <div className='col-lg-6 mx-auto'>
           <p className='lead'>
-            Share your amazing recipies with the world! We would love to see
-            what you have to offer.
+            Add more details to your recipe and make it more attractive to the
+            users
           </p>
         </div>
       </div>
       <Form onSubmit={handleSubmit}>
         <Row className='row'>
+          {/* Name */}
           <RecipeName recipe={formData} handleChange={handleChange} />
+
+          {/* Ingredients */}
           <Ingredients
             recipe={formData}
             handleDelete={handleDelete}
@@ -153,6 +173,7 @@ const UpdateRecipe = () => {
             setInputValue={setInputValue}
           />
 
+          {/* Instructions */}
           <Editor
             recipe={formData}
             onChange={(value: string) =>
@@ -160,7 +181,10 @@ const UpdateRecipe = () => {
             }
           />
 
+          {/* Category */}
           <Category recipe={formData} handleChange={handleChange} />
+
+          {/* Cooking time */}
           <CookingTime recipe={formData} handleChange={handleChange} />
 
           <Col md={12}>
@@ -170,17 +194,29 @@ const UpdateRecipe = () => {
               name='image'
               className='form-control'
               onChange={uploadImage}
-             />
+            />
             <Image
               src={photo ? photo : formData.image}
               alt={formData.name}
-              className="mt-3 rounded mx-auto d-block"
+              className='mt-3 rounded mx-auto d-block'
               style={{ width: "25%" }}
             />
           </Col>
+
+          {/* Button */}
           <Col md={12} className='mt-4 mb-5'>
-            <Button type='submit' className='w-100'>
-              <AiOutlineSend /> Submit Recipe
+            <Button type='submit' className='w-100' disabled={loading}>
+              {loading ? (
+                <span
+                  className='spinner-border spinner-border-sm'
+                  role='status'
+                  aria-hidden='true'
+                ></span>
+              ) : (
+                <span>
+                  <AiOutlineSend /> Submit
+                </span>
+              )}
             </Button>
           </Col>
         </Row>

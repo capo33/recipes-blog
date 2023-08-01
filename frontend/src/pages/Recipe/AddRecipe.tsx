@@ -19,6 +19,7 @@ import { getAllCategories } from "../../redux/feature/Category/categorySlice";
 
 const AddRecipe = () => {
   const { user } = useAppSelector((state) => state.auth);
+  
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [recipe, setRecipe] = useState<Recipe>({

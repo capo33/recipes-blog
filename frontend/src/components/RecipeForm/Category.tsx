@@ -13,6 +13,7 @@ type CategoryProps = {
 
 const Category = ({ recipe, handleChange }: CategoryProps) => {
   const { categories } = useAppSelector((state) => state.category);
+  console.log("recipe?.category?.name", recipe);
 
   const dispatch = useAppDispatch();
 
@@ -21,17 +22,15 @@ const Category = ({ recipe, handleChange }: CategoryProps) => {
   }, [dispatch]);
 
   return (
-    <Col md={6} className="mb-2">
-      <Form.Label htmlFor="category">
-        Category
-      </Form.Label>
+    <Col md={6} className='mb-2'>
+      <Form.Label htmlFor='category'>Category</Form.Label>
       <Form.Select
         id='category'
         name='category'
         required
-        value={recipe?.category?._id}
+        value={recipe?.category._id}
         onChange={handleChange}
-       >
+      >
         <option value=''>Select a category</option>
         {categories &&
           categories?.map((category) => (
