@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row, Image } from "react-bootstrap";
 
 import { Category } from "../../../interfaces/CategoryInterface";
 import { useAppSelector, useAppDispatch } from "../../../redux/app/store";
 import { createCategory } from "../../../redux/feature/Category/categorySlice";
 
 const AddCategory = () => {
+  const [loading, setLoading] = useState(false);
   const [categoryData, setCategoryData] = useState<Category>({
     name: "",
     image: "",
@@ -17,40 +18,50 @@ const AddCategory = () => {
 
   const { user } = useAppSelector((state) => state.auth);
 
-  const token = user?.token as string;
-
+  
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  
+  const token = user?.token as string;
+  
+  // Loading state
+  useEffect(() => {
+    function simulateNetworkRequest() {
+      return new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+
+    if (loading) {
+      simulateNetworkRequest().then(() => {
+        setLoading(false);
+      });
+    }
+  }, [loading]);
+
+  // Handle upload image
+  const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append(
+      "upload_preset",
+      process.env.REACT_APP_PRESET_NAME as string
+    );
+    const res = await axios.post(
+      `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/upload`,
+      formData
+    );
+    setCategoryData({ ...categoryData, image: res.data.url });
+  };
 
   // Submit handler for form
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("file", categoryData.image);
-    data.append("upload_preset", "recipe-app");
-    data.append("cloud_name", "dunforh2u");
-    // Make request to cloudinary
-    const res = await axios.post(
-      "https://api.cloudinary.com/v1_1/dunforh2u/image/upload",
-      data
-    );
-
-    const catData = {
-      name: categoryData.name,
-      image: res.data.url,
-    };
-
-    dispatch(createCategory({ categoryData: catData, token, toast, navigate }));
+    dispatch(createCategory({ categoryData, token, toast, navigate }));
     setCategoryData({
       name: "",
       image: "",
     });
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.currentTarget.files?.[0];
-    if (!file) return;
-    categoryData.image = file as any;
   };
 
   return (
@@ -83,12 +94,33 @@ const AddCategory = () => {
               type='file'
               name='image'
               className='form-control'
-              onChange={handleImageChange}
+              onChange={uploadImage}
+              required
             />
+            <Image
+              src={categoryData?.image}
+              alt={categoryData?.name}
+              className='mt-3 rounded mx-auto d-block'
+              style={{ width: "25%" }}
+            />{" "}
           </Col>
           <Col md={12} className='mt-4 mb-5'>
-            <Button type='submit' className='w-100'>
-              <AiOutlinePlus /> Add Category
+            <Button
+              type='submit'
+              className='w-100'
+              disabled={!categoryData.name || !categoryData.image || loading}
+            >
+              {loading ? (
+                <span
+                  className='spinner-border spinner-border-sm'
+                  role='status'
+                  aria-hidden='true'
+                ></span>
+              ) : (
+                <span>
+                  <AiOutlinePlus /> Add Category
+                </span>
+              )}
             </Button>
           </Col>
         </Row>
