@@ -38,7 +38,7 @@ import "./style.css";
 
 const RecipeDetails = () => {
   const { recipeId } = useParams<{ recipeId: string }>();
-
+  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const { user } = useAppSelector((state) => state.auth);
   const { recipe } = useAppSelector((state) => state.recipe);
@@ -58,6 +58,19 @@ const RecipeDetails = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  // Loading state
+  useEffect(() => {
+    function simulateNetworkRequest() {
+      return new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+
+    if (loading) {
+      simulateNetworkRequest().then(() => {
+        setLoading(false);
+      });
+    }
+  }, [loading]);
 
   useEffect(() => {
     dispatch(getSingleRecipe(recipeId as string));
@@ -85,6 +98,7 @@ const RecipeDetails = () => {
 
   // Save Recipe
   const handleSaveRecipe = (recipeID: string) => {
+    setLoading(true);
     dispatch(
       saveRecipe({
         recipeID,
@@ -96,6 +110,7 @@ const RecipeDetails = () => {
 
   // Unsave Recipe
   const handleUnsaveRecipe = (recipeID: string) => {
+    setLoading(true);
     dispatch(
       unsaveRecipe({
         recipeID,
@@ -205,20 +220,43 @@ const RecipeDetails = () => {
                     variant='secondary w-25 mt-2 mb-5'
                     size='sm'
                     style={{ fontSize: "1.2rem" }}
+                    disabled={loading}
                     onClick={() => handleUnsaveRecipe(recipe?._id as string)}
                   >
-                    <GoBookmarkFill className='h-5 w-5 cursor-pointer' />
-                    unsave{" "}
+                    {loading ? (
+                      <span
+                        className='spinner-border spinner-border-sm'
+                        role='status'
+                        aria-hidden='true'
+                      ></span>
+                    ) : (
+                      <span>
+                        <GoBookmarkFill className='h-5 w-5 cursor-pointer' />
+                        unsave{" "}
+                      </span>
+                    )}
                   </Button>
                 ) : (
                   <Button
                     variant='primary w-25 mt-2 mb-5'
                     size='sm'
                     style={{ fontSize: "1.2rem" }}
+                    disabled={loading}
                     onClick={() => handleSaveRecipe(recipe?._id as string)}
                   >
-                    <GoBookmark className='h-5 w-5 cursor-pointer' />
-                    save{" "}
+                    {" "}
+                    {loading ? (
+                      <span
+                        className='spinner-border spinner-border-sm'
+                        role='status'
+                        aria-hidden='true'
+                      ></span>
+                    ) : (
+                      <span>
+                        <GoBookmark className='h-5 w-5 cursor-pointer' />
+                        save{" "}
+                      </span>
+                    )}
                   </Button>
                 )}
               </>
