@@ -23,7 +23,6 @@ import {
   addReview,
   deleteRecipe,
   deleteReview,
-  getSavedRecipes,
   getSingleRecipe,
   saveRecipe,
   unsaveRecipe,
@@ -42,7 +41,7 @@ const RecipeDetails = () => {
   const [showModal, setShowModal] = useState(false);
   const { user } = useAppSelector((state) => state.auth);
   const { recipe } = useAppSelector((state) => state.recipe);
-  const { savedRecipes, ownRecipes } = useAppSelector((state) => state.recipe);
+  const { savedRecipes } = useAppSelector((state) => state.recipe);
 
   const [show, setShow] = useState(false);
   const [data, setData] = useState<Review>({
@@ -74,10 +73,7 @@ const RecipeDetails = () => {
 
   useEffect(() => {
     dispatch(getSingleRecipe(recipeId as string));
-    if (token) {
-      dispatch(getSavedRecipes({ userID, token }));
-    }
-  }, [dispatch, recipeId, token, userID]);
+  }, [dispatch, recipeId, userID]);
 
   // Delete handler for recipe
   const handleDeleteRecipe = async () => {
@@ -146,6 +142,7 @@ const RecipeDetails = () => {
     }
   };
 
+  // Delete handler for comment
   const handleDeleteComment = (recipeId: string, reviewId: string) => {
     dispatch(
       deleteReview({
@@ -240,7 +237,7 @@ const RecipeDetails = () => {
             <Image
               src={recipe?.image}
               alt={recipe?.name}
-              className='w-100 h-100'
+              className='w-75 img-fluid d-block mx-auto'
             />
 
             {/* Edit & Delete */}
@@ -255,10 +252,7 @@ const RecipeDetails = () => {
                     Edit
                   </Link>
 
-                  <Button
-                    onClick={handleConfirmDelete}
-                    variant='danger'
-                   >
+                  <Button onClick={handleConfirmDelete} variant='danger'>
                     <BsTrash />
                     Delete
                   </Button>
@@ -299,50 +293,37 @@ const RecipeDetails = () => {
               <h3>Hello, I'm {recipe?.owner?.name}</h3>
             </div>
             <div className='widget-body'>
-              <Link to={`/profile/${guestID}`}>
+              <Link
+                to={
+                  recipe?.owner?._id !== userID
+                    ? `/user-profile/${guestID}`
+                    : "/profile"
+                }
+              >
                 <img
                   src={recipe?.owner?.image}
                   alt={recipe?.owner?.name}
                   className='w-25 h-25'
                 />
               </Link>
-              <Button
-                variant='info'
-                size='sm'
-                onClick={() => navigate(`/profile/${guestID}`)}
+              <Link
+                to={
+                  recipe?.owner?._id !== userID
+                    ? `/user-profile/${guestID}`
+                    : "/profile"
+                }
+                className='btn btn-primary btn-sm'
               >
                 View Profile
-              </Button>
-            </div>
-          </div>
-
-          {/* Author Recipes */}
-          <div className='widget widget-post'>
-            <div className='widget-title'>
-              <h3>More Recipes by {recipe?.owner?.name} </h3>
-            </div>
-            <div className='widget-body'>
-              {!ownRecipes.length ? (
-                <p>{recipe?.owner?.name} has no other recipes</p>
-              ) : (
-                <div className='d-flex flex-wrap'>
-                  {ownRecipes?.map((rec, index) => (
-                    <Image
-                      src={rec.image}
-                      alt='recipe'
-                      rounded
-                      className='w-25 m-1'
-                      key={index}
-                    />
-                  ))}
-                </div>
-              )}
+              </Link>
             </div>
           </div>
         </Col>
+
         <Col lg={8} md={12}>
           <hr />
         </Col>
+
         {/* Comments & Reviews */}
         <Row className='my-3'>
           <Col lg={8} md={12}>
