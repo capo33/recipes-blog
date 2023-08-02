@@ -74,9 +74,9 @@ const Login = () => {
           />
         </Form.Group>
 
-        <Form.Group controlId='showPassword' className='mt-1'>
+        <Form.Group controlId='showPassword' className='mt-1 d-flex justify-content-end'>
           <Form.Check
-            type='checkbox'
+            type='switch'
             label='Show Password'
             onClick={handleClickShowPassword}
           />
@@ -87,14 +87,14 @@ const Login = () => {
         </Button>
       </Form>
       <Row className='py-3'>
-        <Col>
+        <Col lg={12}>
           <Link
             to={redirect ? `/forgot-password?redirect=${redirect}` : "/login"}
           >
             Forgot Password
           </Link>
         </Col>
-        <Col>
+        <Col lg={12}>
           <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
             Don't have an account? Register
           </Link>
