@@ -56,115 +56,6 @@ const Register = () => {
   };
 
   return (
-    // <Container component='main' maxWidth='xs'>
-    //   <Box
-    //     sx={{
-    //       marginTop: 8,
-    //       display: "flex",
-    //       flexDirection: "column",
-    //       alignItems: "center",
-    //     }}
-    //   >
-    //     <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-    //       <LockOutlinedIcon />
-    //     </Avatar>
-    //     <Typography component='h1' variant='h5'>
-    //       Register
-    //     </Typography>
-    //     <Box component='form' noValidate sx={{ mt: 3 }} onSubmit={handleSubmit}>
-    //       <Grid container spacing={2}>
-    //         <Grid item xs={12}>
-    //           <TextField
-    //             autoComplete='given-name'
-    //             name='name'
-    //             value={formData.name}
-    //             onChange={handleChange}
-    //             required
-    //             fullWidth
-    //             id='name'
-    //             label='Name'
-    //             autoFocus
-    //           />
-    //         </Grid>
-    //         <Grid item xs={12}>
-    //           <TextField
-    //             required
-    //             fullWidth
-    //             value={formData.email}
-    //             onChange={handleChange}
-    //             id='email'
-    //             label='Email Address'
-    //             name='email'
-    //             autoComplete='email'
-    //           />
-    //         </Grid>
-    //         <Grid item xs={12}>
-    //           <FormControl variant='outlined' fullWidth>
-    //             <InputLabel htmlFor='outlined-adornment-password'>
-    //               Password
-    //             </InputLabel>
-    //             <OutlinedInput
-    //               id='outlined-adornment-password'
-    //               type={showPassword ? "text" : "password"}
-    //               endAdornment={
-    //                 <InputAdornment position='end'>
-    //                   <IconButton
-    //                     aria-label='toggle password visibility'
-    //                     onClick={handleClickShowPassword}
-    //                     onMouseDown={handleMouseDownPassword}
-    //                     edge='end'
-    //                   >
-    //                     {showPassword ? <VisibilityOff /> : <Visibility />}
-    //                   </IconButton>
-    //                 </InputAdornment>
-    //               }
-    //               label='Password'
-    //               value={formData.password}
-    //               onChange={handleChange}
-    //               name='password'
-    //             />
-    //           </FormControl>
-    //         </Grid>
-    //         <Grid item xs={12}>
-    //           <TextField
-    //             required
-    //             fullWidth
-    //             value={formData.answer}
-    //             onChange={handleChange}
-    //             id='answer'
-    //             label='What is your favorite color?'
-    //             name='answer'
-    //             autoComplete='answer'
-    //           />
-    //         </Grid>
-    //       </Grid>
-    //       <Button
-    //         type='submit'
-    //         fullWidth
-    //         variant='contained'
-    //         sx={{ mt: 3, mb: 2 }}
-    //       >
-    //         Register
-    //       </Button>
-    //       <Grid container>
-    //         <Grid item xs>
-    //           <Link to='/forgot-password'>
-    //           <Typography variant='body2' color='text.secondary'>
-    //               Forgot password?
-    //             </Typography>
-    //           </Link>
-    //         </Grid>
-    //         <Grid item>
-    //           <Link to='/login'>
-    //             <Typography variant='body2' color='text.secondary'>
-    //               Already have an account? Login
-    //             </Typography>
-    //           </Link>
-    //         </Grid>
-    //       </Grid>
-    //     </Box>
-    //   </Box>
-    // </Container>
     <FormContainer className='mt-5'>
       <h1>Sign In</h1>
       <Form onSubmit={handleSubmit}>
@@ -202,13 +93,13 @@ const Register = () => {
           </InputGroup>
         </Form.Group>
 
+        {/* Password */}
         <Form.Group controlId='password'>
           <Form.Label>Password</Form.Label>
           <InputGroup>
             <InputGroup.Text id='basic-addon1'>
               <AiOutlineLock />
             </InputGroup.Text>
-
             <Form.Control
               type={showPassword ? "text" : "password"}
               placeholder='Enter password'
@@ -219,6 +110,7 @@ const Register = () => {
           </InputGroup>
         </Form.Group>
 
+        {/* Show Password */}
         <Form.Group
           controlId='showPassword'
           className='mt-1 d-flex justify-content-end'
@@ -230,6 +122,7 @@ const Register = () => {
           />
         </Form.Group>
 
+        {/* Security Question */}
         <Form.Group controlId='answer'>
           <Form.Label>What is your favorite color?</Form.Label>
 
@@ -247,7 +140,7 @@ const Register = () => {
             />
           </InputGroup>
         </Form.Group>
-        
+
         <Button type='submit' variant='primary' className='mt-2'>
           Sign In
         </Button>
