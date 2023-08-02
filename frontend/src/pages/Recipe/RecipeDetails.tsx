@@ -205,7 +205,7 @@ const RecipeDetails = () => {
                     </Button>
                   ) : (
                     <Button
-                      variant='primary w-25 '
+                      variant='primary w-25'
                       style={{ fontSize: "1.2rem" }}
                       disabled={loading}
                       onClick={() => handleSaveRecipe(recipe?._id as string)}
@@ -312,7 +312,7 @@ const RecipeDetails = () => {
                     ? `/user-profile/${guestID}`
                     : "/profile"
                 }
-                className='btn btn-primary btn-sm'
+                className='btn btn-info'
               >
                 View Profile
               </Link>

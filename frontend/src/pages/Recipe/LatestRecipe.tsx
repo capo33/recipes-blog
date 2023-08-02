@@ -19,6 +19,16 @@ const LatestRecipe = () => {
 
   return (
     <Container>
+       <div className='px-4 my-5 text-center'>
+        <h1 className='display-5 fw-bold'>
+          Latest Recipes
+        </h1>
+        <div className='col-lg-6 mx-auto'>
+          <p className='lead'>
+            Get latest recipes from our database.
+          </p>
+        </div>
+      </div>
       <Row>
         {!latestRecipes?.length ? (
           <Message variant='info'>
