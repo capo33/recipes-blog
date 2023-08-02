@@ -238,9 +238,43 @@ export const updateProfile = asyncHandler(
   }
 );
 
+// @desc    Update user profile by admin
+// @route   PUT /api/v1/auth/user/:id
+// @access  Private (admin only)
+export const updateUserByAdmin = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    // Check if user exists
+    const user = await UserModel.findById(req.params.id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+
+    // Check if user is admin
+    if (req.user?.role !== "admin") {
+      res.status(401);
+      throw new Error("You are not authorized to perform this action");
+    }
+
+    // Update user
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      updatedUser,
+    });
+  }
+);
+
 // @desc    Delete user
 // @route   DELETE /api/v1/auth/user/:id
-// @access  Private/Admin or User
+// @access  Private (Admin or User)
 export const deleteUserByUser = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const user = await UserModel.findById(req.user?._id);

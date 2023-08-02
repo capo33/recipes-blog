@@ -24,6 +24,10 @@ const Users = () => {
 
   // Delete User
   const handleDeleteProfile = (id: string) => {
+    if(id === user?._id) {
+      toast.error("You cannot delete your profile, please contact the developer.");
+      return;
+    }
     dispatch(
       deleteUserProfileByAdmin({
         userId: id as string,

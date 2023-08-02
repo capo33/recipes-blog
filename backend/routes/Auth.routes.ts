@@ -13,6 +13,7 @@ router.get("/users", protect, admin, authController.getUsers);
 router.get("/user/:id", authController.getUserProfile);
 router.post("/forgot-password", authController.forgotPassword);
 router.put("/update-profile", protect, authController.updateProfile);
+router.put('/user/:id', protect, admin, authController.updateUserByAdmin)
 router.delete("/user", protect, authController.deleteUserByUser);
 router.delete("/user/:id", protect, admin, authController.deleteUserByAdmin);
 
