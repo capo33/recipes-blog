@@ -232,6 +232,17 @@ const Profile = () => {
 
               <Row>
                 <Col sm={3}>
+                  <h6 className='mb-0'>Email</h6>
+                </Col>
+                <Col sm={9} className='text-secondary'>
+                  {userData?.email ? userData?.email : "Not Available Yet"}
+                </Col>
+              </Row>
+
+              <hr />
+              
+              <Row>
+                <Col sm={3}>
                   <h6 className='mb-0'>Address</h6>
                 </Col>
                 <Col sm={9} className='text-secondary'>

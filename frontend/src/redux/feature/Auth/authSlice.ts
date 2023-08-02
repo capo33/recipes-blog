@@ -166,6 +166,47 @@ export const updateUserProfile = createAsyncThunk(
   }
 );
 
+// Update user profile by admin
+export const updateUserProfileByAdmin = createAsyncThunk(
+  "auth/updateUserProfileByAdmin",
+  async (
+    {
+      userId,
+      userData,
+      token,
+      toast,
+      navigate,
+    }: {
+      userId: string;
+      userData: IUpdateProfile;
+      token: string;
+      toast: any;
+      navigate: any;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const response = await authServices.updateUserProfileByAdmin(
+        userId,
+        userData,
+        token
+      );
+      toast.success(response?.message);
+      navigate("/admin/users");
+      return response;
+    } catch (error: unknown | any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      toast.error(message);
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 // Delete user profile by user
 export const deleteUserProfileByUser = createAsyncThunk(
   "auth/deleteUserProfileByUser",
@@ -384,6 +425,23 @@ const authSlice = createSlice({
       state.message = payload as string;
     });
 
+    // Update user profile by admin
+    builder.addCase(updateUserProfileByAdmin.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(
+      updateUserProfileByAdmin.fulfilled,
+      (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.guest = payload;
+      }
+    );
+    builder.addCase(updateUserProfileByAdmin.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = payload as string;
+    });
     // Delete user profile by admin
     builder.addCase(deleteUserProfileByAdmin.pending, (state) => {
       state.isLoading = true;

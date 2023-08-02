@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { FaEdit } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
@@ -9,6 +10,7 @@ import {
 } from "../../../redux/feature/Auth/authSlice";
 import { capitalize } from "../../../utils";
 import { useAppSelector, useAppDispatch } from "../../../redux/app/store";
+import { LinkContainer } from "react-router-bootstrap";
 
 const Users = () => {
   const { user, users } = useAppSelector((state) => state.auth);
@@ -24,8 +26,10 @@ const Users = () => {
 
   // Delete User
   const handleDeleteProfile = (id: string) => {
-    if(id === user?._id) {
-      toast.error("You cannot delete your profile, please contact the developer.");
+    if (id === user?._id) {
+      toast.error(
+        "You cannot delete your profile, please contact the developer."
+      );
       return;
     }
     dispatch(
@@ -56,6 +60,7 @@ const Users = () => {
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Address</th>
+                <th>Role</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -81,11 +86,35 @@ const Users = () => {
 
                     <td className='border px-4 py-2'>{user.address}</td>
 
-                    <td className='border px-4 py-2'>
-                      <Button
+                    <td className='border px-4 py-2'>{user.role}</td>
+
+                    {/* <td className='border px-4 py-2'>
+                      <Form>
+                        <Form.Check
+                          type='switch'
+                          id='custom-switch'
+                          label='Check this switch'
+                        />
+                      </Form>
+                    </td> */}
+
+                    <td className='border px-4 py d-flex justify-content-between'>
+                      {/* <Button
                         onClick={() => handleDeleteProfile(user._id as string)}
                         variant='outline-danger'
                         size='sm'
+                      >
+                        Delete
+                      </Button> */}
+                      <LinkContainer to={`/admin/user/${user._id}/edit`}>
+                        <Button variant='outline-dark' className='btn-sm'>
+                          <FaEdit />
+                        </Button>
+                      </LinkContainer>
+                      <Button
+                        variant='outline-danger'
+                        className='btn-sm'
+                        onClick={() => handleDeleteProfile(user._id as string)}
                       >
                         Delete
                       </Button>

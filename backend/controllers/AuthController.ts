@@ -257,18 +257,33 @@ export const updateUserByAdmin = asyncHandler(
       throw new Error("You are not authorized to perform this action");
     }
 
-    // Update user
-    const updatedUser = await UserModel.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    if(user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      user.role = req.body.role || user.role;
 
-    res.status(200).json({
-      success: true,
-      message: "User updated successfully",
-      updatedUser,
-    });
+      const updatedUser = await user.save();
+
+      res.status(200).json({
+        success: true,
+        message: "User updated successfully",
+        updatedUser,
+      });
+    }
+
+
+    // Update user
+    // const updatedUser = await UserModel.findByIdAndUpdate(
+    //   req.params.id,
+    //   req.body,
+    //   { new: true }
+    // );
+
+    // res.status(200).json({
+    //   success: true,
+    //   message: "User updated successfully",
+    //   updatedUser,
+    // });
   }
 );
 

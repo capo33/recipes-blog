@@ -22,6 +22,7 @@ import { GuestProfile } from "../pages/UserProfile/GuestProfile";
 import Profile from "../pages/UserProfile/Profile";
 import UpdateProfile from "../pages/UserProfile/UpdateProfile";
 import Users from "../pages/UserProfile/admin/Users";
+import UserEdit from "../pages/UserProfile/admin/UserEdit";
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -46,6 +47,7 @@ const routes = createBrowserRouter(
         <Route path='/admin/users' element={<Users />} />
         <Route path='/admin/add-category' element={<AddCategory />} />
         <Route path='/admin/edit-category/:slug' element={<UpdateCategory />} />
+        <Route path='/admin/user/:id/edit' element={<UserEdit />} />
 
         <Route
           path='/admin/all-categories'

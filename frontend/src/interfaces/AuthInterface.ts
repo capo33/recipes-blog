@@ -72,4 +72,5 @@ export interface IUpdateProfile {
   about?: string;
   image?: string;
   interests?: string[];
+  role?: string;
 }

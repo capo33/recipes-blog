@@ -11,7 +11,6 @@ import {
 // register
 const register = async (formData: AuthUser) => {
   const response = await axios.post(`${AUTH_URL}/register`, formData);
-  console.log(response.data);
 
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));
@@ -74,6 +73,22 @@ const deleteUserProfileByUser = async (token: string) => {
   return response.data;
 };
 
+// update user profile by admin
+const updateUserProfileByAdmin = async (
+  userId: string,
+  userData: IUpdateProfile,
+  token: string
+) => {
+  const response = await axios.put(`${AUTH_URL}/user/${userId}`, userData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  console.log(response.data);
+  
+  return response.data;
+};
+
 // delete user profile by admin
 const deleteUserProfileByAdmin = async (userId: string, token: string) => {
   const response = await axios.delete(`${AUTH_URL}/user/${userId}`, {
@@ -81,7 +96,6 @@ const deleteUserProfileByAdmin = async (userId: string, token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log(response.data);
 
   return response.data;
 };
@@ -112,6 +126,7 @@ const authServices = {
   getProfile,
   updateProfile,
   deleteUserProfileByUser,
+  updateUserProfileByAdmin,
   deleteUserProfileByAdmin,
   getAllUsersProfileByAdmin,
   getUserProfileById,
