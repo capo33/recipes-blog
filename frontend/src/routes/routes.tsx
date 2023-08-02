@@ -23,6 +23,7 @@ import Profile from "../pages/UserProfile/Profile";
 import UpdateProfile from "../pages/UserProfile/UpdateProfile";
 import Users from "../pages/UserProfile/admin/Users";
 import UserEdit from "../pages/UserProfile/admin/UserEdit";
+import ForgotPassword from "../pages/Auth/ForgotPassword";
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -30,11 +31,13 @@ const routes = createBrowserRouter(
       <Route path='' element={<Home />} />
       <Route path='login' element={<Login />} />
       <Route path='register' element={<Register />} />
+      <Route path='/forgot-password' element={<ForgotPassword />} />
       <Route path='recipe-details/:recipeId' element={<RecipeDetails />} />
       <Route path='add-recipe' element={<AddRecipe />} />
       <Route path='categories' element={<Categories />} />
       <Route path='/category/:slug' element={<CategoryDetails />} />
       <Route path='/user-profile/:guestID' element={<GuestProfile />} />
+
 
       <Route path='' element={<PrivateRoute />}>
         <Route path='/saved-recipes' element={<SavedRecipes />} />

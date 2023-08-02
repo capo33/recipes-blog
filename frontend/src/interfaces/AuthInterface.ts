@@ -74,3 +74,9 @@ export interface IUpdateProfile {
   interests?: string[];
   role?: string;
 }
+
+export interface IForgotPassword {
+  email: string;
+  answer: string;
+  newPassword: string;
+}
