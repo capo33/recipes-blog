@@ -7,8 +7,7 @@ import {
   IUpdateProfile,
 } from "../../../interfaces/AuthInterface";
 
-
- // *************************** Auth *************************** //
+// *************************** Auth *************************** //
 // register
 const register = async (formData: AuthUser) => {
   const response = await axios.post(`${AUTH_URL}/register`, formData);
@@ -76,12 +75,13 @@ const deleteUserProfileByUser = async (token: string) => {
 };
 
 // delete user profile by admin
-const deleteUserProfileByAdmin = async (token: string, userId: string) => {
+const deleteUserProfileByAdmin = async (userId: string, token: string) => {
   const response = await axios.delete(`${AUTH_URL}/user/${userId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+  console.log(response.data);
 
   return response.data;
 };

@@ -15,7 +15,7 @@ import {
 import { formatDate } from "../../utils";
 import {
   logout,
-  userDeleteProfile,
+  deleteUserProfileByUser,
   userProfile,
 } from "../../redux/feature/Auth/authSlice";
 import ModalPopup from "../../components/Modal/Index";
@@ -58,7 +58,7 @@ const Profile = () => {
 
   const handleDeleteProfile = () => {
     dispatch(logout());
-    dispatch(userDeleteProfile({ token, toast, navigate }));
+    dispatch(deleteUserProfileByUser({ token, toast, navigate }));
   };
 
   // Delete handler for recipe
@@ -71,13 +71,9 @@ const Profile = () => {
   return (
     <Container>
       <div className='px-4 my-5 text-center'>
-        <h1 className='display-5 fw-bold'>
-         My Profile
-        </h1>
+        <h1 className='display-5 fw-bold'>My Profile</h1>
         <div className='col-lg-6 mx-auto'>
-          <p className='lead'>
-            Explore your recipes and profiles
-          </p>
+          <p className='lead'>Explore your recipes and profiles</p>
         </div>
       </div>
       {showModal ? (

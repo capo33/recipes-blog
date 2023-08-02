@@ -98,7 +98,7 @@ export const Header = () => {
                           Admin categories
                         </NavDropdown.Item>
                       </LinkContainer>
-                      <LinkContainer to='/admin/userlist'>
+                      <LinkContainer to='/admin/users'>
                         <NavDropdown.Item>
                           <HiOutlineUserGroup className='me-2' />
                           Users

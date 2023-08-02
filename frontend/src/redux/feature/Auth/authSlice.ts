@@ -41,7 +41,7 @@ export const register = createAsyncThunk(
       const response = await authServices.register(formData);
       navigate("/");
       console.log(response);
-      
+
       toast.success(response?.message);
       return response;
     } catch (error: unknown | any) {
@@ -73,8 +73,8 @@ export const login = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-        console.log(error.response?.data?.message);
-        
+      console.log(error.response?.data?.message);
+
       toast.error(error.response?.data?.message);
       return rejectWithValue(message);
     }
@@ -167,8 +167,8 @@ export const updateUserProfile = createAsyncThunk(
 );
 
 // Delete user profile by user
-export const userDeleteProfile = createAsyncThunk(
-  "auth/userDeleteProfile",
+export const deleteUserProfileByUser = createAsyncThunk(
+  "auth/deleteUserProfileByUser",
   async (
     { token, toast, navigate }: { token: string; toast: any; navigate: any },
     thunkAPI
@@ -176,7 +176,6 @@ export const userDeleteProfile = createAsyncThunk(
     try {
       const response = await authServices.deleteUserProfileByUser(token);
       toast.success(response?.message);
-      thunkAPI.dispatch(logout());
       navigate("/login");
       return response;
     } catch (error: unknown | any) {
@@ -193,24 +192,25 @@ export const userDeleteProfile = createAsyncThunk(
 );
 
 // Delete user profile by admin
-export const adminDeleteUserProfileBy = createAsyncThunk(
-  "auth/adminDeleteUserProfileBy",
+export const deleteUserProfileByAdmin = createAsyncThunk(
+  "auth/deleteUserProfileByAdmin",
   async (
     {
-      token,
       userId,
+      token,
       toast,
       navigate,
-    }: { token: string; userId: string; toast: any; navigate: any },
-    { rejectWithValue }
+    }: { userId: string; token: string; toast: any; navigate: any },
+    thunkAPI
   ) => {
     try {
       const response = await authServices.deleteUserProfileByAdmin(
-        token,
-        userId
+        userId,
+        token
       );
       toast.success(response?.message);
-      navigate("/");
+      thunkAPI.dispatch(getAllUsers(token));
+      // navigate("/");
       return response;
     } catch (error: unknown | any) {
       const message =
@@ -221,7 +221,7 @@ export const adminDeleteUserProfileBy = createAsyncThunk(
         error.toString();
       toast.error(message);
 
-      return rejectWithValue(message);
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -370,29 +370,29 @@ const authSlice = createSlice({
     });
 
     // Delete user profile by user
-    builder.addCase(userDeleteProfile.pending, (state) => {
+    builder.addCase(deleteUserProfileByUser.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(userDeleteProfile.fulfilled, (state) => {
+    builder.addCase(deleteUserProfileByUser.fulfilled, (state) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.user = null;
     });
-    builder.addCase(userDeleteProfile.rejected, (state, { payload }) => {
+    builder.addCase(deleteUserProfileByUser.rejected, (state, { payload }) => {
       state.isLoading = false;
       state.isError = true;
       state.message = payload as string;
     });
 
     // Delete user profile by admin
-    builder.addCase(adminDeleteUserProfileBy.pending, (state) => {
+    builder.addCase(deleteUserProfileByAdmin.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(adminDeleteUserProfileBy.fulfilled, (state) => {
+    builder.addCase(deleteUserProfileByAdmin.fulfilled, (state) => {
       state.isLoading = false;
       state.isSuccess = true;
     });
-    builder.addCase(adminDeleteUserProfileBy.rejected, (state, { payload }) => {
+    builder.addCase(deleteUserProfileByAdmin.rejected, (state, { payload }) => {
       state.isLoading = false;
       state.isError = true;
       state.message = payload as string;

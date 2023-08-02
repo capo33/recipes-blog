@@ -260,7 +260,7 @@ export const deleteUserByUser = asyncHandler(
     }
 
     // Delete user
-    await user.deleteOne();
+    await UserModel.findByIdAndDelete(req.user?._id);
     // Delete recipes
     await recipes?.deleteOne();
 
@@ -286,19 +286,18 @@ export const deleteUserByAdmin = asyncHandler(
       throw new Error("User not found");
     }
 
-    // Check if user is authorized to delete the user
-    if (
-      user?._id.toString() !== req.user?._id.toString() &&
-      user.role === "admin"
-    ) {
+    // Check if user is an admin & authorized to delete the user
+    if (req.user?.role !== "admin") {
       res.status(401);
       throw new Error("Not authorized to delete this user");
     }
 
     // Delete user
-    await user.deleteOne();
+    const x = await UserModel.deleteOne({ _id: user._id });
     // Delete recipes
-    await recipes?.deleteOne();
+    const y = await RecipeModel.deleteOne({ owner: user._id });
+
+    console.log(x, y);
 
     res.status(200).json({
       success: true,
@@ -314,11 +313,7 @@ export const getUsers = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const users = await UserModel.find({}).select("-password");
 
-    res.status(200).json({
-      success: true,
-      message: "All users",
-      users,
-    });
+    res.status(200).json(users);
   }
 );
 

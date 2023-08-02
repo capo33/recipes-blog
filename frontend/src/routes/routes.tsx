@@ -21,7 +21,8 @@ import UpdateRecipe from "../pages/Recipe/UpdateRecipe";
 import { GuestProfile } from "../pages/UserProfile/GuestProfile";
 import Profile from "../pages/UserProfile/Profile";
 import UpdateProfile from "../pages/UserProfile/UpdateProfile";
- 
+import Users from "../pages/UserProfile/admin/Users";
+
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
@@ -39,10 +40,10 @@ const routes = createBrowserRouter(
         <Route path='/profile' element={<Profile />} />
         <Route path='/update-recipe/:recipeId' element={<UpdateRecipe />} />
         <Route path='/update-profile/:id' element={<UpdateProfile />} />
-
-
       </Route>
+
       <Route path='' element={<AdminRoute />}>
+        <Route path='/admin/users' element={<Users />} />
         <Route path='/admin/add-category' element={<AddCategory />} />
         <Route path='/admin/edit-category/:slug' element={<UpdateCategory />} />
 
