@@ -23,7 +23,6 @@ import { useAppDispatch, useAppSelector } from "../../redux/app/store";
 
 const Profile = () => {
   const { user } = useAppSelector((state) => state.auth);
-  // const recipes = useAppSelector((state) => state.recipe);
   const { recipes } = useAppSelector((state) => state.recipe);
   const [showModal, setShowModal] = useState(false);
 
@@ -240,7 +239,7 @@ const Profile = () => {
               </Row>
 
               <hr />
-              
+
               <Row>
                 <Col sm={3}>
                   <h6 className='mb-0'>Address</h6>

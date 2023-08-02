@@ -61,6 +61,7 @@ const Users = () => {
                 <th>Phone</th>
                 <th>Address</th>
                 <th>Role</th>
+                <th>Edit</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -71,8 +72,8 @@ const Users = () => {
                     <td className='border px-4 py-2'>
                       <img
                         src={user?.image}
-                        alt=''
-                        className='img-fluid rounded-circle'
+                        alt={user?.name}
+                        className='rounded-circle'
                         style={{ width: "30px", height: "30px" }}
                       />
                     </td>
@@ -88,29 +89,15 @@ const Users = () => {
 
                     <td className='border px-4 py-2'>{user.role}</td>
 
-                    {/* <td className='border px-4 py-2'>
-                      <Form>
-                        <Form.Check
-                          type='switch'
-                          id='custom-switch'
-                          label='Check this switch'
-                        />
-                      </Form>
-                    </td> */}
-
-                    <td className='border px-4 py d-flex justify-content-between'>
-                      {/* <Button
-                        onClick={() => handleDeleteProfile(user._id as string)}
-                        variant='outline-danger'
-                        size='sm'
-                      >
-                        Delete
-                      </Button> */}
+                    <td className='border px-4 py '>
                       <LinkContainer to={`/admin/user/${user._id}/edit`}>
                         <Button variant='outline-dark' className='btn-sm'>
                           <FaEdit />
                         </Button>
                       </LinkContainer>
+                    </td>
+
+                    <td className='border px-4 py '>
                       <Button
                         variant='outline-danger'
                         className='btn-sm'
