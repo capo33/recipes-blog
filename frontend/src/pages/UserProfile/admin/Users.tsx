@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
-import { AiFillDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
 
@@ -48,6 +47,7 @@ const Users = () => {
           <Table striped variant='success' bordered hover responsive>
             <thead>
               <tr>
+                <th>#</th>
                 <th>User name</th>
                 <th>Email</th>
                 <th>Phone</th>
@@ -59,6 +59,14 @@ const Users = () => {
               {users &&
                 users?.map((user) => (
                   <tr key={user._id}>
+                    <td className='border px-4 py-2'>
+                      <img
+                        src={user?.image}
+                        alt=''
+                        className='img-fluid rounded-circle'
+                        style={{ width: "30px", height: "30px" }}
+                      />
+                    </td>
                     <td className='border px-4 py-2'>
                       {capitalize(user.name)}
                     </td>
@@ -75,8 +83,7 @@ const Users = () => {
                         variant='outline-danger'
                         size='sm'
                       >
-                        <AiFillDelete className='h-5 w-5 mr-1' />
-                        Delete{" "}
+                        Delete
                       </Button>
                     </td>
                   </tr>

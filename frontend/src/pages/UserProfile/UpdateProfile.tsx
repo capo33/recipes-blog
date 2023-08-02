@@ -12,6 +12,7 @@ import Input from "../../components/ProfileForm/Input";
 import Textarea from "../../components/ProfileForm/Textarea";
 import { IUpdateProfile } from "../../interfaces/AuthInterface";
 import { useAppSelector, useAppDispatch } from "../../redux/app/store";
+import Loader from "../../components/Loader/Index";
 
 const UpdateProfile = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -109,7 +110,7 @@ const UpdateProfile = () => {
         </h1>
         <div className='col-lg-6 mx-auto'>
           <p className='lead'>
-             Add information about yourself to share on your profile.
+            Add information about yourself to share on your profile.
           </p>
         </div>
       </div>
@@ -195,12 +196,16 @@ const UpdateProfile = () => {
               onChange={uploadImage}
             />
             <div className='d-flex justify-content-around flex-wrap'>
-              <Image
-                src={userData?.image}
-                alt={userData?.name}
-                className='mt-3 rounded mx-auto d-block'
-                style={{ width: "25%" }}
-              />
+              {loading ? (
+                <Loader />
+              ) : (
+                <Image
+                  src={userData?.image}
+                  alt={userData?.name}
+                  className='mt-3 rounded mx-auto d-block'
+                  style={{ width: "25%" }}
+                />
+              )}
             </div>
           </Col>
           <Col md={12} className='mt-4 mb-5'>
