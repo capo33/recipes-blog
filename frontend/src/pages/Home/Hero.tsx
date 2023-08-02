@@ -1,6 +1,7 @@
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 
 import food from "../../assets/images/hero-image.png";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -27,20 +28,15 @@ const Hero = () => {
             recipes.
           </p>
           <div className='d-grid gap-2 d-md-flex justify-content-md-start'>
-            <Button
-              type='button'
-              variant='primary'
-              className='btn btn-primary btn-lg px-4 me-md-2'
-            >
-              Primary
-            </Button>
-            <Button
-              type='button'
-              variant='outline-secondary'
+            <Link to='/random' className='btn btn-primary btn-lg px-4'>
+              Random Recipe
+            </Link>
+            <Link
+              to='/latest'
               className='btn btn-outline-secondary btn-lg px-4'
             >
-              Default
-            </Button>
+              Latest Recipe
+            </Link>
           </div>
         </Col>
       </Row>

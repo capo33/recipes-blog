@@ -32,6 +32,8 @@ export interface Recipe {
   reviews?: Review[];
   rating?: number;
   numReviews?: number;
+  randomRecipes?: Recipe[];
+  latestRecipes?: Recipe[];
   slug?: string;
   createdAt?: number;
 }

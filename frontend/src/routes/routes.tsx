@@ -5,25 +5,28 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
+
 import Home from "../pages/Home/Index";
-import RecipeDetails from "../pages/Recipe/RecipeDetails";
-import AddRecipe from "../pages/Recipe/AddRecipe";
-import PrivateRoute from "../Guards/PrivateRoute";
 import AdminRoute from "../Guards/AdminRoute";
-import AddCategory from "../pages/Category/admin/AddCategory";
-import Categories from "../pages/Category/Categories";
-import AllCategoriesForAdmin from "../pages/Category/admin/AllCategoriesForAdmin";
 import Register from "../pages/Auth/Register";
-import UpdateCategory from "../pages/Category/admin/UpdateCategory";
-import SavedRecipes from "../pages/Recipe/SavedRecipes";
-import CategoryDetails from "../pages/Category/CategoryDetails";
-import UpdateRecipe from "../pages/Recipe/UpdateRecipe";
-import { GuestProfile } from "../pages/UserProfile/GuestProfile";
+import PrivateRoute from "../Guards/PrivateRoute";
+import AddRecipe from "../pages/Recipe/AddRecipe";
 import Profile from "../pages/UserProfile/Profile";
-import UpdateProfile from "../pages/UserProfile/UpdateProfile";
 import Users from "../pages/UserProfile/admin/Users";
-import UserEdit from "../pages/UserProfile/admin/UserEdit";
+import Categories from "../pages/Category/Categories";
+import SavedRecipes from "../pages/Recipe/SavedRecipes";
+import UpdateRecipe from "../pages/Recipe/UpdateRecipe";
+import RandomRecipe from "../pages/Recipe/RandomRecipe";
+import LatestRecipe from "../pages/Recipe/LatestRecipe";
+import RecipeDetails from "../pages/Recipe/RecipeDetails";
 import ForgotPassword from "../pages/Auth/ForgotPassword";
+import UserEdit from "../pages/UserProfile/admin/UserEdit";
+import AddCategory from "../pages/Category/admin/AddCategory";
+import UpdateProfile from "../pages/UserProfile/UpdateProfile";
+import CategoryDetails from "../pages/Category/CategoryDetails";
+import { GuestProfile } from "../pages/UserProfile/GuestProfile";
+import UpdateCategory from "../pages/Category/admin/UpdateCategory";
+import AllCategoriesForAdmin from "../pages/Category/admin/AllCategoriesForAdmin";
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +35,8 @@ const routes = createBrowserRouter(
       <Route path='login' element={<Login />} />
       <Route path='register' element={<Register />} />
       <Route path='/forgot-password' element={<ForgotPassword />} />
+      <Route path='/random' element={<RandomRecipe />} />
+      <Route path='/latest' element={<LatestRecipe />} />
       <Route path='recipe-details/:recipeId' element={<RecipeDetails />} />
       <Route path='add-recipe' element={<AddRecipe />} />
       <Route path='categories' element={<Categories />} />

@@ -8,6 +8,8 @@ interface RecipeState {
   recipe: Recipe | null;
   savedRecipes: Recipe[];
   ownRecipes: Recipe[];
+  randomRecipes: Recipe[];
+  latestRecipes: Recipe[];
   isError: boolean;
   isLoading: boolean;
   isSuccess: boolean;
@@ -19,6 +21,8 @@ const initialState: RecipeState = {
   recipe: null,
   savedRecipes: [],
   ownRecipes: [],
+  randomRecipes: [],
+  latestRecipes: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -32,6 +36,44 @@ export const getAllRecipes = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await recipeServices.getAllRecipes();
+      return response;
+    } catch (error: unknown | any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return rejectWithValue(message);
+    }
+  }
+);
+
+// Get random recipes
+export const getRandomRecipes = createAsyncThunk(
+  "recipe/getRandomRecipes",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await recipeServices.getRandomRecipes();
+      return response;
+    } catch (error: unknown | any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return rejectWithValue(message);
+    }
+  }
+);
+
+// Get latest recipes
+export const getLatestRecipes = createAsyncThunk(
+  "recipe/getLatestRecipes",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await recipeServices.getLatestRecipes();
       return response;
     } catch (error: unknown | any) {
       const message =
@@ -339,6 +381,34 @@ const recipeSlice = createSlice({
       state.ownRecipes = payload as Recipe[];
     });
     builder.addCase(getAllRecipes.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = payload as string;
+    });
+
+    // Get random recipes
+    builder.addCase(getRandomRecipes.pending, (state) => {
+      // state.isLoading = true;
+    });
+    builder.addCase(getRandomRecipes.fulfilled, (state, { payload }) => {
+      // state.isLoading = false;
+      state.randomRecipes = payload as Recipe[];
+    });
+    builder.addCase(getRandomRecipes.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = payload as string;
+    });
+
+    // Get latest recipes
+    builder.addCase(getLatestRecipes.pending, (state) => {
+      // state.isLoading = true;
+    });
+    builder.addCase(getLatestRecipes.fulfilled, (state, { payload }) => {
+      // state.isLoading = false;
+      state.latestRecipes = payload as Recipe[];
+    });
+    builder.addCase(getLatestRecipes.rejected, (state, { payload }) => {
       state.isLoading = false;
       state.isError = true;
       state.message = payload as string;

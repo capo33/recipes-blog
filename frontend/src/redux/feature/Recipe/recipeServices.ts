@@ -17,6 +17,21 @@ const getSingleRecipe = async (recipeId: string) => {
   return response.data;
 };
 
+// Get random recipes
+const getRandomRecipes = async () => {
+  const response = await axios.get(`${RECIPE_URL}/random`);
+  return response.data;
+};
+
+// Get latest recipes
+const getLatestRecipes = async () => {
+  const response = await axios.get(`${RECIPE_URL}/latest`);
+  console.log(response.data);
+  
+  return response.data;
+};
+
+
 // Create a recipe
 const createRecipe = async (formData: Recipe, token: string) => {
   const response = await axios.post(
@@ -178,6 +193,8 @@ const deleteReview = async (
 
 const recipeService = {
   getAllRecipes,
+  getRandomRecipes,
+  getLatestRecipes,
   createRecipe,
   getSingleRecipe,
   getRecipesByUserId,
