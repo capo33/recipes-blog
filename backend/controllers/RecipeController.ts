@@ -43,6 +43,26 @@ export const getRecipeById = asyncHandler(
   }
 );
 
+// @desc    Get Random Recipes
+// @route   GET /api/v1/recipes/random
+// @access  Public
+export const getRandomRecipes = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const recipes = await RecipeModel.aggregate([{ $sample: { size: 3 } }]);
+    res.status(200).json(recipes);
+  }
+);
+
+// @desc    Get Latest Recipes
+// @route   GET /api/v1/recipes/latest
+// @access  Public
+export const getLatestRecipes = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const recipes = await RecipeModel.find({}).sort({ createdAt: -1 }).limit(3);
+    res.status(200).json(recipes);
+  }
+);
+
 // @desc    Create a recipe
 // @route   POST /api/v1/recipes
 // @access  Private
