@@ -1,26 +1,23 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { AiFillDelete } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
 
-import { useAppSelector, useAppDispatch } from "../../../redux/app/store";
 import {
   deleteUserProfileByAdmin,
   getAllUsers,
 } from "../../../redux/feature/Auth/authSlice";
-import { AiFillDelete } from "react-icons/ai";
 import { capitalize } from "../../../utils";
+import { useAppSelector, useAppDispatch } from "../../../redux/app/store";
 
 const Users = () => {
   const { user, users } = useAppSelector((state) => state.auth);
-  console.log(users);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const token = user?.token as string;
-
-  const existingUser = users?.find((user) => user._id === user?._id);
 
   useEffect(() => {
     dispatch(getAllUsers(token));
@@ -37,6 +34,7 @@ const Users = () => {
       })
     );
   };
+
   return (
     <Container>
       <div className='px-4 my-5 text-center'>
