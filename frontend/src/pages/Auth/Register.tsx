@@ -57,7 +57,7 @@ const Register = () => {
 
   return (
     <FormContainer className='mt-5'>
-      <h1>Sign In</h1>
+      <h1>Sign Up</h1>
       <Form onSubmit={handleSubmit}>
         {/* Name */}
         <Form.Group controlId='name'>
@@ -142,7 +142,7 @@ const Register = () => {
         </Form.Group>
 
         <Button type='submit' variant='primary' className='mt-2'>
-          Sign In
+          Sign Up
         </Button>
       </Form>
       <Row className='py-3'>

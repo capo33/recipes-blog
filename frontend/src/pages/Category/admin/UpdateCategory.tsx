@@ -38,39 +38,35 @@ const UpdateCategory = () => {
     }
   }, [category]);
 
+  // Handle upload image
+  const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append(
+      "upload_preset",
+      process.env.REACT_APP_PRESET_NAME as string
+    );
+    const res = await axios.post(
+      `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/upload`,
+      formData
+    );
+    setCategoryData({ ...categoryData, image: res.data.url });
+  };
+
   // Handle submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("file", categoryData.image);
-    data.append("upload_preset", "recipe-app");
-    data.append("cloud_name", "dunforh2u");
-    // Make request to cloudinary
-    const res = await axios.post(
-      "https://api.cloudinary.com/v1_1/dunforh2u/image/upload",
-      data
-    );
-
-    const catData = {
-      name: categoryData.name,
-      image: res.data.url,
-    };
-
     dispatch(
       updateCategory({
         id: category?._id as string,
-        categoryData: catData,
+        categoryData,
         token,
         toast,
         navigate,
       })
     );
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.currentTarget.files?.[0];
-    if (!file) return;
-    categoryData.image = file as any;
   };
 
   return (
@@ -103,7 +99,7 @@ const UpdateCategory = () => {
               type='file'
               name='image'
               className='form-control'
-              onChange={handleImageChange}
+              onChange={uploadImage}
             />
           </Col>
           <Col md={4}>

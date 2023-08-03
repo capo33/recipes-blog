@@ -114,7 +114,6 @@ const AddRecipe = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(createRecipe({ formData: recipe, token, toast }));
-    console.log(recipe);
     setLoading(true);
     navigate("/");
     setRecipe({
