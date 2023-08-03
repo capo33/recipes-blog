@@ -38,14 +38,13 @@ const routes = createBrowserRouter(
       <Route path='/random' element={<RandomRecipe />} />
       <Route path='/latest' element={<LatestRecipe />} />
       <Route path='recipe-details/:recipeId' element={<RecipeDetails />} />
-      <Route path='add-recipe' element={<AddRecipe />} />
       <Route path='categories' element={<Categories />} />
       <Route path='/category/:slug' element={<CategoryDetails />} />
       <Route path='/user-profile/:guestID' element={<GuestProfile />} />
 
-
       <Route path='' element={<PrivateRoute />}>
         <Route path='/saved-recipes' element={<SavedRecipes />} />
+        <Route path='add-recipe' element={<AddRecipe />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/update-recipe/:recipeId' element={<UpdateRecipe />} />
         <Route path='/update-profile/:id' element={<UpdateProfile />} />

@@ -10,6 +10,7 @@ import { getRandomRecipes } from "../../redux/feature/Recipe/recipeSlice";
 
 const RandomRecipe = () => {
   const { randomRecipes } = useAppSelector((state) => state.recipe);
+  const { user } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
 
@@ -31,9 +32,15 @@ const RandomRecipe = () => {
       </div>
       <Row>
         {!randomRecipes?.length ? (
-          <Message variant='info'>
-            No recipes found. <Link to='/add-recipe'>Create Recipe</Link>
-          </Message>
+          user ? (
+            <Message variant='info'>
+              No recipes found. <Link to='/add-recipe'>Create Recipe</Link>
+            </Message>
+          ) : (
+            <Message variant='info'>
+              No recipes found. <Link to='/login'>Login</Link> to create recipe.
+            </Message>
+          )
         ) : (
           <Row style={{ margin: "0 auto" }}>
             {randomRecipes?.map((recipe: Recipe) => (

@@ -5,7 +5,7 @@ type FormContainerProps = {
   children: React.ReactNode;
   className?: string;
 };
-const FormContainer = ({ children , className}: FormContainerProps) => {
+const FormContainer = ({ children, className }: FormContainerProps) => {
   return (
     <Container className={className}>
       <Row className='justify-content-md-center'>

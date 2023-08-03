@@ -1,14 +1,14 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import Hero from "./Hero";
+import Loader from "../../components/Loader/Index";
+import Message from "../../components/Message/Index";
 import { Recipe } from "../../interfaces/RecipeInterface";
+import RecipeCard from "../../components/RecipeCard/RecipeCard";
 import { getAllRecipes } from "../../redux/feature/Recipe/recipeSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/app/store";
-import RecipeCard from "../../components/RecipeCard/RecipeCard";
-import Message from "../../components/Message/Index";
-import { Link } from "react-router-dom";
-import Loader from "../../components/Loader/Index";
 
 const Home = () => {
   const { recipes , isLoading} = useAppSelector((state) => state.recipe);

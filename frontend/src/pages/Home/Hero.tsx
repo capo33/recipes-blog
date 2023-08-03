@@ -1,18 +1,21 @@
 import { Col, Container, Row } from "react-bootstrap";
 
-import food from "../../assets/images/hero-image.png";
+import food from "../../assets/images/food.jpg";
 import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
     <Container>
       <Row className='flex-lg-row-reverse align-items-center g-5 py-5'>
-        <Col sm={12} lg={6} className='mb-4'>
+        <Col sm={12} lg={6} className='mb-4 mix'>
           <img
             src={food}
             width={607}
             height={510}
             className='d-block mx-lg-auto img-fluid'
+            style={{
+              mixBlendMode: "multiply",
+             }}
             loading='lazy'
             alt='Eating food'
           />
