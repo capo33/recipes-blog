@@ -5,11 +5,7 @@ import UserModel from "../models/User";
 import RecipeModel from "../models/Recipe";
 import { generateToken } from "../utils/generateToken";
 import asyncHandler from "../middlewares/asyncHandler";
-import insertDymmyUserData from "../data/usersData";
-
-// // Dummy data
-// insertDymmyUserData();
-
+  
 // @desc    Register user
 // @route   POST /api/v1/auth/register
 // @access  Public

@@ -5,11 +5,7 @@ import RecipeModel from "../models/Recipe";
 import CategoryModel from "../models/Category";
 import asyncHandler from "../middlewares/asyncHandler";
 import { IReview } from "../interfaces/reviewInterface";
-import { IRecipe } from "../interfaces/recipeInterface";
-import insertDymmyRecipeData from "../data/recipesData";
 
-// Dummy data
-// insertDymmyRecipeData();
 // @desc    Get all recipes
 // @route   GET /api/v1/recipes
 // @access  Public
@@ -114,7 +110,7 @@ export const updateRecipe = asyncHandler(
       throw new Error("Not authorized");
     }
 
-    const recipe = await RecipeModel.findById(recipeId)
+    const recipe = await RecipeModel.findById(recipeId);
 
     // Check if recipe exists with the given id
     if (!recipe) {
