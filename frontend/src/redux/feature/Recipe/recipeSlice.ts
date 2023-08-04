@@ -125,7 +125,6 @@ export const createRecipe = createAsyncThunk(
       const response = await recipeServices.createRecipe(formData, token);
       toast.success("Recipe created successfully");
       thunkAPI.dispatch(getAllRecipes());
-      console.log("response", response);
 
       return response;
     } catch (error: unknown | any) {
@@ -140,7 +139,7 @@ export const getSavedRecipes = createAsyncThunk(
   async ({ userID, token }: { userID: string; token: string }, thunkAPI) => {
     try {
       const response = await recipeServices.getRecipesByUserId(userID, token);
-      thunkAPI.dispatch(getAllRecipes());
+      // thunkAPI.dispatch(getAllRecipes());
       return response;
     } catch (error: unknown | any) {
       return thunkAPI.rejectWithValue(error.response.data.message);
@@ -163,7 +162,6 @@ export const saveRecipe = createAsyncThunk(
       const response = await recipeServices.saveRecipe(recipeID, userID, token);
       thunkAPI.dispatch(getSavedRecipes({ userID, token }));
       // console.log("response", response); response is the saved recipe
-      console.log("response", response);
 
       return response;
     } catch (error: unknown | any) {
@@ -250,7 +248,8 @@ export const updateRecipe = createAsyncThunk(
         formData,
         token
       );
-      thunkAPI.dispatch(getAllRecipes());
+      thunkAPI.dispatch(getSingleRecipe(recipeId));
+      // thunkAPI.dispatch(getAllRecipes());
       console.log("response", response);
       toast.success("Recipe updated successfully");
       navigate(`/recipe-details/${recipeId}`);

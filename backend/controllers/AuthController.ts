@@ -5,6 +5,10 @@ import UserModel from "../models/User";
 import RecipeModel from "../models/Recipe";
 import { generateToken } from "../utils/generateToken";
 import asyncHandler from "../middlewares/asyncHandler";
+import insertDymmyUserData from "../data/usersData";
+
+// // Dummy data
+// insertDymmyUserData();
 
 // @desc    Register user
 // @route   POST /api/v1/auth/register
@@ -257,7 +261,7 @@ export const updateUserByAdmin = asyncHandler(
       throw new Error("You are not authorized to perform this action");
     }
 
-    if(user) {
+    if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
       user.role = req.body.role || user.role;
@@ -270,7 +274,6 @@ export const updateUserByAdmin = asyncHandler(
         updatedUser,
       });
     }
-
 
     // Update user
     // const updatedUser = await UserModel.findByIdAndUpdate(

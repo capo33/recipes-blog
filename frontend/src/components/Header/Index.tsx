@@ -86,12 +86,6 @@ export const Header = () => {
 
                   {user && user.role === "admin" && (
                     <>
-                      <LinkContainer to='/admin/add-category'>
-                        <NavDropdown.Item>
-                          <AiOutlinePlus className='me-2' />
-                          Add category
-                        </NavDropdown.Item>
-                      </LinkContainer>
                       <LinkContainer to='/admin/all-categories'>
                         <NavDropdown.Item>
                           <BsGrid className='me-2' />

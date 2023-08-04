@@ -30,7 +30,7 @@ const Ingredients = ({
               <Badge
                 bg='success'
                 text='white'
-                className='me-1'
+                className='me-1 mt-1'
                 style={{ fontSize: "1rem" }}
               >
                 {ingredient}
@@ -56,6 +56,7 @@ const Ingredients = ({
       />
       <Button
         variant='primary'
+        size='sm'
         onClick={handleClick}
         className='mt-2 mb-'
         disabled={inputValue === ""}

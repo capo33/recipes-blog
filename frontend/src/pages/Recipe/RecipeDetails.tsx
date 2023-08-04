@@ -13,6 +13,7 @@ import {
   Tabs,
   OverlayTrigger,
   Image,
+  Badge,
 } from "react-bootstrap";
 import { BsTrash } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
@@ -143,7 +144,7 @@ const RecipeDetails = () => {
   };
 
   // Delete handler for comment
-  const handleDeleteComment = (recipeId: string, reviewId: string) => {
+  const handleDeleteComment = (reviewId: string) => {
     dispatch(
       deleteReview({
         recipeId: recipe_Id,
@@ -228,11 +229,11 @@ const RecipeDetails = () => {
               )}
             </div>
 
-            <h6>
+            <Badge bg='success' className='mb-3'>
               {recipe?.category?.name
                 ? recipe?.category?.name
                 : "Category not available"}
-            </h6>
+            </Badge>
 
             <Image
               src={recipe?.image}
@@ -373,10 +374,7 @@ const RecipeDetails = () => {
                               <button
                                 className='btn btn-outline-danger btn-sm '
                                 onClick={() =>
-                                  handleDeleteComment(
-                                    recipe_Id as string,
-                                    review._id as string
-                                  )
+                                  handleDeleteComment(review._id as string)
                                 }
                               >
                                 Delete
@@ -406,10 +404,7 @@ const RecipeDetails = () => {
                             <button
                               className='btn btn-outline-danger btn-sm '
                               onClick={() =>
-                                handleDeleteComment(
-                                  recipe_Id as string,
-                                  review._id as string
-                                )
+                                handleDeleteComment(review._id as string)
                               }
                             >
                               Delete

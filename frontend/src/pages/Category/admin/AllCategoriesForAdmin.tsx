@@ -47,6 +47,14 @@ const AllCategoriesForAdmin = () => {
           <p className='lead'>Edit or delete categories for your recipe.</p>
         </div>
       </div>
+      {/* Add Category */}
+      <Row className='mb-3'>
+        <Col md={12}>
+          <Link to='/admin/add-category' className='btn btn-primary'>
+            Add Category
+          </Link>
+        </Col>
+      </Row>
       <Row>
         <Col md={12}>
           <Table striped variant='success' bordered hover responsive>
