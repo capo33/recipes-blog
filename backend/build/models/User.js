@@ -1,5 +1,7 @@
-import { Schema, model } from "mongoose";
-var userSchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = require("mongoose");
+const userSchema = new mongoose_1.Schema({
     name: {
         type: String,
         required: true,
@@ -30,13 +32,13 @@ var userSchema = new Schema({
     },
     savedRecipes: [
         {
-            type: Schema.Types.ObjectId,
+            type: mongoose_1.Schema.Types.ObjectId,
             ref: "Recipe",
         },
     ],
     ownRecipes: [
         {
-            type: Schema.Types.ObjectId,
+            type: mongoose_1.Schema.Types.ObjectId,
             ref: "Recipe",
         },
     ],
@@ -57,4 +59,4 @@ var userSchema = new Schema({
         default: ["None"],
     },
 }, { timestamps: true });
-export default model("User", userSchema);
+exports.default = (0, mongoose_1.model)("User", userSchema);

@@ -1,5 +1,7 @@
-import { Schema, model } from "mongoose";
-var reviewSchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = require("mongoose");
+const reviewSchema = new mongoose_1.Schema({
     name: {
         type: String,
         required: true,
@@ -14,10 +16,10 @@ var reviewSchema = new Schema({
         required: [true, "Please enter your comment"],
     },
     user: {
-        type: Schema.Types.ObjectId,
+        type: mongoose_1.Schema.Types.ObjectId,
         ref: "User",
     },
 }, {
     timestamps: true,
 });
-export default model("Review", reviewSchema);
+exports.default = (0, mongoose_1.model)("Review", reviewSchema);
