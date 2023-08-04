@@ -22,7 +22,7 @@ const Hero = () => {
         </Col>
         <Col lg={6}>
           <h1 className='display-5 fw-bold lh-1 mb-3'>
-            Huge selection of delicios recipe ideas
+            Huge selection of delicious recipe ideas
           </h1>
           <p className='lead'>
             Explore our huge selection of delicious recipe ideas including; easy
