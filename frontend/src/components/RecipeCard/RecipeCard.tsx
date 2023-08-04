@@ -51,7 +51,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
   };
 
   return (
-    <Card className='my-3 rounded'>
+    <Card className='my-3 rounded '>
       {/* Card Body */}
       <Card.Body>
         {/* Card Header */}
@@ -71,14 +71,18 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
             )}
           </Card.Title>
         </Card.Text>
-        <Card.Title as={"p"}>{formatDate(recipe?.createdAt)}</Card.Title>
-
+        <Card.Text as='div' className='d-flex justify-content-between  '>
+          <Card.Title as={"p"}>{formatDate(recipe?.createdAt)}</Card.Title>
+          <Card.Title as={"p"}>
+            <Badge>{recipe?.category?.name}</Badge>
+          </Card.Title>
+        </Card.Text>
         <Link to={`/recipe-details/${recipe._id}`}>
           <Card.Img
             src={recipe.image}
             variant='top'
             alt={recipe.name}
-             style={{
+            style={{
               width: "100%",
               height: "150px",
               objectFit: "cover",

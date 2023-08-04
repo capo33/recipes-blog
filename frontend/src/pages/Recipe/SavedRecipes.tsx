@@ -41,7 +41,7 @@ const SavedRecipes = () => {
 
       <Row className=''>
         {savedRecipes?.map((myRecipe) => (
-          <Col lg={3} md={4} sm={6} key={myRecipe?._id}>
+          <Col lg={4} md={4} sm={6} key={myRecipe?._id}>
             <Card className='mt-2'>
               <Link to={`/recipe-details/${myRecipe?._id}`}>
                 <Card.Img

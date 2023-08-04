@@ -11,7 +11,6 @@ const CategoryDetails = () => {
   const { slug } = useParams<{ slug: string }>();
 
   const { category, isLoading } = useAppSelector((state) => state.category);
-  console.log("category", category);
 
   const dispatch = useAppDispatch();
 
@@ -32,6 +31,20 @@ const CategoryDetails = () => {
             </p>
           </div>
         </div>
+        <nav aria-label='breadcrumb'>
+          <ol className='breadcrumb'>
+            <li className='breadcrumb-item'>
+              <Link to='/'>Home</Link>
+            </li>
+            <li className='breadcrumb-item'>
+              <Link to='/categories'>Categories</Link>
+            </li>
+            <li className='breadcrumb-item active' aria-current='page'>
+              {category?.name && capitalize(category?.name)}
+            </li>
+          </ol>
+        </nav>
+
         {isLoading && <Loader />}
         <Row>
           {category?.recipes?.map((recipe) => (

@@ -485,7 +485,7 @@ const RecipeDetails = () => {
                     ></Form.Control>
                   </Form.Group>
                   <Button type='submit' variant='primary'>
-                    Submit
+                    Add Review
                   </Button>
                 </Form>
               ) : (

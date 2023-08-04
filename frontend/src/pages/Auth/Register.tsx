@@ -124,7 +124,9 @@ const Register = () => {
 
         {/* Security Question */}
         <Form.Group controlId='answer'>
-          <Form.Label>What is your favorite color?</Form.Label>
+          <Form.Label>
+            What is your favorite color? (Security Question)
+          </Form.Label>
 
           <InputGroup>
             <InputGroup.Text id='basic-addon1'>
