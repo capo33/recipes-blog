@@ -174,44 +174,7 @@ const Profile = () => {
               </Card.Footer>
             </Card.Body>
           </Card>
-          s{/* Author Recipes Card */}
-          <Card className='mt-3'>
-            <Card.Body>
-              <Card.Title className='text-center ' as={"h3"}>
-                {userData?.name}'s Recipes
-                <span className='text-gray-500'>
-                  ({userData?.ownedRecipes?.length})
-                </span>
-              </Card.Title>
-
-              {userData?.ownedRecipes && userData?.ownedRecipes?.length > 0
-                ? userData?.ownedRecipes?.map((recipe, index) => (
-                    <div
-                      className='d-flex justify-content-between align-items-center flex-wrap mt-2 p-2 border rounded '
-                      key={index}
-                    >
-                      {recipe.name}
-                      <Link to={`/recipe-details/${recipe._id}`}>
-                        <Image
-                          className=' rounded-full img-fluid'
-                          style={{
-                            width: 75,
-                            height: 75,
-                            objectFit: "cover",
-                          }}
-                          src={
-                            recipe?.image
-                              ? recipe?.image
-                              : "https://via.placeholder.com/150"
-                          }
-                          alt='recipe'
-                        />
-                      </Link>
-                    </div>
-                  ))
-                : "Not Available Yet"}
-            </Card.Body>
-          </Card>
+          {/* Author Recipes Card */}
         </Col>
 
         {/* Author Details */}
@@ -319,6 +282,48 @@ const Profile = () => {
           </Card>
         </Col>
       </Row>
+      <Row>
+        
+          <Card className='mt-3'>
+        <Col lg={6} md={4} sm={12}>
+            <Card.Body>
+              <Card.Title className='text-center ' as={"h3"}>
+                {userData?.name}'s Recipes
+                <span className='text-gray-500'>
+                  ({userData?.ownedRecipes?.length})
+                </span>
+              </Card.Title>
+
+              {userData?.ownedRecipes && userData?.ownedRecipes?.length > 0
+                ? userData?.ownedRecipes?.map((recipe, index) => (
+                    <div
+                      className='d-flex justify-content-between align-items-center flex-wrap mt-2 p-2 border rounded '
+                      key={index}
+                    >
+                      {recipe.name}
+                      <Link to={`/recipe-details/${recipe._id}`}>
+                        <Image
+                          className=' rounded-full img-fluid'
+                          style={{
+                            width: 75,
+                            height: 75,
+                            objectFit: "cover",
+                          }}
+                          src={
+                            recipe?.image
+                              ? recipe?.image
+                              : "https://via.placeholder.com/150"
+                          }
+                          alt='recipe'
+                        />
+                      </Link>
+                    </div>
+                  ))
+                : "Not Available Yet"}
+            </Card.Body>
+        </Col>
+          </Card>
+        </Row>
     </Container>
   );
 };

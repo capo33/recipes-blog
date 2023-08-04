@@ -12,8 +12,8 @@ import {
   Tab,
   Tabs,
   OverlayTrigger,
-  Image,
   Badge,
+  Card,
 } from "react-bootstrap";
 import { BsTrash } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
@@ -165,160 +165,184 @@ const RecipeDetails = () => {
           value='recipe'
         />
       ) : null}
-
+      <div className='px-4 my-5 text-center'>
+        <h1 className='display-5 fw-bold'>Recipe Details</h1>
+        <div className='col-lg-6 mx-auto'>
+          <p className='lead'>Let's get cooking today</p>
+        </div>
+      </div>
       <Row>
-        <Col lg={8}>
-          <div className='article'>
-            <div className='flexy'>
-              <h2>{recipe?.name}</h2>
+        <Col lg={8} className='mt-3'>
+          <Card className='mb-3'>
+            <Card.Header className='mt-2 mx-2'>
+              <Row>
+                <Col md={8}>
+                  <Card.Title as={"h3"}>{recipe?.name}</Card.Title>
+                </Col>
+                <Col md={4}>
+                  <div className='d-flex justify-content-between'>
+                    {/* Save & Unsave */}
+                    {!user ? (
+                      <OverlayTrigger
+                        placement='top'
+                        overlay={<Tooltip>Login to save recipe</Tooltip>}
+                      >
+                        <Button variant='primary w-100'>
+                          <GoBookmark style={{ fontSize: "1.2rem" }} />
+                        </Button>
+                      </OverlayTrigger>
+                    ) : (
+                      <>
+                        {recipesIDs?.includes(recipe?._id as string) ? (
+                          <Button
+                            variant='primary w-100'
+                            style={{ fontSize: "1.2rem" }}
+                            size='sm'
+                            disabled={loading}
+                            onClick={() =>
+                              handleUnsaveRecipe(recipe?._id as string)
+                            }
+                          >
+                            {loading ? (
+                              <span
+                                className='spinner-border spinner-border-sm'
+                                role='status'
+                                aria-hidden='true'
+                              />
+                            ) : (
+                              <span>
+                                <GoBookmarkFill
+                                  style={{ fontSize: "1.2rem" }}
+                                />
+                                unsave
+                              </span>
+                            )}
+                          </Button>
+                        ) : (
+                          <Button
+                            variant='primary w-100'
+                            size='sm'
+                            style={{ fontSize: "1.2rem" }}
+                            disabled={loading}
+                            onClick={() =>
+                              handleSaveRecipe(recipe?._id as string)
+                            }
+                          >
+                            {loading ? (
+                              <span
+                                className='spinner-border spinner-border-sm'
+                                role='status'
+                                aria-hidden='true'
+                              />
+                            ) : (
+                              <span>
+                                <GoBookmark />
+                                save
+                              </span>
+                            )}
+                          </Button>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </Col>
+              </Row>
+              <Badge bg='info' className='px-3'>
+                {recipe?.category?.name
+                  ? recipe?.category?.name
+                  : "Category not available"}
+              </Badge>
+            </Card.Header>
 
-              {/* Save & Unsave */}
-              {!user ? (
-                <OverlayTrigger
-                  placement='top'
-                  overlay={<Tooltip>Login to save recipe</Tooltip>}
+            {/* Card Body */}
+            <Card.Body>
+              <Card.Img
+                src={recipe?.image}
+                alt={recipe?.name}
+                className='recipe_img img-fluid d-block mx-auto mt-3'
+              />
+
+              <Col className='mt-3'>
+                <Tabs defaultActiveKey='ingredients' className='m-3' justify>
+                  <Tab eventKey='ingredients' title='Ingredients'>
+                    <ListGroup as='ol' numbered>
+                      {recipe?.ingredients?.map((ingredient, index) => (
+                        <ListGroup.Item
+                          as={"li"}
+                          key={index}
+                          className='border-0 bg-transparent'
+                        >
+                          {ingredient}
+                        </ListGroup.Item>
+                      ))}
+                    </ListGroup>
+                  </Tab>
+                  <Tab
+                    eventKey='instructions'
+                    title='instructions'
+                    className='mx-3'
+                  >
+                    <span
+                      className='m-5'
+                      dangerouslySetInnerHTML={{
+                        __html: recipe?.instructions as string,
+                      }}
+                    />
+                  </Tab>
+                </Tabs>
+              </Col>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col>
+          <Card className='m-3 d-flex justify-content-between'>
+            <Card.Body>
+              <Card.Title>Author: {recipe?.owner?.name}</Card.Title>
+              <Card.Img
+                src={recipe?.owner?.image}
+                alt={recipe?.owner?.name}
+                className='w-50 d-block mx-auto rounded-circle'
+              />
+              <Card.Text>
+                <Link
+                  to={
+                    recipe?.owner?._id !== userID
+                      ? `/user-profile/${guestID}`
+                      : "/profile"
+                  }
+                  className='btn btn-info w-100'
                 >
-                  <Button variant='primary w-100 mt-2 mb-5'>
-                    <GoBookmark style={{ fontSize: "1.2rem" }} />
-                  </Button>
-                </OverlayTrigger>
-              ) : (
-                <>
-                  {recipesIDs?.includes(recipe?._id as string) ? (
-                    <Button
-                      variant='primary w-25 '
-                      style={{ fontSize: "1.2rem" }}
-                      disabled={loading}
-                      onClick={() => handleUnsaveRecipe(recipe?._id as string)}
-                    >
-                      {loading ? (
-                        <span
-                          className='spinner-border spinner-border-sm'
-                          role='status'
-                          aria-hidden='true'
-                        />
-                      ) : (
-                        <span>
-                          <GoBookmarkFill style={{ fontSize: "1.2rem" }} />
-                          unsave
-                        </span>
-                      )}
-                    </Button>
-                  ) : (
-                    <Button
-                      variant='primary w-25'
-                      style={{ fontSize: "1.2rem" }}
-                      disabled={loading}
-                      onClick={() => handleSaveRecipe(recipe?._id as string)}
-                    >
-                      {loading ? (
-                        <span
-                          className='spinner-border spinner-border-sm'
-                          role='status'
-                          aria-hidden='true'
-                        />
-                      ) : (
-                        <span>
-                          <GoBookmark />
-                          save
-                        </span>
-                      )}
-                    </Button>
-                  )}
-                </>
-              )}
-            </div>
+                  View Profile
+                </Link>
+              </Card.Text>
 
-            <Badge bg='success' className='mb-3'>
-              {recipe?.category?.name
-                ? recipe?.category?.name
-                : "Category not available"}
-            </Badge>
-
-            <Image
-              src={recipe?.image}
-              alt={recipe?.name}
-              className='w-75 img-fluid d-block mx-auto'
-            />
-
-            {/* Edit & Delete */}
-            <div className='d-flex justify-content-end align-items-center mt-3'>
+              {/* Edit & Delete */}
               {recipe?.owner?._id === userID && (
-                <div>
+                <Card.Title
+                  as={"div"}
+                  className='d-flex justify-content-between align-items-center mt-3 gap-2'
+                >
                   <Link
                     to={`/update-recipe/${recipe?._id}`}
-                    className='btn btn-primary   mx-2'
+                    className='btn btn-primary w-100'
                   >
                     <AiOutlineEdit />
                     Edit
                   </Link>
 
-                  <Button onClick={handleConfirmDelete} variant='danger'>
+                  <Button
+                    onClick={handleConfirmDelete}
+                    variant='danger'
+                    className='w-100'
+                  >
                     <BsTrash />
                     Delete
                   </Button>
-                </div>
+                </Card.Title>
               )}
-            </div>
-          </div>
-
-          <Tabs defaultActiveKey='ingredients' className='mb-3' justify>
-            <Tab eventKey='ingredients' title='Ingredients'>
-              <ListGroup as='ol' numbered>
-                {recipe?.ingredients?.map((ingredient, index) => (
-                  <ListGroup.Item
-                    as={"li"}
-                    key={index}
-                    className='border-0 bg-transparent'
-                  >
-                    {ingredient}
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            </Tab>
-            <Tab eventKey='instructions' title='instructions'>
-              <span
-                className='m-5'
-                dangerouslySetInnerHTML={{
-                  __html: recipe?.instructions as string,
-                }}
-              />
-            </Tab>
-          </Tabs>
-        </Col>
-
-        <Col className='recipe-aside'>
-          {/* Author */}
-          <div className='widget widget-author'>
-            <div className='widget-title'>
-              <h3>Hello, I'm {recipe?.owner?.name}</h3>
-            </div>
-            <div className='widget-body'>
-              <Link
-                to={
-                  recipe?.owner?._id !== userID
-                    ? `/user-profile/${guestID}`
-                    : "/profile"
-                }
-              >
-                <img
-                  src={recipe?.owner?.image}
-                  alt={recipe?.owner?.name}
-                  className='w-25 h-25'
-                />
-              </Link>
-              <Link
-                to={
-                  recipe?.owner?._id !== userID
-                    ? `/user-profile/${guestID}`
-                    : "/profile"
-                }
-                className='btn btn-info'
-              >
-                View Profile
-              </Link>
-            </div>
-          </div>
+            </Card.Body>
+          </Card>
         </Col>
 
         <Col lg={8} md={12}>

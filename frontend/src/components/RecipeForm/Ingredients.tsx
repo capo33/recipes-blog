@@ -24,13 +24,17 @@ const Ingredients = ({
     <Col md={12} className='mb-2'>
       <Form.Label htmlFor='ingredients'>Ingredients</Form.Label>
       {recipe && recipe?.ingredients?.length > 0 && (
-        <Alert variant='secondary'>
+        <Alert
+          variant='secondary'
+          className=' '
+          style={{ overflow: "scroll" }}
+        >
           {recipe?.ingredients?.map((ingredient) => (
             <span key={ingredient}>
               <Badge
                 bg='success'
                 text='white'
-                className='me-1 mt-1'
+                className='mb-1 me-1 '
                 style={{ fontSize: "1rem" }}
               >
                 {ingredient}
@@ -46,7 +50,7 @@ const Ingredients = ({
           ))}
         </Alert>
       )}
-      
+
       <Form.Control
         type='text'
         name='ingredients'

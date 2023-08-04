@@ -114,7 +114,7 @@ export const updateRecipe = asyncHandler(
       throw new Error("Not authorized");
     }
 
-    const recipe = await RecipeModel.findById(recipeId);
+    const recipe = await RecipeModel.findById(recipeId)
 
     // Check if recipe exists with the given id
     if (!recipe) {
