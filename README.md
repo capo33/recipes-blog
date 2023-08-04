@@ -72,6 +72,7 @@ yarn run server
 Frontend
 
 - [React]
+- [Redux]
 - [Typescript]
 
 Backend
