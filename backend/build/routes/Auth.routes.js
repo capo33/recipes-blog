@@ -23,10 +23,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const authMiddleware_1 = require("../middlewares/authMiddleware");
-const authController = __importStar(require("../controllers/AuthController"));
-const router = (0, express_1.Router)();
+var express_1 = require("express");
+var authMiddleware_1 = require("../middlewares/authMiddleware");
+var authController = __importStar(require("../controllers/AuthController"));
+var router = (0, express_1.Router)();
 router.get("/logout", authController.logout);
 router.post("/login", authController.login);
 router.post("/register", authController.register);

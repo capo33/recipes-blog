@@ -23,10 +23,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const authMiddleware_1 = require("../middlewares/authMiddleware");
-const recipeController = __importStar(require("../controllers/RecipeController"));
-const router = (0, express_1.Router)();
+var express_1 = require("express");
+var authMiddleware_1 = require("../middlewares/authMiddleware");
+var recipeController = __importStar(require("../controllers/RecipeController"));
+var router = (0, express_1.Router)();
 router.get("/", recipeController.getRecipes);
 router.get("/random", recipeController.getRandomRecipes);
 router.get("/latest", recipeController.getLatestRecipes);
