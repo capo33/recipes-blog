@@ -50,7 +50,7 @@ if (process.env.NODE_ENV === "production") {
   );
 } else {
   // Welcome route
-  app.get("/", (req, res) => {
+  app.get("/", (req: Request, res: Response) => {
     res.json({
       message: "API is running...",
     });
