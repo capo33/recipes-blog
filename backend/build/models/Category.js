@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var mongoose_1 = require("mongoose");
-var categorySchema = new mongoose_1.Schema({
+import { Schema, model } from "mongoose";
+var categorySchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -16,11 +14,11 @@ var categorySchema = new mongoose_1.Schema({
     },
     recipes: [
         {
-            type: mongoose_1.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "Recipe",
         },
     ],
 }, {
     timestamps: true,
 });
-exports.default = (0, mongoose_1.model)("Category", categorySchema);
+export default model("Category", categorySchema);

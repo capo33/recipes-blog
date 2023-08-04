@@ -1,11 +1,6 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var mongoose_1 = require("mongoose");
-var Review_1 = __importDefault(require("./Review"));
-var recipeSchema = new mongoose_1.Schema({
+import { Schema, model } from "mongoose";
+import ReviewModel from "./Review";
+var recipeSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -31,7 +26,7 @@ var recipeSchema = new mongoose_1.Schema({
         required: [true, "Please enter your views"],
         default: 0,
     },
-    reviews: [Review_1.default.schema],
+    reviews: [ReviewModel.schema],
     rating: {
         type: Number,
         // required: true,
@@ -48,19 +43,19 @@ var recipeSchema = new mongoose_1.Schema({
     },
     likes: [
         {
-            type: mongoose_1.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "User",
         },
     ],
     category: {
-        type: mongoose_1.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Category",
     },
     owner: {
-        type: mongoose_1.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User",
     },
 }, {
     timestamps: true,
 });
-exports.default = (0, mongoose_1.model)("Recipe", recipeSchema);
+export default model("Recipe", recipeSchema);

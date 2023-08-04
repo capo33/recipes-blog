@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -46,23 +45,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.unlikeRecipe = exports.likeRecipe = exports.deleteReview = exports.addReview = exports.getSavedRecipes = exports.getRecipesByUser = exports.unsaveRecipe = exports.saveRecipe = exports.deleteRecipe = exports.updateRecipe = exports.createRecipe = exports.getLatestRecipes = exports.getRandomRecipes = exports.getRecipeById = exports.getRecipes = void 0;
-var User_1 = __importDefault(require("../models/User"));
-var Recipe_1 = __importDefault(require("../models/Recipe"));
-var Category_1 = __importDefault(require("../models/Category"));
-var asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
+import UserModel from "../models/User";
+import RecipeModel from "../models/Recipe";
+import CategoryModel from "../models/Category";
+import asyncHandler from "../middlewares/asyncHandler";
 // @desc    Get all recipes
 // @route   GET /api/v1/recipes
 // @access  Public
-exports.getRecipes = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var getRecipes = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var recipes;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, Recipe_1.default.find({})
+            case 0: return [4 /*yield*/, RecipeModel.find({})
                     .populate("owner", "name image")
                     .populate("category", "name image")];
             case 1:
@@ -75,11 +69,11 @@ exports.getRecipes = (0, asyncHandler_1.default)(function (req, res) { return __
 //@desc     GET a recipe by id
 //@route    GET /api/v1/recipes/:id
 //@access   Public
-exports.getRecipeById = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var getRecipeById = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var recipe, views;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, Recipe_1.default.findById(req.params.recipeId)
+            case 0: return [4 /*yield*/, RecipeModel.findById(req.params.recipeId)
                     .populate("owner", "name image")
                     .populate("category", "name image")];
             case 1:
@@ -104,11 +98,11 @@ exports.getRecipeById = (0, asyncHandler_1.default)(function (req, res) { return
 // @desc    Get Random Recipes
 // @route   GET /api/v1/recipes/random
 // @access  Public
-exports.getRandomRecipes = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var getRandomRecipes = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var recipes;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, Recipe_1.default.aggregate([{ $sample: { size: 3 } }])];
+            case 0: return [4 /*yield*/, RecipeModel.aggregate([{ $sample: { size: 3 } }])];
             case 1:
                 recipes = _a.sent();
                 res.status(200).json(recipes);
@@ -119,11 +113,11 @@ exports.getRandomRecipes = (0, asyncHandler_1.default)(function (req, res) { ret
 // @desc    Get Latest Recipes
 // @route   GET /api/v1/recipes/latest
 // @access  Public
-exports.getLatestRecipes = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var getLatestRecipes = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var recipes;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, Recipe_1.default.find({}).sort({ createdAt: -1 }).limit(3)];
+            case 0: return [4 /*yield*/, RecipeModel.find({}).sort({ createdAt: -1 }).limit(3)];
             case 1:
                 recipes = _a.sent();
                 res.status(200).json(recipes);
@@ -134,7 +128,7 @@ exports.getLatestRecipes = (0, asyncHandler_1.default)(function (req, res) { ret
 // @desc    Create a recipe
 // @route   POST /api/v1/recipes
 // @access  Private
-exports.createRecipe = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var createRecipe = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var newRecipe;
     var _a, _b;
     return __generator(this, function (_c) {
@@ -145,18 +139,18 @@ exports.createRecipe = (0, asyncHandler_1.default)(function (req, res) { return 
                     res.status(401);
                     throw new Error("Not authorized");
                 }
-                return [4 /*yield*/, Recipe_1.default.create(__assign(__assign({}, req.body), { owner: (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a._id }))];
+                return [4 /*yield*/, RecipeModel.create(__assign(__assign({}, req.body), { owner: (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a._id }))];
             case 1:
                 newRecipe = _c.sent();
                 // Add the recipe to the user
-                return [4 /*yield*/, User_1.default.findByIdAndUpdate((_b = req === null || req === void 0 ? void 0 : req.user) === null || _b === void 0 ? void 0 : _b._id, {
+                return [4 /*yield*/, UserModel.findByIdAndUpdate((_b = req === null || req === void 0 ? void 0 : req.user) === null || _b === void 0 ? void 0 : _b._id, {
                         $push: { ownRecipes: newRecipe._id },
                     })];
             case 2:
                 // Add the recipe to the user
                 _c.sent();
                 // Add the recipe to the category
-                return [4 /*yield*/, Category_1.default.findByIdAndUpdate(req.body.category, {
+                return [4 /*yield*/, CategoryModel.findByIdAndUpdate(req.body.category, {
                         $push: { recipes: newRecipe._id },
                     })];
             case 3:
@@ -174,7 +168,7 @@ exports.createRecipe = (0, asyncHandler_1.default)(function (req, res) { return 
 //@desc     Update a recipe
 //@route    PUT /api/v1/recipes/:id
 //@access   Private
-exports.updateRecipe = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var updateRecipe = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var recipeId, recipe, _a, name, ingredients, instructions, image, cookingTime, category;
     var _b;
     return __generator(this, function (_c) {
@@ -185,7 +179,7 @@ exports.updateRecipe = (0, asyncHandler_1.default)(function (req, res) { return 
                     res.status(401);
                     throw new Error("Not authorized");
                 }
-                return [4 /*yield*/, Recipe_1.default.findById(recipeId)];
+                return [4 /*yield*/, RecipeModel.findById(recipeId)];
             case 1:
                 recipe = _c.sent();
                 // Check if recipe exists with the given id
@@ -220,14 +214,14 @@ exports.updateRecipe = (0, asyncHandler_1.default)(function (req, res) { return 
 //@desc     Delete a recipe
 //@route    DELETE /api/v1/recipes/:id
 //@access   Private
-exports.deleteRecipe = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var deleteRecipe = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var recipeId, recipe;
     var _a, _b;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
                 recipeId = req.params.recipeId;
-                return [4 /*yield*/, User_1.default.findByIdAndUpdate((_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a._id, {
+                return [4 /*yield*/, UserModel.findByIdAndUpdate((_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a._id, {
                         $pull: { ownRecipes: recipeId },
                     })];
             case 1:
@@ -237,7 +231,7 @@ exports.deleteRecipe = (0, asyncHandler_1.default)(function (req, res) { return 
                     res.status(401);
                     throw new Error("Not authorized");
                 }
-                return [4 /*yield*/, Recipe_1.default.findById(recipeId)];
+                return [4 /*yield*/, RecipeModel.findById(recipeId)];
             case 2:
                 recipe = _c.sent();
                 // Check if recipe exists with the given id
@@ -251,7 +245,7 @@ exports.deleteRecipe = (0, asyncHandler_1.default)(function (req, res) { return 
                     throw new Error("Not authorized");
                 }
                 // Delete the recipe
-                return [4 /*yield*/, Recipe_1.default.findByIdAndDelete(recipeId)];
+                return [4 /*yield*/, RecipeModel.findByIdAndDelete(recipeId)];
             case 3:
                 // Delete the recipe
                 _c.sent();
@@ -266,7 +260,7 @@ exports.deleteRecipe = (0, asyncHandler_1.default)(function (req, res) { return 
 // @desc    Save a recipe
 // @route   PUT /api/v1/recipes/:id/save
 // @access  Private
-exports.saveRecipe = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var saveRecipe = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var recipe, user, isSaved;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -276,10 +270,10 @@ exports.saveRecipe = (0, asyncHandler_1.default)(function (req, res) { return __
                     res.status(401);
                     throw new Error("Not authorized");
                 }
-                return [4 /*yield*/, Recipe_1.default.findById(req.body.recipeID).populate("category", "name image recipes")];
+                return [4 /*yield*/, RecipeModel.findById(req.body.recipeID).populate("category", "name image recipes")];
             case 1:
                 recipe = _a.sent();
-                return [4 /*yield*/, User_1.default.findById(req.body.userID)];
+                return [4 /*yield*/, UserModel.findById(req.body.userID)];
             case 2:
                 user = _a.sent();
                 // Check if recipe exists with the given id
@@ -293,7 +287,7 @@ exports.saveRecipe = (0, asyncHandler_1.default)(function (req, res) { return __
                     throw new Error("Recipe already saved");
                 }
                 // Save the recipe
-                return [4 /*yield*/, User_1.default.findByIdAndUpdate(req.body.userID, {
+                return [4 /*yield*/, UserModel.findByIdAndUpdate(req.body.userID, {
                         $push: { savedRecipes: recipe._id },
                     }, { new: true } // to return the updated document
                     )];
@@ -314,7 +308,7 @@ exports.saveRecipe = (0, asyncHandler_1.default)(function (req, res) { return __
 // @desc    Unsave a recipe
 // @route   PUT /api/v1/recipes/:id/unsave
 // @access  Private
-exports.unsaveRecipe = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var unsaveRecipe = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var recipe, user, isUnsaved;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -324,10 +318,10 @@ exports.unsaveRecipe = (0, asyncHandler_1.default)(function (req, res) { return 
                     res.status(401);
                     throw new Error("Not authorized");
                 }
-                return [4 /*yield*/, Recipe_1.default.findById(req.body.recipeID).populate("category", "name image recipes")];
+                return [4 /*yield*/, RecipeModel.findById(req.body.recipeID).populate("category", "name image recipes")];
             case 1:
                 recipe = _a.sent();
-                return [4 /*yield*/, User_1.default.findById(req.body.userID)];
+                return [4 /*yield*/, UserModel.findById(req.body.userID)];
             case 2:
                 user = _a.sent();
                 // Check if recipe exists with the given id
@@ -341,7 +335,7 @@ exports.unsaveRecipe = (0, asyncHandler_1.default)(function (req, res) { return 
                     throw new Error("Recipe already unsaved");
                 }
                 // Unsave the recipe
-                return [4 /*yield*/, User_1.default.findByIdAndUpdate(req.body.userID, {
+                return [4 /*yield*/, UserModel.findByIdAndUpdate(req.body.userID, {
                         $pull: { savedRecipes: recipe._id },
                     }, { new: true } // to return the updated document
                     )];
@@ -360,13 +354,13 @@ exports.unsaveRecipe = (0, asyncHandler_1.default)(function (req, res) { return 
 // @desc    Get recipes by user
 // @route   GET /api/v1/recipes/savedRecipes/:id
 // @access  Public
-exports.getRecipesByUser = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var getRecipesByUser = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var id, user;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 id = req.params.id;
-                return [4 /*yield*/, User_1.default.findById(id)
+                return [4 /*yield*/, UserModel.findById(id)
                         .populate("savedRecipes")
                         .select("-password")];
             case 1:
@@ -380,18 +374,18 @@ exports.getRecipesByUser = (0, asyncHandler_1.default)(function (req, res) { ret
 // @desc    Get recipes by user
 // @route   GET /api/v1/recipes/savedRecipes/ids/:id
 // @access  Public
-exports.getSavedRecipes = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var getSavedRecipes = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var id, user, savedRecipes;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 id = req.params.id;
-                return [4 /*yield*/, User_1.default.findById(id)
+                return [4 /*yield*/, UserModel.findById(id)
                         .populate("savedRecipes", "name image")
                         .select("password")];
             case 1:
                 user = _a.sent();
-                return [4 /*yield*/, Recipe_1.default.find({
+                return [4 /*yield*/, RecipeModel.find({
                         _id: { $in: user === null || user === void 0 ? void 0 : user.savedRecipes }, // find recipes with ids in the savedRecipes array
                     })
                         .populate("category", "name image")
@@ -406,14 +400,14 @@ exports.getSavedRecipes = (0, asyncHandler_1.default)(function (req, res) { retu
 // @desc    Create a review
 // @route   POST /api/v1/recipes/:id/reviews
 // @access  Private
-exports.addReview = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var addReview = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, rating, comment, recipe, alreadyReviewed, review;
     var _b, _c, _d, _e;
     return __generator(this, function (_f) {
         switch (_f.label) {
             case 0:
                 _a = req.body, rating = _a.rating, comment = _a.comment;
-                return [4 /*yield*/, Recipe_1.default.findById(req.params.id)
+                return [4 /*yield*/, RecipeModel.findById(req.params.id)
                         // .sort({ createdAt: -1 })
                         .populate({
                         path: "reviews",
@@ -465,14 +459,14 @@ exports.addReview = (0, asyncHandler_1.default)(function (req, res) { return __a
 // @desc    Delete a review
 // @route   DELETE /api/v1/recipes/reviews/:recipeId/:reviewId
 // @access  Private
-exports.deleteReview = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var deleteReview = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, recipeId, reviewId, recipe;
     var _b, _c, _d;
     return __generator(this, function (_e) {
         switch (_e.label) {
             case 0:
                 _a = req.params, recipeId = _a.recipeId, reviewId = _a.reviewId;
-                return [4 /*yield*/, Recipe_1.default.findByIdAndUpdate(recipeId, {
+                return [4 /*yield*/, RecipeModel.findByIdAndUpdate(recipeId, {
                         $pull: { reviews: { _id: reviewId } },
                     }, { new: true })];
             case 1:
@@ -506,13 +500,13 @@ exports.deleteReview = (0, asyncHandler_1.default)(function (req, res) { return 
 // @desc    Like a recipe
 // @route   PUT /api/v1/recipes/like
 // @access  Private
-exports.likeRecipe = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var likeRecipe = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var recipeId, recipe;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 recipeId = req.body.recipeId;
-                return [4 /*yield*/, Recipe_1.default.findByIdAndUpdate(recipeId, {
+                return [4 /*yield*/, RecipeModel.findByIdAndUpdate(recipeId, {
                         $push: { likes: req.body.userId },
                     }, { new: true })];
             case 1:
@@ -533,13 +527,13 @@ exports.likeRecipe = (0, asyncHandler_1.default)(function (req, res) { return __
 // @desc    Unlike a recipe
 // @route   PUT /api/v1/recipes/unlike
 // @access  Private
-exports.unlikeRecipe = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var unlikeRecipe = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var recipeId, recipe;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 recipeId = req.body.recipeId;
-                return [4 /*yield*/, Recipe_1.default.findByIdAndUpdate(recipeId, {
+                return [4 /*yield*/, RecipeModel.findByIdAndUpdate(recipeId, {
                         $pull: { likes: req.body.userId },
                     }, { new: true })];
             case 1:

@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,22 +34,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCategory = exports.updateCategory = exports.createCategory = exports.getCategory = exports.getCategories = void 0;
-var slugify_1 = __importDefault(require("slugify"));
-var Category_1 = __importDefault(require("../models/Category"));
-var asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
+import slugify from "slugify";
+import CategoryModel from "../models/Category";
+import asyncHandler from "../middlewares/asyncHandler";
 // @desc    Get all categories
 // @route   GET /api/v1/categories
 // @access  Public
-exports.getCategories = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var getCategories = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var categories;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, Category_1.default.find({}).populate("recipes")];
+            case 0: return [4 /*yield*/, CategoryModel.find({}).populate("recipes")];
             case 1:
                 categories = _a.sent();
                 res.status(200).json(categories);
@@ -61,11 +55,11 @@ exports.getCategories = (0, asyncHandler_1.default)(function (req, res) { return
 // @desc    Get a category by slug
 // @route   GET /api/v1/categories/:slug
 // @access  Public
-exports.getCategory = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var getCategory = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var category;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, Category_1.default.findOne({
+            case 0: return [4 /*yield*/, CategoryModel.findOne({
                     slug: req.params.slug,
                 }).populate({
                     path: "recipes",
@@ -89,15 +83,15 @@ exports.getCategory = (0, asyncHandler_1.default)(function (req, res) { return _
 // @desc    Create a category
 // @route   POST /api/v1/categories
 // @access  Private/Admin
-exports.createCategory = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var createCategory = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, name, image, category;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _a = req.body, name = _a.name, image = _a.image;
-                return [4 /*yield*/, Category_1.default.create({
+                return [4 /*yield*/, CategoryModel.create({
                         name: name,
-                        slug: (0, slugify_1.default)(name),
+                        slug: slugify(name),
                         image: image,
                     })];
             case 1:
@@ -114,13 +108,13 @@ exports.createCategory = (0, asyncHandler_1.default)(function (req, res) { retur
 // @desc    Update a category
 // @route   PUT /api/v1/categories/:id
 // @access  Private/Admin
-exports.updateCategory = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var updateCategory = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var id, category, _a, name, image;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 id = req.params.id;
-                return [4 /*yield*/, Category_1.default.findById(id)];
+                return [4 /*yield*/, CategoryModel.findById(id)];
             case 1:
                 category = _b.sent();
                 // Check if category exists with the given slug
@@ -130,7 +124,7 @@ exports.updateCategory = (0, asyncHandler_1.default)(function (req, res) { retur
                 }
                 _a = req.body, name = _a.name, image = _a.image;
                 category.name = name || category.name;
-                category.slug = (0, slugify_1.default)(name) || category.slug;
+                category.slug = slugify(name) || category.slug;
                 category.image = image || category.image;
                 return [4 /*yield*/, category.save()];
             case 2:
@@ -147,13 +141,13 @@ exports.updateCategory = (0, asyncHandler_1.default)(function (req, res) { retur
 // @desc    Delete a category
 // @route   DELETE /api/v1/categories/:id
 // @access  Private/Admin
-exports.deleteCategory = (0, asyncHandler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+export var deleteCategory = asyncHandler(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var id, category;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 id = req.params.id;
-                return [4 /*yield*/, Category_1.default.findByIdAndDelete(id)];
+                return [4 /*yield*/, CategoryModel.findByIdAndDelete(id)];
             case 1:
                 category = _a.sent();
                 // Check if category exists with the given slug
