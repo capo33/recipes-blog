@@ -27,6 +27,7 @@ type RecipeCardProps = {
 const RecipeCard = ({ recipe }: RecipeCardProps) => {
   const { user } = useAppSelector((state) => state.auth);
   const { savedRecipes } = useAppSelector((state) => state.recipe);
+  console.log(user);
 
   const dispatch = useAppDispatch();
 
@@ -85,13 +86,16 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
           <Card.Title as={"p"}>
             <Badge>{recipe?.category?.name}</Badge>
           </Card.Title>
-          <Card.Title as={"p"} className=''>
-            {recipesIDs?.includes(recipe._id) ? (
-              <Badge bg='success'>Saved</Badge>
-            ) : (
-              <Badge bg='danger'>Unsaved</Badge>
-            )}
-          </Card.Title>
+          {user && (
+            <Card.Title as={"p"} className=''>
+              {recipesIDs?.includes(recipe._id) ? (
+                <Badge bg='success'>Saved</Badge>
+              ) : (
+                <Badge bg='danger'>Unsaved</Badge>
+              )}
+            </Card.Title>
+          )}
+
           <Card.Title as={"p"}>{formatDate(recipe?.createdAt)}</Card.Title>
         </Card.Text>
         <Link to={`/recipe-details/${recipe._id}`}>
