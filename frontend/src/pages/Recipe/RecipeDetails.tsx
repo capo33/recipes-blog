@@ -35,15 +35,13 @@ import { Review } from "../../interfaces/RecipeInterface";
 import { useAppDispatch, useAppSelector } from "../../redux/app/store";
 
 import "./style.css";
- 
+
 const RecipeDetails = () => {
   const { recipeId } = useParams<{ recipeId: string }>();
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const { user } = useAppSelector((state) => state.auth);
-  const { recipe, savedRecipes } = useAppSelector(
-    (state) => state.recipe
-  );
+  const { recipe, savedRecipes } = useAppSelector((state) => state.recipe);
 
   const [show, setShow] = useState(false);
   const [data, setData] = useState<Review>({

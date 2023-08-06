@@ -274,6 +274,8 @@ export const likeRecipe = createAsyncThunk(
     try {
       const response = await recipeServices.likeRecipe(recipeId, userId, token);
       thunkAPI.dispatch(getAllRecipes());
+      thunkAPI.dispatch(getRandomRecipes());
+      thunkAPI.dispatch(getLatestRecipes());
       return response;
     } catch (error: unknown | any) {
       return thunkAPI.rejectWithValue(error.response.data.message);
@@ -299,6 +301,8 @@ export const unlikeRecipe = createAsyncThunk(
         token
       );
       thunkAPI.dispatch(getAllRecipes());
+      thunkAPI.dispatch(getRandomRecipes());
+      thunkAPI.dispatch(getLatestRecipes());
       return response;
     } catch (error: unknown | any) {
       return thunkAPI.rejectWithValue(error.response.data.message);

@@ -27,7 +27,6 @@ type RecipeCardProps = {
 const RecipeCard = ({ recipe }: RecipeCardProps) => {
   const { user } = useAppSelector((state) => state.auth);
   const { savedRecipes } = useAppSelector((state) => state.recipe);
-  console.log(user);
 
   const dispatch = useAppDispatch();
 

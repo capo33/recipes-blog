@@ -7,17 +7,16 @@ import { Recipe } from "../../interfaces/RecipeInterface";
 import RecipeCard from "../../components/RecipeCard/RecipeCard";
 import { useAppDispatch, useAppSelector } from "../../redux/app/store";
 import { getRandomRecipes } from "../../redux/feature/Recipe/recipeSlice";
- 
+
 const RandomRecipe = () => {
   const { randomRecipes } = useAppSelector((state) => state.recipe);
   const { user } = useAppSelector((state) => state.auth);
- 
+
   const dispatch = useAppDispatch();
 
- 
   useEffect(() => {
     dispatch(getRandomRecipes());
-   }, [dispatch]);
+  }, [dispatch]);
 
   return (
     <Container>
@@ -42,7 +41,7 @@ const RandomRecipe = () => {
           <Row style={{ margin: "0 auto" }}>
             {randomRecipes?.map((recipe: Recipe) => (
               <Col key={recipe._id} sm={12} md={6} lg={4}>
-              <RecipeCard recipe={recipe} />
+                <RecipeCard recipe={recipe} />
               </Col>
             ))}
           </Row>
