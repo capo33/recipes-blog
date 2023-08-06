@@ -35,14 +35,15 @@ import { Review } from "../../interfaces/RecipeInterface";
 import { useAppDispatch, useAppSelector } from "../../redux/app/store";
 
 import "./style.css";
-
+ 
 const RecipeDetails = () => {
   const { recipeId } = useParams<{ recipeId: string }>();
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const { user } = useAppSelector((state) => state.auth);
-  const { recipe } = useAppSelector((state) => state.recipe);
-  const { savedRecipes } = useAppSelector((state) => state.recipe);
+  const { recipe, savedRecipes } = useAppSelector(
+    (state) => state.recipe
+  );
 
   const [show, setShow] = useState(false);
   const [data, setData] = useState<Review>({
@@ -62,7 +63,7 @@ const RecipeDetails = () => {
   // Loading state
   useEffect(() => {
     function simulateNetworkRequest() {
-      return new Promise((resolve) => setTimeout(resolve, 1000));
+      return new Promise((resolve) => setTimeout(resolve, 1500));
     }
 
     if (loading) {
@@ -180,15 +181,19 @@ const RecipeDetails = () => {
                   <Card.Title as={"h3"}>{recipe?.name}</Card.Title>
                 </Col>
                 <Col md={4}>
-                  <div className='d-flex justify-content-between'>
+                  <div className=' '>
                     {/* Save & Unsave */}
                     {!user ? (
                       <OverlayTrigger
                         placement='top'
                         overlay={<Tooltip>Login to save recipe</Tooltip>}
                       >
-                        <Button variant='primary w-100'>
-                          <GoBookmark style={{ fontSize: "1.2rem" }} />
+                        <Button
+                          variant='primary w-100'
+                          style={{ fontSize: "1.2rem" }}
+                          size='sm'
+                        >
+                          <GoBookmark style={{ fontSize: "1.2rem" }} /> Save
                         </Button>
                       </OverlayTrigger>
                     ) : (
@@ -204,17 +209,13 @@ const RecipeDetails = () => {
                             }
                           >
                             {loading ? (
-                              <span
-                                className='spinner-border spinner-border-sm'
-                                role='status'
-                                aria-hidden='true'
-                              />
+                              <span className='spinner-border spinner-border-sm' />
                             ) : (
                               <span>
                                 <GoBookmarkFill
                                   style={{ fontSize: "1.2rem" }}
-                                />
-                                unsave
+                                />{" "}
+                                Unsave
                               </span>
                             )}
                           </Button>
@@ -229,15 +230,10 @@ const RecipeDetails = () => {
                             }
                           >
                             {loading ? (
-                              <span
-                                className='spinner-border spinner-border-sm'
-                                role='status'
-                                aria-hidden='true'
-                              />
+                              <span className='spinner-border spinner-border-sm' />
                             ) : (
                               <span>
-                                <GoBookmark />
-                                save
+                                <GoBookmark /> Save
                               </span>
                             )}
                           </Button>
@@ -311,7 +307,7 @@ const RecipeDetails = () => {
                       ? `/user-profile/${guestID}`
                       : "/profile"
                   }
-                  className='btn btn-info w-100'
+                  className='btn btn-info w-100 mt-3'
                 >
                   View Profile
                 </Link>

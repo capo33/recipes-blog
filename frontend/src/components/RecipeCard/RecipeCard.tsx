@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import Button from "react-bootstrap/Button";
-import { Badge, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {
   AiFillLike,
@@ -8,8 +7,8 @@ import {
   AiOutlineLike,
   AiOutlineStar,
 } from "react-icons/ai";
-import Tooltip from "react-bootstrap/Tooltip";
 import { FaRegComments } from "react-icons/fa";
+import { Tooltip, Badge, Card } from "react-bootstrap";
 
 import { formatDate } from "../../utils";
 import {
@@ -56,9 +55,19 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
       <Card.Body>
         {/* Card Header */}
         <Card.Text as='div' className='d-flex justify-content-between  '>
-          <Card.Title as={"h5"}>{recipe?.name}</Card.Title>
+          <Card.Title as={"h4"}>{recipe?.name}</Card.Title>
+
           <Card.Title as={"h4"} className='d-flex align-items-center'>
-            {recipe?.likes?.includes(userID) ? (
+            {!user ? (
+              <OverlayTrigger
+                placement='top'
+                overlay={<Tooltip>Login to like recipe</Tooltip>}
+              >
+                <Button variant='primary w-100'>
+                  <AiFillLike style={{ cursor: "pointer" }} />
+                </Button>
+              </OverlayTrigger>
+            ) : recipe?.likes?.includes(userID) ? (
               <AiFillLike
                 style={{ cursor: "pointer" }}
                 onClick={() => handleUnlike(recipe?._id as string)}
@@ -71,11 +80,19 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
             )}
           </Card.Title>
         </Card.Text>
-        <Card.Text as='div' className='d-flex justify-content-between  '>
-          <Card.Title as={"p"}>{formatDate(recipe?.createdAt)}</Card.Title>
+
+        <Card.Text as='div' className='d-flex justify-content-between'>
           <Card.Title as={"p"}>
             <Badge>{recipe?.category?.name}</Badge>
           </Card.Title>
+          <Card.Title as={"p"} className=''>
+            {recipesIDs?.includes(recipe._id) ? (
+              <Badge bg='success'>Saved</Badge>
+            ) : (
+              <Badge bg='danger'>Unsaved</Badge>
+            )}
+          </Card.Title>
+          <Card.Title as={"p"}>{formatDate(recipe?.createdAt)}</Card.Title>
         </Card.Text>
         <Link to={`/recipe-details/${recipe._id}`}>
           <Card.Img
@@ -84,23 +101,19 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
             alt={recipe.name}
             style={{
               width: "100%",
-              height: "150px",
+              height: "200px",
               objectFit: "cover",
             }}
+            loading='lazy'
           />
         </Link>
 
-        <Card.Text as='div' className='mb-2 mt-2'>
-          {recipesIDs?.includes(recipe._id) ? (
-            <Badge bg='success'>Saved</Badge>
-          ) : (
-            <Badge bg='danger'>Unsaved</Badge>
-          )}
-        </Card.Text>
-
-        {/* Tooltips */}
-        <Card.Text as='div' className='d-flex justify-content-between'>
+        <Card.Text
+          as='div'
+          className='d-flex justify-content-between align-items-center mt-5'
+        >
           {/* Likes Tooltip */}
+
           <OverlayTrigger
             placement={"top"}
             overlay={
@@ -112,8 +125,8 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
             }
           >
             <Button
-              variant='light'
-              className='btn btn-outline-primary d-flex justify-content-center align-items-center'
+              variant='outline-primary'
+              className='d-flex justify-content-center align-items-center'
             >
               <AiFillLike />
             </Button>
@@ -129,8 +142,8 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
             }
           >
             <Button
-              variant='light'
-              className='btn btn-outline-primary d-flex justify-content-center align-items-center'
+              variant='outline-primary'
+              className='d-flex justify-content-center align-items-center'
             >
               <AiOutlineEye />
             </Button>
@@ -148,8 +161,8 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
             }
           >
             <Button
-              variant='light'
-              className='btn btn-outline-primary d-flex justify-content-center align-items-center'
+              variant='outline-primary'
+              className='d-flex justify-content-center align-items-center'
             >
               <FaRegComments />
             </Button>
@@ -165,8 +178,8 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
             }
           >
             <Button
-              variant='light'
-              className='btn btn-outline-primary d-flex justify-content-center align-items-center'
+              variant='outline-primary'
+              className='d-flex justify-content-center align-items-center'
             >
               <AiOutlineStar />
             </Button>

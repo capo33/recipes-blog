@@ -47,7 +47,13 @@ export const getRecipeById = asyncHandler(
 // @access  Public
 export const getRandomRecipes = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const recipes = await RecipeModel.aggregate([{ $sample: { size: 3 } }]);
+    const count = await RecipeModel.countDocuments();
+    const random = Math.floor(Math.random() * count);
+    const recipes = await RecipeModel.find({})
+      .skip(random)
+      .limit(3)
+      .populate("owner", "name image")
+      .populate("category", "name image");
     res.status(200).json(recipes);
   }
 );
@@ -57,7 +63,11 @@ export const getRandomRecipes = asyncHandler(
 // @access  Public
 export const getLatestRecipes = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const recipes = await RecipeModel.find({}).sort({ createdAt: -1 }).limit(3);
+    const recipes = await RecipeModel.find({})
+      .sort({ createdAt: -1 })
+      .limit(3)
+      .populate("owner", "name image")
+      .populate("category", "name image");
     res.status(200).json(recipes);
   }
 );

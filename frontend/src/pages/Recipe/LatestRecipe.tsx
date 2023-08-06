@@ -40,8 +40,8 @@ const LatestRecipe = () => {
         ) : (
           <Row style={{ margin: "0 auto" }}>
             {latestRecipes?.map((recipe: Recipe) => (
-              <Col key={recipe._id} sm={12} md={6} lg={4} xl={3}>
-                <RecipeCard recipe={recipe} />
+              <Col key={recipe._id} sm={12} md={6} lg={4}>
+              <RecipeCard recipe={recipe} />
               </Col>
             ))}
           </Row>

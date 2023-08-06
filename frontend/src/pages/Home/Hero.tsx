@@ -15,7 +15,7 @@ const Hero = () => {
             className='d-block mx-lg-auto img-fluid'
             style={{
               mixBlendMode: "multiply",
-             }}
+            }}
             loading='lazy'
             alt='Eating food'
           />

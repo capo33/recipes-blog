@@ -7,27 +7,24 @@ import { Recipe } from "../../interfaces/RecipeInterface";
 import RecipeCard from "../../components/RecipeCard/RecipeCard";
 import { useAppDispatch, useAppSelector } from "../../redux/app/store";
 import { getRandomRecipes } from "../../redux/feature/Recipe/recipeSlice";
-
+ 
 const RandomRecipe = () => {
   const { randomRecipes } = useAppSelector((state) => state.recipe);
   const { user } = useAppSelector((state) => state.auth);
-
+ 
   const dispatch = useAppDispatch();
 
+ 
   useEffect(() => {
     dispatch(getRandomRecipes());
-  }, [dispatch]);
+   }, [dispatch]);
 
   return (
     <Container>
-       <div className='px-4 my-5 text-center'>
-        <h1 className='display-5 fw-bold'>
-          Random Recipes
-        </h1>
+      <div className='px-4 my-5 text-center'>
+        <h1 className='display-5 fw-bold'>Random Recipes</h1>
         <div className='col-lg-6 mx-auto'>
-          <p className='lead'>
-            Get random recipes from our database.
-          </p>
+          <p className='lead'>Get random recipes from our database.</p>
         </div>
       </div>
       <Row>
@@ -44,15 +41,15 @@ const RandomRecipe = () => {
         ) : (
           <Row style={{ margin: "0 auto" }}>
             {randomRecipes?.map((recipe: Recipe) => (
-              <Col key={recipe._id} sm={12} md={6} lg={4} xl={3}>
-                <RecipeCard recipe={recipe} />
+              <Col key={recipe._id} sm={12} md={6} lg={4}>
+              <RecipeCard recipe={recipe} />
               </Col>
             ))}
           </Row>
         )}
       </Row>
     </Container>
-  )
-}
+  );
+};
 
-export default RandomRecipe
+export default RandomRecipe;

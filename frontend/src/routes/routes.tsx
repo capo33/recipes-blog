@@ -31,7 +31,12 @@ import AllCategoriesForAdmin from "../pages/Category/admin/AllCategoriesForAdmin
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
-      <Route path='' element={<Home />} />
+      {/* <Route path='' element={<Home />} /> */}
+      <Route index={true} path='/' element={<Home />} />
+      <Route path='/search/:keyword' element={<Home />} />
+      <Route path='/page/:pageNumber' element={<Home />} />
+      <Route path='/search/:keyword/page/:pageNumber' element={<Home />} />
+
       <Route path='login' element={<Login />} />
       <Route path='register' element={<Register />} />
       <Route path='/forgot-password' element={<ForgotPassword />} />

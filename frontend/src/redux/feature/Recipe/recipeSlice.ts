@@ -525,10 +525,10 @@ const recipeSlice = createSlice({
 
     // Like a recipe
     builder.addCase(likeRecipe.pending, (state) => {
-      state.isSuccess = false;
+      state.isLoading = false;
     });
     builder.addCase(likeRecipe.fulfilled, (state, { payload }) => {
-      state.isSuccess = true;
+      state.isLoading = true;
 
       const newdata = state.recipes.map((recipe) => {
         if (recipe?._id === payload?.data?._id) {
@@ -546,10 +546,10 @@ const recipeSlice = createSlice({
 
     // Unlike a recipe
     builder.addCase(unlikeRecipe.pending, (state) => {
-      state.isSuccess = false;
+      state.isLoading = false;
     });
     builder.addCase(unlikeRecipe.fulfilled, (state, { payload }) => {
-      state.isSuccess = true;
+      state.isLoading = true;
       console.log(payload);
 
       const newdata = state.recipes.map((recipe) => {
